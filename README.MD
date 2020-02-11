@@ -284,4 +284,3 @@ class Cat {
 - Hosting: assigning values to variables that don't exist, creates a variable in global scope.
 - Marshalling: convert objects from memory to a format that can be written to disk
 - `var` can cause hoisting bugs, prefer to use `let` or `const`
--
