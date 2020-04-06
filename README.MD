@@ -359,7 +359,7 @@ class Cat {
   'prototype' in Object // returns true
 ```
 
-#### 8.0.9 ...rest and ...spread
+### Chapter 9 - ...rest and ...spread
 - The `...rest` syntax assumes you have more than element
 - The single `...rest` parameter assumes you have one or more parameter passed to a function
 ```javascript
@@ -454,6 +454,24 @@ class Cat {
   let c1 = [...a1, ...b1]; // [1, 2, 3, 4]
 ```
 - `Spread` allows deep copies
+
+### Chapter 10 Closures
+- After a function is called, Javascript keeps track of all variables that were used
+- _Closures_ enables you to keep a reference to all local function variables in the state they were found after the function exited
+- Remember: in Javascript you can define a function inside another function (Technically this is a closure)
+- Closure inner execution context
+- In Javascript, inner functions have access to variables defined in the code of the function in which they are defined
+- We can expose "private" functions by returning the function
+```javascript
+function sendEmail(from, sub, message) {
+  let msg = `my message ${message}`;
+  let send = function() { console.log(msg) }
+  return send;
+}
+
+let refToSend = sendEmail('Professor Farnsworth', 'Re: subject;', 'Good news everyone!')
+```
+
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
