@@ -16,11 +16,11 @@ Condensed knowledge for javascript
 - `import { Mouse, Tiger, Dog } from 'animals.js'`
 
 #### 3.2 - Strict Mode
-- Available since *ECMAScript 5*
+- Available since **ECMAScript 5**
 - This _Strict contexts_ prevents certain actions from being taken and throws an exception
 - Example: In _strict_ mode you cannot use undeclared variables
 - In _strict_ mode you become aware of more errors.
-- _Strict_ mode can be delimited to certain scopes, not only to *Global*; Besides would be better to limit it's scope to the current function.
+- _Strict_ mode can be delimited to certain scopes, not only to **Global**; Besides would be better to limit it's scope to the current function.
 - Using _Strict_ mode is a good practice
 
 #### 3.3 - Literal Values
@@ -171,9 +171,9 @@ new Number(1).toString();
   let a = Boolean({}); // true
 ```
 - Javascript will try to coerce to an ideal value specific to that type
-- *Coercion* is the process of converting a value from one type into another
+- **Coercion** is the process of converting a value from one type into another
 - `==` tests obkects by reference, not by value
-- Javascript will often coerce different types to its *string* or *number* value
+- Javascript will often coerce different types to its **string** or **number** value
 - If during operation, Javascript discover that the types are different then will use _type coercion_ to change one of the values before performin the operation
 - Javascript uses three types of `+` operators: _unary_, _arithmetic_ & _string_
 - Operators evaluate from _left_ to _right_
@@ -183,7 +183,7 @@ new Number(1).toString();
 - For _multiplication_ the coercion occurs from string to number. Remember `3 * "" => 0`
 - _null_ => value is empty
 - _undefined_ => value is not assigned
-- Avoid using *undefined* as initial value, prefer *null*
+- Avoid using **undefined** as initial value, prefer **null**
 
 #### 6.0.1 Examples of type coercion
 - Javascript will try to come up with best value available if you supply meaningless combinations of types to some of its operators
@@ -195,7 +195,7 @@ new Number(1).toString();
 - You can define a variable using `var`, `let` or `const`
 - If you try to use a variable that wasn't defined you would get a _ReferenceError_
 - _Global scope_ variables are propagated into all inner scopes
-- _Global scope_ is also *window* when using `var` definition, let does not attach variables to window
+- _Global scope_ is also **window** when using `var` definition, let does not attach variables to window
 - Hoisting: _placed on to of_ or _raised_
 - Hoising is limited to `var`
 - Using `let` or `const` variables means that these elements only exist in the scope that they were declared
@@ -269,8 +269,8 @@ class Cat {
 
 ### ES6 Const
 - `const` keyword is different than `let` and `var`
-- `const` *cannot* be reassigned
-- `const` *requires* to be assigned or has initial value
+- `const` **cannot** be reassigned
+- `const` **requires** to be assigned or has initial value
 ```javascript
   const a = []
   a[0] = 'A'; // valid
@@ -368,16 +368,16 @@ class Cat {
   let f = (...items) => items.map(item => console.log(item));
   f(1,2,3,4,5) // results in see in console 1 2 3 4 5 printed
 ```
-- `=>` refers as *Arrow Function*
+- `=>` refers as **Arrow Function**
 - Shorter code but less understandable
 - _Remember, if you are working on a team, another person might be reading your code. Sometimes that person will be you in the future_
 - You can think `...spread` as opposite of of `...rest`
 - `...spread` can help you to extract parts of an object.
 - _Rest & spread_ are not syntax operators, they are assign operators
-- _Spread_ operator *expands* iterables into one or more argument
-- _Rest_ operator *collects* all the rest parameters into an array
-- *Rest* parameters cannot appear as leading/middle parameters if we have more arguments/parameters
-- *Rest* parameters must be unique or last
+- _Spread_ operator **expands** iterables into one or more argument
+- _Rest_ operator **collects** all the rest parameters into an array
+- **Rest** parameters cannot appear as leading/middle parameters if we have more arguments/parameters
+- **Rest** parameters must be unique or last
 ```javascript
   function sum(...args, b, c) {} // error
   function sum(a, ...args, c) {} // error
@@ -443,7 +443,7 @@ class Cat {
   let { coco, negrita } = perros.manada.casa
 ```
 - If a variable is not found in the object, then it uses `undefined`
-- You can use *spread* to easily merge objects or arrays
+- You can use* **spread** to easily merge objects or arrays
 ```javascript
   let a = { p: 1, q: 2 };
   let b = { r: 3, s: 4 };
@@ -471,6 +471,22 @@ function sendEmail(from, sub, message) {
 
 let refToSend = sendEmail('Professor Farnsworth', 'Re: subject;', 'Good news everyone!')
 ```
+- _Closures_ are used in functional programming the same way in OOP we use private methods
+- _Closures_ provide a method API to an object in the form of a function
+- Whenever a function is declared inside another function, a closure is created
+- When a function containing another function is called, then a new execution context is created.
+- **Note**: _new Function()_ does not create a new closure. Objects created with the keyword **new**
+
+#### 10.0.1 Arity
+- **Arity** is the number of arguments that a function takes
+```javascript
+function f(a,b,c) {} // 3 parameters
+let arity = f.length;
+console.log(arity) // 3 as result
+```
+#### 10.0.2 Currying
+- In Javascript functions are expressions. This also means a function can return another function.
+- A **curried** function can be constructed by chaining closures by defining and immediately returning all inner functions at the same time
 
 
 ### Notes & Concepts
