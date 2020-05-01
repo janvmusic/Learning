@@ -488,9 +488,44 @@ console.log(arity) // 3 as result
 - In Javascript functions are expressions. This also means a function can return another function.
 - A **curried** function can be constructed by chaining closures by defining and immediately returning all inner functions at the same time
 
+### Chapter 11 Loops
+- Iterating: the act of repeat the same action **n** number of times
+- Array is iterable while Object, no.
+- Enumerable types do not guarantee the order in which properties will appear when iterated
+- Types of loops: `for`, `for...of`, `for...in`, `while` & `Array.forEach`
+- Some **Array** methods are considered to be iterators: `.values`, `.keys`, `.map`, `.every`, `.some`, `.filter` & `.reduce`,
+
+
+#### Reduce
+```javascript
+  let miles = [5, 12, 75, 2, 5];
+
+  let A = 0;
+  for (let i = 0; i < 5; i++) {
+    A += miles[i];
+  }
+
+  console.log(A); // returns 99
+```
+- You can use `Reduce` function to use high order functions
+```javascript
+  const R = (accumulator, value) => accumulator + value;
+  const result = miles.reduce(R);
+  console.log(result); // returns 99
+```
+
+#### 11.1 Loops
+- Contains 3 basic elements;
+- **initialize**: `i = 0`;
+- **test condition**: `i < 5`;
+- **increment/decrement**: `i++`;
+- Remember that most of the _List_ elements are based on a **0 index**
+- **Multiple statements
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
 - Hosting: assigning values to variables that don't exist, creates a variable in global scope.
 - Marshalling: convert objects from memory to a format that can be written to disk
 - `var` can cause hoisting bugs, prefer to use `let` or `const`
+- **High-order functions**: because they take another function as argument or return a function
+- **Rendering** is the act of displaying something in the screen
