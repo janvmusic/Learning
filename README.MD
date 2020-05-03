@@ -1,5 +1,5 @@
 ### JS Grammar
-Condensed knowledge for javascript
+Condensed knowledge for Javascript
 
 ### Chapter 3 - Welcome to Javascript
 #### 3.1 - Basics
@@ -25,10 +25,10 @@ Condensed knowledge for javascript
 
 #### 3.3 - Literal Values
 - Literal representation of a number, boolean, text & so on
-- Operations avaiable (+,-,/,*, etc)
+- Operations available (+,-,/,*, etc)
 - Variable types: number, string, [], {}, boolean, function
-- Javascript functon can be used as values or parameters to other functions. These are called `function expression`
-- It's uncommon to use contructors for primitive values; However use the literal notation
+- Javascript function can be used as values or parameters to other functions. These are called `function expression`
+- It's uncommon to use constructors for primitive values; However use the literal notation
 
 #### 3.4 Variables
 - _Variables_ are place holders for values
@@ -77,7 +77,7 @@ Condensed knowledge for javascript
 - `Strings` can be a template string `I have {$number} of apples`
 - `Boolean` are _true_ or _false_
 - `null` is an object. Null has no constructor WTF?
-- `Number` they are part of the numberic domain (positive, negative, floats, infinity)
+- `Number` they are part of the numeric domain (positive, negative, floats, infinity)
 - `Numbers` has an special value `NaN` (not a number)
 - Using constructors return object
 
@@ -172,9 +172,9 @@ new Number(1).toString();
 ```
 - Javascript will try to coerce to an ideal value specific to that type
 - **Coercion** is the process of converting a value from one type into another
-- `==` tests obkects by reference, not by value
+- `==` tests objects by reference, not by value
 - Javascript will often coerce different types to its **string** or **number** value
-- If during operation, Javascript discover that the types are different then will use _type coercion_ to change one of the values before performin the operation
+- If during operation, Javascript discover that the types are different then will use _type coercion_ to change one of the values before performing the operation
 - Javascript uses three types of `+` operators: _unary_, _arithmetic_ & _string_
 - Operators evaluate from _left_ to _right_
 - One exception of this rule is `assignation` which evaluates from _right_ to _left_
@@ -197,7 +197,7 @@ new Number(1).toString();
 - _Global scope_ variables are propagated into all inner scopes
 - _Global scope_ is also **window** when using `var` definition, let does not attach variables to window
 - Hoisting: _placed on to of_ or _raised_
-- Hoising is limited to `var`
+- Hoisting is limited to `var`
 - Using `let` or `const` variables means that these elements only exist in the scope that they were declared
 - `var` elements declared in _function level_ remains in the level in which they were defined
 - Hoisting is a safety element for Javascript
@@ -209,7 +209,7 @@ new Number(1).toString();
 fun();
 
 function fun() {
-  console.log("This function is going to be hoised")
+  console.log("This function is going to be hoisted")
 }
 ```
 - _Functions_ can be assigned to variables; these functions are not going to be _hoisted_
@@ -281,7 +281,7 @@ class Cat {
 
 ### Chapter 8 - Arithmetic
 - Same as Java
-- `%` returns the number of times one numbers ointo the other. It's often used to determine the remainder
+- `%` returns the number of times one numbers into the other. It's often used to determine the remainder
 - For numbers these operators `=, +=, -=, *=, /= %=` allows you to assign values
 - For strings these operators help you to perform these:
   - `=` string assignment
@@ -351,7 +351,7 @@ class Cat {
   'length' in [] // returns true
   'length' in [1, 2, 3] // returns true
   'length' in {} // returns false
-  'length' in { lentgth: '2' } // returns true
+  'length' in { length: '2' } // returns true
 ```
 - Checks for the presence of `constructor` or `prototype`
 ```javascript
@@ -520,7 +520,7 @@ console.log(arity) // 3 as result
 - **test condition**: `i < 5`;
 - **increment/decrement**: `i++`;
 - Remember that most of the _List_ elements are based on a **0 index**
-- **Multiple statements**: You can call several functions during an interation using `comma`
+- **Multiple statements**: You can call several functions during an iteration using `comma`
 ```javascript
   let counter = 0;
   function inc() {
@@ -641,12 +641,45 @@ console.log(generator.next().value); // prints two
     // Because those are the tuples in the enumerable object
   }
 ```
-- This can be also achived using `for...in` loop, this will help to avoid use any of the Object conversion method
+- This can be also achieved using `for...in` loop, this will help to avoid use any of the Object conversion method
 
 #### 11.3 for ... in
 - `for ...of` loops only uses iterables. Remember Objects are _enumerables_
 - `for ...in` loops work with _enumerables_ object properties
+```javascript
+  let object = {
+    a: 1,
+    b: 2,
+    c: 3,
+    method: () => {}
+  }
 
+  for (let value in object) {
+    console.log(value, object[value]);
+    // This will print 
+    // 1
+    // 2
+    // 3
+    // () => {}
+  }
+```
+- Not all objects properties are enumerable even if they exist on the object.
+- `for...in` will skip all non `enumerable` properties
+- `constructor` and `prototype` are not enumerable
+
+#### 11.4 While loops
+- **While** loops will iterate until the condition becomes false
+- You can use secondary conditions to break **while** earlier if needed
+```javascript
+  let c = 0;
+  while (c++ < 5) {
+    console.log(c);
+  }
+```
+
+#### 11.4.1 While and continue
+- **Continue** keyword can be used to skip steps.
+- However if you need earlier termination, use break
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
