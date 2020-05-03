@@ -520,7 +520,133 @@ console.log(arity) // 3 as result
 - **test condition**: `i < 5`;
 - **increment/decrement**: `i++`;
 - Remember that most of the _List_ elements are based on a **0 index**
-- **Multiple statements
+- **Multiple statements**: You can call several functions during an interation using `comma`
+```javascript
+  let counter = 0;
+  function inc() {
+    counter++;
+  }
+
+  for (let i = 0; i < 10; i++, inc());
+  console.log(counter); // returns 10;
+```
+- `let` elements need to be enclosed by brackets when used in a `for` loop
+```javascript
+  for (let i = 0; i < 10; i++) let x = i; // throws an error
+  
+  for (let i = 0; i < 10; i++) {
+    let x = i; // it works!
+  } 
+```
+- Javascript allows nested looks
+- As in Java, you can use `continue` keyword to skip one iteration
+- As in Java, you can use `break` keyword to get out of loop execution
+- None of the 3 basic elements are required, you can use `;;` and move the context to the loop body
+- You can use `labels` in Javascript. This is interesting
+```javascript
+  let c = 0
+  mark: for (let i = 0; i < 5; i++) {
+    inner: for(let j = 0; j < 5; j++) {
+      c++;
+      if (i === 2) {
+        break mark;
+      }
+    }
+  }
+  console.log(c); // returns 11
+```
+```javascript
+  let c = 0
+  mark: for (let i = 0; i < 5; i++) {
+    inner: for(let j = 0; j < 5; j++) {
+      c++;
+      if (i === 2) {
+        break inner;
+      }
+    }
+  }
+  console.log(c); // returns 21
+```
+- All the instructions called after `break`/`continue` keywords are going to be ignored
+```javascript
+block: {
+  console.log("before");
+  break;
+  console.log("after");
+}
+```
+#### 11.2 for...of Loop
+#### 11.2.1 for...of Loop + Generators
+- **Generators** are function declared with a `*`. They can `yield` and can execute several likes by parts, not following all the lines
+```javascript
+function* generator() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+for (let value of generator()) {
+  console.log(value);
+}
+
+// prints: 1, then prints 2, then prints 3
+let generator = generator();
+
+console.log(generator.next().value); // prints one
+console.log(generator.next().value); // prints two
+```
+- **Generators** are one-time use functions. you should not attempt to reuse a generator fiunction more than once. They are not a regular functions!!
+
+#### 11.2.1 for...of Loop
+- `Strings` are **iterables**, you can walk each character using a `for...of` statement
+```javascript
+  let heroName = 'Jotaro Joestar';
+
+  for (let character of heroName) {
+    console.log(character);
+  }
+```
+
+#### 11.2.3 for ... of and Arrays
+- `for...of` it the equivalent to `for each` in Java
+```javascript
+  let array = [0,1,2];
+  for (let value of array) {
+    console.log(value);
+  }
+```
+
+#### 11.2.3 for ... of and Objects
+- `Objects` in Javascript are not iterables
+- `Objects` has enumerable properties
+- As remedy for this, we can use `Objects.keys`, `Objects.values` or `Objects.entries`
+```javascript
+  let enumerable = { property: 1, method : () => {} };
+
+  for (let key of Object.keys(enumerable)) {
+    console.log(key);
+    // Will print: method, property.
+    // Because those are the keys in the enumerable object
+  }
+
+  for (let value of Object.values(enumerable)) {
+    console.log(value);
+    // Will print: 1, () => {}
+    // Because those are the values in the enumerable object
+  }
+
+  for (let entry of Object.entries(enumerable)) {
+    console.log(entry);
+    // Will print: [property, 1] & [method, f]
+    // Because those are the tuples in the enumerable object
+  }
+```
+- This can be also achived using `for...in` loop, this will help to avoid use any of the Object conversion method
+
+#### 11.3 for ... in
+- `for ...of` loops only uses iterables. Remember Objects are _enumerables_
+- `for ...in` loops work with _enumerables_ object properties
+
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
