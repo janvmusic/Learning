@@ -681,6 +681,94 @@ console.log(generator.next().value); // prints two
 - **Continue** keyword can be used to skip steps.
 - However if you need earlier termination, use break
 
+### Chapter 12 Arrays
+- Most of the methods in `Arrays` are iterators.
+- `Array` methods are **attached** to _Array.prototype_ property
+- You can used them like:
+```javascript
+  [1,2,3].forEach();
+```
+
+#### 12.0.1 Array.prototype.sort()
+- Previous `ES-10` V8 used an unstable version of quick sort algorithm
+- A stable algorithm is when 2 objects with equal keys appear in the same order in the sorted output as in the unsorted input.
+
+#### 12.0.2 Array.forEach
+- This method will execute a function for every item in the array
+- Before ES6.
+```javascript
+  let fruit = ['pear', 'banana', 'orange', 'apple', 'pineapple'];
+  let print = function (item, index, object) {
+    console.log(item);
+  }
+
+  fruit.forEach(print);
+```
+- `forEach` received 3 parameters **item, index & object**
+- In ES6 you can use this method, using arrow functions:
+```javascript
+  fruit.forEach((item, index, object) => {
+    console.log(item, index, object);
+  });
+```
+- ES6 Slim form
+```javascript
+  fruit.forEach(item => console.log(item));
+```
+- As long as you have only one statement, you can remove brackets.
+
+#### 12.0.3 Array.every
+- This method evaluates for something that all items in the array has it
+- Uses `short circuit` logic, so breaks when we get first _false_
+- `Array.every` will not modify the original array. Uses a **copy** not a reference
+
+#### 12.0.4 Array.some
+- This method evaluates for _true_ if one element accomplishes the condition
+- Uses **short circuit** logic.
+- Note: this is not the opposite of `Array.every`
+
+#### 12.0.5 Array.filter
+- Return a new set of elements after applying a condition
+```javascript
+  let numbers = [0,10,2,3,4,5,6,7];
+  let condition = value => value < 10;
+  
+  let filteredElements = numbers.filter(condition);
+  console.log(filtered); // [0,2,3,4,5,6,7]
+  console.log(numbers); // array unchanged
+```
+
+#### 12.0.6 Array.reduce
+- Returns an accumulator
+- The `accumulator` value must be returned
+- There are different types of accumulators.
+- As any other method that uses `iterables` **reducer** has access to current value (currentValue)
+- `Array.reduce` vs `Array.filter`? `reduce` is the father of `filter` & `map`
+- Anything done by `filter` or `map` can be done with `reduce`
+- Use `reduce` when the return type is the same as the `input items`
+- Do use it:
+  - Sum or multiply numbers
+  - Update state in react
+- Do NOT use it
+  - Building a new list or objects from scratch
+  - For anything else, use A LOOP!
+  - To mutate original input arguments
+  - To perform side efects, like call APIs and routing transitions
+  - To call non-pure functions, like **Date.now()** or **Math.random()**
+
+#### 12.0.10 Array.flat
+- Flattering multi-dimensional array
+```javascript
+  let multi = [1,2,3,[4,5,6,[7,8,9,[10,11,12]]]];
+  multi.flat(); // [1, 2, 3, 4, 5, 6, Array(4)]
+  multi.flat().flat(); // [1, 2, 3, 4, 5, 6, 7, 8, 9, Array(3)]
+  multi.flat().flat().flat(); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  multi.flat(Infinity); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+```
+
+#### 12.0.11 Array.flatMap
+
+
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
 - Hosting: assigning values to variables that don't exist, creates a variable in global scope.
