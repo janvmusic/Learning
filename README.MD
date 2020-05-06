@@ -767,7 +767,102 @@ console.log(generator.next().value); // prints two
 ```
 
 #### 12.0.11 Array.flatMap
+```javascript
+  let array = [1,2,3,4,5];
+  array.map(x => [x, x * 2]);
 
+  /* Result of this
+    [1, 2]
+    [2, 4]
+    [3, 6]
+    [4, 8]
+    [5, 10]
+  */
+
+  array.flatMap(v => [v, v * 2]);
+  // [1, 2, 2, 4, 3, 6, 4, 8, 5, 10]
+```
+
+#### 12.0.12 String.prototype.matchAll()
+- Match multiple patterns in a string it's a common problem
+- Capturing groups in regrex is sumply extracting a pattern from parenthesis
+- You can capture groups using _/regex/.exec(string)_ and with _string.match_
+- `(pattern)` -> This means **capture group**
+- `(?<name>pattern)` -> means capture group property on resulting object
+- To create a **group name** prepend `?<name>` between brackets and voila!!
+```javascript
+  const input = 'black*raven lime*parrot white*seagull'
+  const regex = /(?<color>.*?)\*(?<bird>[a-z0-9]+)/g;
+
+  while (match = regex.exec(input)) {
+    let value = match[0];
+    let index = match.index;
+    let input = match.input;
+
+    console.log(`${value} at ${index} with '${input}'`);
+    console.log(match.groups.color);
+    console.log(match.groups.bird);
+  }
+```
+- If you remove `/g` from the regex, thsi will cause a infinite loop
+- Good reasons to use `.matchAll()`
+  1. Elegant when using capture groups
+  2. Returns iterator instead of array
+  3. Iterator can be converted to array using spread operator
+  4. Avoids using `/g` expressions
+  5. RegEx object changes internal `.lastIndex` property.
+```javascript
+  let iterator = "hello".matchAll(/[el]/);
+  for (const match of iterator) {
+    console.log(match); // does not require /g
+  }
+```
+
+```javascript
+  const string = 'black*raven lime*parrot white*seagull';
+  const regex = /(?<color>.*?)\*(?<bird>[a-z0-9]+)/;
+  
+  for(const match of string.matchAll(regex)) {
+    let value = match[0];
+    let index = match.index;
+    let input = match.input;
+
+    console.log(`${value} at ${index} with '${input}'`);
+    console.log(match.groups.color);
+    console.log(match.groups.bird);
+  }
+```
+- Do use `string.matchAll` intead of `regex.exec` and use `string.match` with `/g` flag.
+
+#### 12.0.14 Comparing 2 Objects
+- `==` and `===` compares by reference, so it's no good for _objects_ because we need to compare them by value
+```javascript
+  [] === []; // return false by value
+  let x = [];
+  x === x; // return true by reference
+```
+- So, if you want to compare objects. Write, your own function
+```javascript
+// Shallow copy object comparison algorithm
+export default function objectEquals(a, b) {
+  let A = Object.getOwnPropertyNames(a);
+  let B = Object.getOwnPropertyNames(b);
+  
+  if (A.length != B.length) {
+    return false;
+  }
+
+  for (let i = 0; i < aProps.length; i++) {
+    let propName = A[i];
+    if (a[propName] !== b[propName]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+```
+  
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
