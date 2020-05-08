@@ -852,7 +852,7 @@ export default function objectEquals(a, b) {
     return false;
   }
 
-  for (let i = 0; i < aProps.length; i++) {
+  for (let i = 0; i < A.length; i++) {
     let propName = A[i];
     if (a[propName] !== b[propName]) {
       return false;
@@ -862,7 +862,76 @@ export default function objectEquals(a, b) {
   return true;
 }
 ```
+- Previous solution does not compare `objects` or `arrays`
+- Also properties attached are not checked
+- To compare an array:
+```javascript
+  function is_array(value) {
+    return typeof value.reduce == 'function' &&
+           typeof value.filter == 'function' &&
+ 	   typeof value.map    == 'function' &&
+           typeof valye.length == 'number';
+  }
+```
+- We will also need arrcmp!
+```javascript
+  let a = [1,2];
+  let b = [1,2];
+  let c = [5,5];
+
+  function arrcmp(a,b) {
+    if (!(is_array(a) && is_array(b))) {
+      return false;
+    }
+
+    if (a.length != b.length) {
+      return false;
+    }
+
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+```
+- Javascript **DOES NOT** have a built in function to compare arrays
+- Javascript **arrays** does not always guarantee integrity between its values and indexes they are stored at.
+```javascript
+// Shallow copy object comparison algorithm
+export default function objectEquals(a, b) {
+  let A = Object.getOwnPropertyNames(a);
+  let B = Object.getOwnPropertyNames(b);
   
+  if (A.length != B.length) {
+    return false;
+  }
+
+  for (let i = 0; i < A.length; i++) {
+    let propName = A[i];
+    let p1 = a[propName];
+    let p2 = b[propName];
+
+    // Property points to an array
+    if (is_array(p1) && is_array(p2)) {
+      if (!arrcmp(p1,p2)) {
+        return false;
+      }
+    } else if (p1.constructor === Object &&
+               p2.constructor === Object) {
+        if (!objcmp(p1,p2)) {
+          return false;
+        }
+    } else if (p1 !== p2) {
+      return false;
+    } 
+  }
+
+  return true;
+}
+```
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
