@@ -1117,7 +1117,9 @@ export default function objectEquals(a, b) {
 - `Arrow functions` do not bind `this` keyword; They look it up from whatever `this` equals in the outer scope
 - `Arrow functions` have a transparent scope
 - Remember **arguments** do not exists in `arrow functions`
-- 
+- `ES5 functions` are constructors. So when you call it using new, the `function` itself becomes a class
+- `Arrow functions` cannot be used as object constructors
+- `Arrow functions` inherits the lexical scope based on **where it was used**  
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
