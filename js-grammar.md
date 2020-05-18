@@ -1176,6 +1176,50 @@ export default function objectEquals(a, b) {
 - This creates a problem because `getName` is copied 4 times. Not reused!
 
 ### Chapter 17 Prototype
+- When a function is defined 2 things happen:
+  - The **function object** is created; Remember **functions** are objects in Javascript
+  - Then another **prototype** object is created
+```javascript
+  function Human(name) { };
+  console.log(typeof Human.prototype); // prints "Object"
+```
+- When this __human prototype__ is created **prototype** will point to the prototype object and __human function__ will point to function constructor
+- Remember __Human__ function is a **constructor** but its __prototype__ points to a different location in memory
+- Note: __prototype__ is not available on **instances**; It's only available in the constructor function
+- Note: On an __instance__ you can access to prototype via:
+  - \_\_proto\_\_; In fact this is a getter!
+  - Object.getPrototypeOf(instance); This is the prefered way
+
+### 17.0.2 Prototype on Object Literal
+- A **JavaScript object literal** is a comma-separated list of name-value pairs wrapped in curly braces.
+- Lets begin with an example:
+```javascript
+  let literal = {
+    prop: 123,
+    meth: function() {},
+  }
+```
+- Internally is linked into prototype as an object type
+- When **literal** was created it was linked to `literal.__proto__` which points to `Object.prototype`
+
+### 17.0.3 Prototype Link
+- When **new** keyword is used to create an object, the **constructor** function executes to build the instance
+```
+  let instance = new Object();
+  instance.prop; // returns 123
+  instance.meth; // returns function() {};
+```
+- In this case `__proto__` points to `Object.prototype`; which is a separate object
+- We do not exactly control how the object was created, because points to a **built in** object
+- `__proto__` is in the object. It's a threeway relationship
+
+### 17.0.5 Method look-up
+- Think of an `Array` what happens when you call `.toString()?`
+  1. first looks up in its `Array.prototype`
+  2. Since it's not there, goes to it's parent: `Object.prototype`
+  3. Finds it, uses it!
+
+### 17.0.5 Method look-up
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
@@ -1184,3 +1228,4 @@ export default function objectEquals(a, b) {
 - `var` can cause hoisting bugs, prefer to use `let` or `const`
 - **High-order functions**: because they take another function as argument or return a function
 - **Rendering** is the act of displaying something in the screen
+- A **class** is an abstract representation of an object
