@@ -1,4 +1,4 @@
-### JS Grammar
+## JS Grammar
 Condensed knowledge for Javascript
 
 ### Chapter 3 - Welcome to Javascript
