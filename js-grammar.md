@@ -267,7 +267,7 @@ class Cat {
 }
 ```
 
-### ES6 Const
+#### ES6 Const
 - `const` keyword is different than `let` and `var`
 - `const` **cannot** be reassigned
 - `const` **requires** to be assigned or has initial value
@@ -1158,7 +1158,7 @@ export default function objectEquals(a, b) {
 - You can also call `document.getElementById("id").appendChild(div)`
 - Or you can add it using `document.querySelector( selector ).appendChild(div)`
 
-### 16.0.4 Create objects using functions constructors
+#### 16.0.4 Create objects using functions constructors
 ```javascript
   function Season(name) {
     this.name = name;
@@ -1281,7 +1281,82 @@ export default function objectEquals(a, b) {
     }
   };
 ```
-- 
+- To create a "class" in ES5 we would wrap previous `object literal` in a **function**
+```javascript
+function Cat(name, hunger, energy, state) {
+  let cat = {};
+  
+  cat.name = name;
+  cat.hunger = hunger;
+  cat.energy = energy;
+  cat.state = state;
+
+  cat.sleep = function(amount) = { /* implement */ };
+  cat.wakeup = function() = { /* implement */ };
+  cat.eat = function(amount) = { /* implement */ };
+  cat.wander = function() = { /* implement */ };
+
+  return cat;
+};
+```
+- With this way, we can create different objects, using these lines:
+```javascript
+  let felix = Cat("Felix", 10, 5, "iddle");
+  felix.sleep(5);
+  felix.eat(5);
+  felix.wander(6);
+
+  let luna = Cat("Luna", 8, 3, "iddle");
+  luna.sleep(5);
+  luna.wander();
+  luna.eat(1);
+```
+
+#### 17.2.3 Prototype
+- The problem with previous approach is that each instance `Luna` & `Felix` each one has a copy of methods like: `sleep`, `eat`, `wander` & `wakeup`
+- These objects are not shared but each individual has it's own
+- That means...double memory use!
+- **Important** This is the problem `prototype` tries to solve!
+```javascript
+function Cat(name, hunger, energy, state) {
+  let cat = {};
+  
+  cat.name = name;
+  cat.hunger = hunger;
+  cat.energy = energy;
+  cat.state = state;
+
+  cat.sleep = prototype.sleep;
+  cat.wakeup = prototype.wakeup;
+  cat.eat = prototype.eat;
+  cat.wander = prototype.wander;
+
+  return cat;
+};
+```
+- Now `Luna` & `Felix` share methods via `prototype`
+
+#### 17.2.4 Creating objects using Object.create
+- You can asd well use `Object.create` function like this:
+```javascript
+const cat = {
+  name: "Felix",
+  state: "iddle",
+  hunger: 1,
+}
+
+const kitten = Object.create(cat);
+kitten.name = "Luna";
+kitten.state = "sleeping"
+
+console.log(kitten); // returns {name: "Luna", state: "sleeping"}, where's hunger property??
+```
+- `Hunger` exists when we use:
+```javascript
+console.log(kitten.hunger); // returns 1... actual wtf?
+```
+
+
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
