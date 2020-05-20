@@ -1,4 +1,4 @@
-### Chapter 11 Loops
+### Chapter 11 - Loops
 - Iterating: the act of repeat the same action **n** number of times
 - Array is iterable while Object, no.
 - Enumerable types do not guarantee the order in which properties will appear when iterated
