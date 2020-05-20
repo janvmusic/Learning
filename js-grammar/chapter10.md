@@ -1,4 +1,4 @@
-### Chapter 10 Closures
+### Chapter - 10 Closures
 - After a function is called, Javascript keeps track of all variables that were used
 - _Closures_ enables you to keep a reference to all local function variables in the state they were found after the function exited
 - Remember: in Javascript you can define a function inside another function (Technically this is a closure)
