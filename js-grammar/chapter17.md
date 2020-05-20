@@ -178,15 +178,3 @@ console.log(kitten); // returns {name: "Luna", state: "sleeping"}, where's hunge
 ```javascript
 console.log(kitten.hunger); // returns 1... actual wtf?
 ```
-
-
-
-### Notes & Concepts
-- Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
-- Hosting: assigning values to variables that don't exist, creates a variable in global scope.
-- Marshalling: convert objects from memory to a format that can be written to disk
-- `var` can cause hoisting bugs, prefer to use `let` or `const`
-- **High-order functions**: because they take another function as argument or return a function
-- **Rendering** is the act of displaying something in the screen
-- A **class** is an abstract representation of an object
-- Prototype Inheritance: Create between links and parents objects
