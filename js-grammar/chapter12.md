@@ -1,4 +1,4 @@
-### Chapter 12 Arrays
+### Chapter 12 - Arrays
 - Most of the methods in `Arrays` are iterators.
 - `Array` methods are **attached** to _Array.prototype_ property
 - You can used them like:
