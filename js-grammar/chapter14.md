@@ -1,4 +1,4 @@
-### Chapter 14 High-order Functions
+### Chapter 14 - High-order Functions
 - **First-order** functions are regular functions, which receives parameters and so
 - **Abstraction** is the quality of dealing with ideas rather than gritty details
 - **First-order** functions that applies an action

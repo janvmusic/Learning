@@ -1,4 +1,4 @@
-### Chapter 13 Function
+### Chapter 13 - Function
 - Javascript has 2 types of functions
   -> Regular functions
   -> Arrow functions

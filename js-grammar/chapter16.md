@@ -1,4 +1,4 @@
-### Chapter 16 Creating HTML elements dynamically
+### Chapter 16 - Creating HTML elements dynamically
 - **DOM** Document Object Model.
 - Javascript **creates** and HTML unique object for each tag presented in your DOM
 - _createElement_ is a native tool from Javascript to create HTML objects

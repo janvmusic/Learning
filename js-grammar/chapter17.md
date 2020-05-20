@@ -1,4 +1,4 @@
-### Chapter 17 Prototype
+### Chapter 17 - Prototype
 - When a function is defined 2 things happen:
   - The **function object** is created; Remember **functions** are objects in Javascript
   - Then another **prototype** object is created

@@ -1,4 +1,4 @@
-### Chapter 15 Arrow Functions
+### Chapter 15 - Arrow Functions
 - New feature introduced in ES6
 - **Arrow Functions** provice a slim syntax for create functions expressions in Javascript
 ```javascript
