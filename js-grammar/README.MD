@@ -2,21 +2,21 @@
 Condensed knowledge for Javascript
 
 ## Table of Contents
-[Chapter 3]()
-[Chapter 4]()
-[Chapter 5]()
-[Chapter 6]()
-[Chapter 7]()
-[Chapter 8]()
-[Chapter 9]()
-[Chapter 10]()
-[Chapter 11]()
-[Chapter 12]()
-[Chapter 13]()
-[Chapter 14]()
-[Chapter 15]()
-[Chapter 16]()
-[Chapter 17]()
+- [Chapter 3](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter3.md)
+- [Chapter 4](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter4.md)
+- [Chapter 5](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter5.md)
+- [Chapter 6](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter6.md)
+- [Chapter 7](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter7.md)
+- [Chapter 8](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter8.md)
+- [Chapter 9](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter9.md)
+- [Chapter 10](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter10.md)
+- [Chapter 11](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter11.md)
+- [Chapter 12](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter12.md)
+- [Chapter 13](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter13.md)
+- [Chapter 14](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter14.md)
+- [Chapter 15](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter15.md)
+- [Chapter 16](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter16.md)
+- [Chapter 17](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter17.md)
 
 ## Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
