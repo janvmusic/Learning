@@ -17,11 +17,11 @@ Condensed knowledge for Javascript
 
 #### 3.2 - Strict Mode
 - Available since **ECMAScript 5**
-- This __Strict contexts__ prevents certain actions from being taken and throws an exception
-- Example: In __strict__ mode you cannot use undeclared variables
-- In __strict__ mode you become aware of more errors.
-- __Strict__ mode can be delimited to certain scopes, not only to **Global**; Besides would be better to limit it's scope to the current function.
-- Using __Strict__ mode is a good practice
+- This _Strict contexts_ prevents certain actions from being taken and throws an exception
+- Example: In _strict_ mode you cannot use undeclared variables
+- In _strict_ mode you become aware of more errors.
+- _Strict_ mode can be delimited to certain scopes, not only to **Global**; Besides would be better to limit it's scope to the current function.
+- Using _Strict_ mode is a good practice
 
 #### 3.3 - Literal Values
 - Literal representation of a number, boolean, text & so on
@@ -31,12 +31,12 @@ Condensed knowledge for Javascript
 - It's uncommon to use constructors for primitive values; However use the literal notation
 
 #### 3.4 Variables
-- __Variables__ are place holders for values
+- _Variables_ are place holders for values
 - Keywords used: var, let, const
 - `var` is legacy, better use `let`
 - `const` represents something that wont change
-- __Dynamic typing__ it means that variables created can be assigned to other values.
-- In __Statically-typed__ language, such as Java, this will produce an error:
+- _Dynamic typing_ it means that variables created can be assigned to other values.
+- In _Statically-typed_ language, such as Java, this will produce an error:
 ```javascript
   let exampleVariable = 2
   exampleVariable = "2" // Correct, now exampleVariable is a string
@@ -48,7 +48,7 @@ Condensed knowledge for Javascript
 #### 3.6 Scope Quirks
 - Quirk 1 => Global variables and let/const variables cannot coexist with the same name.
 - Quirk 2 => `var` uses `window/this` context; `let` & `const` don't
-- In __Global scope__ `this` keyword refers to `window`
+- In _Global scope_ `this` keyword refers to `window`
 - Let variables are not attached to `window/this`
 ```javascript
   var x = 1
@@ -66,7 +66,7 @@ Condensed knowledge for Javascript
 #### 4.0.1 Evaluating Statements
 - A statement is the smallest building block of a computer program
 - `var, let  or const` keywords return undefined because is an assignation
-- Statements __usually__ produce a value. However when there's anything to return the statement will return undefined
+- Statements _usually_ produce a value. However when there's anything to return the statement will return undefined
 
 #### 4.0.2 Expressions
 - Expressions don't have to be variable definitions, they are just literals or functions being called
@@ -75,7 +75,7 @@ Condensed knowledge for Javascript
 - Javascript has 7 primitive types: `null`, `undefined`, `number`, `bigint`, `strings`, `boolean` & `symbol` 
 - `Numbers`, `booleans` & `strings` are basic units
 - `Strings` can be a template string `I have {$number} of apples`
-- `Boolean` are __true__ or __false_
+- `Boolean` are _true_ or _false_
 - `null` is an object. Null has no constructor WTF?
 - `Number` they are part of the numeric domain (positive, negative, floats, infinity)
 - `Numbers` has an special value `NaN` (not a number)
@@ -90,18 +90,18 @@ Condensed knowledge for Javascript
 - To get "number" from the previous example you will need to use `number.valueOf`
 - `bigint` was added in EcmaScript 10, it's not available in other versions
 - `bigint` allows you to specify numbers bigger than Number.MAX_SAFE_INTEGER
-- __Equality__ works among both types
+- _Equality_ works among both types
 ```javascript
   10n === BigInt(10) // compares value & value type
   10n == 10 // uses implicit comparison
 
 ```
-- __Math operators__ only work with their own type
+- _Math operators_ only work with their own type
 ```javascript
  200n / 10n; // 20n
  200n / 10; // Uncaught type error
 ```
-- __Leading__ works with negatives
+- _Leading_ works with negatives
 ```javascript
  -1000n // -100n
  +1000n // Uncaught type error
@@ -143,13 +143,13 @@ Condensed knowledge for Javascript
 
 #### 5.0.9.1 Constructors and instances
 - `Constructor` who knows how to build the object
-- `Instance` the actual object built by the __constructor_
-- __Function__ is the constructor to create JavaScript Functions
-- __Object__ has the constructor function that could be overriden by other objects
+- `Instance` the actual object built by the _constructor_
+- _Function_ is the constructor to create JavaScript Functions
+- _Object_ has the constructor function that could be overriden by other objects
 
 #### 5.0.10 Executing methods on primitive types
-- __Parenthesis__ let you know which statement should evaluate
-- When you execute a method over a primitive type, Javascript converts it to __object_
+- _Parenthesis_ let you know which statement should evaluate
+- When you execute a method over a primitive type, Javascript converts it to _object_
 ```javascript
 1.toString(); // will freeze execution
 (1).toString(); // Wraps the primitive type then executes the function that will return "1"
@@ -162,9 +162,9 @@ new Number(1).toString();
 ```
 
 ### Chapter 6 - Type coercion madness
-- When `+` operator finds objects of incompatible type, it will attempt to __coerce__ those objects to their valies in string format
+- When `+` operator finds objects of incompatible type, it will attempt to _coerce_ those objects to their valies in string format
 - If `+` finds a string, this type will take precedence
-- Besides operators, __Type coercion__ could happen in constructors
+- Besides operators, _Type coercion_ could happen in constructors
 ```javascript
   let a = Boolean(true); // true
   let a = Boolean([]]); // true
@@ -174,15 +174,15 @@ new Number(1).toString();
 - **Coercion** is the process of converting a value from one type into another
 - `==` tests objects by reference, not by value
 - Javascript will often coerce different types to its **string** or **number** value
-- If during operation, Javascript discover that the types are different then will use __type coercion__ to change one of the values before performing the operation
-- Javascript uses three types of `+` operators: __unary_, __arithmetic__ & __string_
-- Operators evaluate from __left__ to __right_
-- One exception of this rule is `assignation` which evaluates from __right__ to __left_
-- When adding __numbers__ and __strings__ `arithmetic` operators takes precedence
+- If during operation, Javascript discover that the types are different then will use _type coercion_ to change one of the values before performing the operation
+- Javascript uses three types of `+` operators: _unary_, _arithmetic_ & _string_
+- Operators evaluate from _left_ to _right_
+- One exception of this rule is `assignation` which evaluates from _right_ to _left_
+- When adding _numbers_ and _strings_ `arithmetic` operators takes precedence
 - However, Javascript prefers to coerce to string before number (in addition operation)
-- For __multiplication__ the coercion occurs from string to number. Remember `3 * "" => 0`
-- __null__ => value is empty
-- __undefined__ => value is not assigned
+- For _multiplication_ the coercion occurs from string to number. Remember `3 * "" => 0`
+- _null_ => value is empty
+- _undefined_ => value is not assigned
 - Avoid using **undefined** as initial value, prefer **null**
 
 #### 6.0.1 Examples of type coercion
@@ -193,13 +193,13 @@ new Number(1).toString();
 #### Variable definitions: Case sensitive
 - Variables are case sensitive; variable `A` is not the same as variable `a`
 - You can define a variable using `var`, `let` or `const`
-- If you try to use a variable that wasn't defined you would get a __ReferenceError_
-- __Global scope__ variables are propagated into all inner scopes
-- __Global scope__ is also **window** when using `var` definition, let does not attach variables to window
-- Hoisting: __placed on to of__ or __raised_
+- If you try to use a variable that wasn't defined you would get a _ReferenceError_
+- _Global scope_ variables are propagated into all inner scopes
+- _Global scope_ is also **window** when using `var` definition, let does not attach variables to window
+- Hoisting: _placed on to of_ or _raised_
 - Hoisting is limited to `var`
 - Using `let` or `const` variables means that these elements only exist in the scope that they were declared
-- `var` elements declared in __function level__ remains in the level in which they were defined
+- `var` elements declared in _function level_ remains in the level in which they were defined
 - Hoisting is a safety element for Javascript
 
 #### Functions declaration
@@ -212,7 +212,7 @@ function fun() {
   console.log("This function is going to be hoisted")
 }
 ```
-- __Functions__ can be assigned to variables; these functions are not going to be __hoisted_
+- _Functions_ can be assigned to variables; these functions are not going to be _hoisted_
 - Named functions:
 ```javascript
 function fun() { 
@@ -234,16 +234,16 @@ var fun = function() {
 - Closure pattern: Protect/hide variables from global scope, but still be able to use variables; Something like encapsulation
 
 #### Variable types
-- __Variable types__ can change during runtime
-- Reserved words __let_, __const__ or __var__ does not determine it's value type
+- _Variable types_ can change during runtime
+- Reserved words _let_, _const_ or _var_ does not determine it's value type
 - `const` & `let` only exists in the declared scope
-- `var` is deprecated, uses __window__ & right now is used to support legacy
+- `var` is deprecated, uses _window_ & right now is used to support legacy
 
 #### Scope visibility
-- When a variable is declared in the __global scope__ there's no difference between declare a variable using `let`, `const` or `var` (Talking about scope). They all propagate to innser scopes
+- When a variable is declared in the _global scope_ there's no difference between declare a variable using `let`, `const` or `var` (Talking about scope). They all propagate to innser scopes
 - `const` & `let` are not hoisted, `var` yes
 - All variables remain limited to their scope
-- A __function closure__ is a function trapped in another function
+- A _function closure_ is a function trapped in another function
 - `Functions` inside `Functions` are concealed/hidden from global scope
 
 #### Scope in classes
@@ -305,7 +305,7 @@ class Cat {
 
 #### 8.0.5 Logical
 - `&&, ||, !` same as Java
-- __Bitwise__ operators... 
+- _Bitwise_ operators... 
 
 #### 8.0.7 typeof
 - This operator `typeof` is used to check the type of a value. The return value of this is a string
@@ -313,7 +313,7 @@ class Cat {
   typeof 125 // returns number
   typeof 'hola' // returns string
 ```
-- `NaN` evaluates to number. `NaN` lives in __Number.NaN_
+- `NaN` evaluates to number. `NaN` lives in _Number.NaN_
 
 #### 8.0.8 Ternary
 - Same as Java
@@ -333,7 +333,7 @@ class Cat {
   delete bird.speed;
   console.log(bird);
 ```
-- You cannot remove __stand alone__ variables
+- You cannot remove _stand alone_ variables
 
 #### 8.0.9 in
 - Looks for a property name inside an object
@@ -341,7 +341,7 @@ class Cat {
 'c' in { 'a': 1, 'b': 2, 'c': 3} // returns true
 'c' in { 'a': 1, 'b': 2, 'c': 3} // returns true
 ```
-- When used in __arrays__ the `in` operator checks if an index exists
+- When used in _arrays_ the `in` operator checks if an index exists
 ```javascript
 'c' in ['a','b','c','d'] // returns false
 0 in ['a','b','c','d'] // returns true
@@ -370,12 +370,12 @@ class Cat {
 ```
 - `=>` refers as **Arrow Function**
 - Shorter code but less understandable
-- __Remember, if you are working on a team, another person might be reading your code. Sometimes that person will be you in the future_
+- _Remember, if you are working on a team, another person might be reading your code. Sometimes that person will be you in the future_
 - You can think `...spread` as opposite of of `...rest`
 - `...spread` can help you to extract parts of an object.
-- __Rest & spread__ are not syntax operators, they are assign operators
-- __Spread__ operator **expands** iterables into one or more argument
-- __Rest__ operator **collects** all the rest parameters into an array
+- _Rest & spread_ are not syntax operators, they are assign operators
+- _Spread_ operator **expands** iterables into one or more argument
+- _Rest_ operator **collects** all the rest parameters into an array
 - **Rest** parameters cannot appear as leading/middle parameters if we have more arguments/parameters
 - **Rest** parameters must be unique or last
 ```javascript
@@ -457,7 +457,7 @@ class Cat {
 
 ### Chapter 10 Closures
 - After a function is called, Javascript keeps track of all variables that were used
-- __Closures__ enables you to keep a reference to all local function variables in the state they were found after the function exited
+- _Closures_ enables you to keep a reference to all local function variables in the state they were found after the function exited
 - Remember: in Javascript you can define a function inside another function (Technically this is a closure)
 - Closure inner execution context
 - In Javascript, inner functions have access to variables defined in the code of the function in which they are defined
@@ -471,11 +471,11 @@ function sendEmail(from, sub, message) {
 
 let refToSend = sendEmail('Professor Farnsworth', 'Re: subject;', 'Good news everyone!')
 ```
-- __Closures__ are used in functional programming the same way in OOP we use private methods
-- __Closures__ provide a method API to an object in the form of a function
+- _Closures_ are used in functional programming the same way in OOP we use private methods
+- _Closures_ provide a method API to an object in the form of a function
 - Whenever a function is declared inside another function, a closure is created
 - When a function containing another function is called, then a new execution context is created.
-- **Note**: __new Function()__ does not create a new closure. Objects created with the keyword **new**
+- **Note**: _new Function()_ does not create a new closure. Objects created with the keyword **new**
 
 #### 10.0.1 Arity
 - **Arity** is the number of arguments that a function takes
@@ -519,7 +519,7 @@ console.log(arity) // 3 as result
 - **initialize**: `i = 0`;
 - **test condition**: `i < 5`;
 - **increment/decrement**: `i++`;
-- Remember that most of the __List__ elements are based on a **0 index**
+- Remember that most of the _List_ elements are based on a **0 index**
 - **Multiple statements**: You can call several functions during an iteration using `comma`
 ```javascript
   let counter = 0;
@@ -644,8 +644,8 @@ console.log(generator.next().value); // prints two
 - This can be also achieved using `for...in` loop, this will help to avoid use any of the Object conversion method
 
 #### 11.3 for ... in
-- `for ...of` loops only uses iterables. Remember Objects are __enumerables_
-- `for ...in` loops work with __enumerables__ object properties
+- `for ...of` loops only uses iterables. Remember Objects are _enumerables_
+- `for ...in` loops work with _enumerables_ object properties
 ```javascript
   let object = {
     a: 1,
@@ -683,7 +683,7 @@ console.log(generator.next().value); // prints two
 
 ### Chapter 12 Arrays
 - Most of the methods in `Arrays` are iterators.
-- `Array` methods are **attached** to __Array.prototype__ property
+- `Array` methods are **attached** to _Array.prototype_ property
 - You can used them like:
 ```javascript
   [1,2,3].forEach();
@@ -719,11 +719,11 @@ console.log(generator.next().value); // prints two
 
 #### 12.0.3 Array.every
 - This method evaluates for something that all items in the array has it
-- Uses `short circuit` logic, so breaks when we get first __false_
+- Uses `short circuit` logic, so breaks when we get first _false_
 - `Array.every` will not modify the original array. Uses a **copy** not a reference
 
 #### 12.0.4 Array.some
-- This method evaluates for __true__ if one element accomplishes the condition
+- This method evaluates for _true_ if one element accomplishes the condition
 - Uses **short circuit** logic.
 - Note: this is not the opposite of `Array.every`
 
@@ -786,7 +786,7 @@ console.log(generator.next().value); // prints two
 #### 12.0.12 String.prototype.matchAll()
 - Match multiple patterns in a string it's a common problem
 - Capturing groups in regrex is sumply extracting a pattern from parenthesis
-- You can capture groups using __/regex/.exec(string)__ and with __string.match_
+- You can capture groups using _/regex/.exec(string)_ and with _string.match_
 - `(pattern)` -> This means **capture group**
 - `(?<name>pattern)` -> means capture group property on resulting object
 - To create a **group name** prepend `?<name>` between brackets and voila!!
@@ -835,7 +835,7 @@ console.log(generator.next().value); // prints two
 - Do use `string.matchAll` intead of `regex.exec` and use `string.match` with `/g` flag.
 
 #### 12.0.14 Comparing 2 Objects
-- `==` and `===` compares by reference, so it's no good for __objects__ because we need to compare them by value
+- `==` and `===` compares by reference, so it's no good for _objects_ because we need to compare them by value
 ```javascript
   [] === []; // return false by value
   let x = [];
@@ -1113,7 +1113,7 @@ export default function objectEquals(a, b) {
   }
 ```
 - Most of the time you can replace regular functions by using `Arrow functions`
-- Remember when defined in __global__ scope __seems__ that there's no difference between regular functions
+- Remember when defined in _global_ scope _seems_ that there's no difference between regular functions
 - `Arrow functions` do not bind `this` keyword; They look it up from whatever `this` equals in the outer scope
 - `Arrow functions` have a transparent scope
 - Remember **arguments** do not exists in `arrow functions`
@@ -1124,7 +1124,7 @@ export default function objectEquals(a, b) {
 ### Chapter 16 Creating HTML elements dynamically
 - **DOM** Document Object Model.
 - Javascript **creates** and HTML unique object for each tag presented in your DOM
-- __createElement__ is a native tool from Javascript to create HTML objects
+- _createElement_ is a native tool from Javascript to create HTML objects
 ```javascript
   let E1 = document.createElement("div");
   let E2 = document.createElement("span");
@@ -1133,7 +1133,7 @@ export default function objectEquals(a, b) {
   let E5 = document.createElement("input");
 ```
 - At this point these elements only exists in **Javascript** context. Not in DOM
-- You can add some __CSS__ styling via **Javascript**
+- You can add some _CSS_ styling via **Javascript**
 ```javascript
   let div = document.createElement("div");
   
@@ -1152,7 +1152,7 @@ export default function objectEquals(a, b) {
   div.style.left            = 1000;
   div.style.backgroundColor = "white";
 ```
-- In __CSS__ dash (-) is a legal property name character. But Javascript interpretes it as **minus** sign
+- In _CSS_ dash (-) is a legal property name character. But Javascript interpretes it as **minus** sign
 - Multi-word property names are changed to **camel case** format. In example: `border-style` for `borderStyle`
 - To add our new element to the DOM, you will need to call `element.appendChild(object);`. In example could be: `document.body.appendChild(div);`
 - You can also call `document.getElementById("id").appendChild(div)`
@@ -1183,14 +1183,14 @@ export default function objectEquals(a, b) {
   function Human(name) { };
   console.log(typeof Human.prototype); // prints "Object"
 ```
-- When this __human prototype__ is created **prototype** will point to the prototype object and __human function__ will point to function constructor
-- Remember __Human__ function is a **constructor** but its __prototype__ points to a different location in memory
-- Note: __prototype__ is not available on **instances**; It's only available in the constructor function
-- Note: On an __instance__ you can access to prototype via:
-  - \_\_proto\_\_; In fact this is a getter!
+- When this _human prototype_ is created **prototype** will point to the prototype object and _human function_ will point to function constructor
+- Remember _Human_ function is a **constructor** but its _prototype_ points to a different location in memory
+- Note: _prototype_ is not available on **instances**; It's only available in the constructor function
+- Note: On an _instance_ you can access to prototype via:
+  - `__proto_+`; In fact this is a getter!
   - Object.getPrototypeOf(instance); This is the prefered way
 
-### 17.0.2 Prototype on Object Literal
+#### 17.0.2 Prototype on Object Literal
 - A **JavaScript object literal** is a comma-separated list of name-value pairs wrapped in curly braces.
 - Lets begin with an example:
 ```javascript
@@ -1200,26 +1200,88 @@ export default function objectEquals(a, b) {
   }
 ```
 - Internally is linked into prototype as an object type
-- When **literal** was created it was linked to `literal.__proto__` which points to `Object.prototype`
+- When **literal** was created it was linked to `literal._proto_` which points to `Object.prototype`
 
-### 17.0.3 Prototype Link
+#### 17.0.3 Prototype Link
 - When **new** keyword is used to create an object, the **constructor** function executes to build the instance
 ```
   let instance = new Object();
   instance.prop; // returns 123
   instance.meth; // returns function() {};
 ```
-- In this case `__proto__` points to `Object.prototype`; which is a separate object
+- In this case `_proto_` points to `Object.prototype`; which is a separate object
 - We do not exactly control how the object was created, because points to a **built in** object
-- `__proto__` is in the object. It's a threeway relationship
+- `_proto_` is in the object. It's a threeway relationship
 
-### 17.0.5 Method look-up
+#### 17.0.5 Method look-up
 - Think of an `Array` what happens when you call `.toString()?`
   1. first looks up in its `Array.prototype`
   2. Since it's not there, goes to it's parent: `Object.prototype`
   3. Finds it, uses it!
 
-### 17.0.5 Method look-up
+#### 17.0.6 Array methods
+- Native methods for `Array` should exists in `Array.prototype`
+- If you want to extend functionality of arrays then attach your method to `Array.prototype`
+
+#### 17.1 Parenting
+- How does Array know where to look for a method? `Prototype chain!`
+
+#### 17.1.1 Exenting your own objects
+- What if we want to have something like _Java Inheritance_?
+  - You could directly mess with prototype... Bad idea
+  - Maybe you could create a new prototype and replace origina? ... hacky
+  - In EC6 you should use `class` and `extends` that way you do not worry about prototype links
+
+#### 17.1.2 constructor property
+- `Object` constructor points to `function`
+- `Function` constructor points to `function`... wait what?
+- This is called **circular dependency**
+- `Function` is the constructor of all object types
+
+#### 17.2.1 Object Literal
+- In some ways, under the hood Javascript wires up all the prototype linking
+```javascript
+  let cat = {};
+  cat.name = "Felix"
+  cat.hunger = 0;
+  cat.energy = 1;
+  cat.state = "iddle"
+
+  cat.sleep = function(amount) {
+    this.state = "sleeping";
+    console.log(`${this.name} is ${this.state}`);
+
+    this.energy += 1;
+    this.hunger += 1;
+  };
+
+  cat.wakeup = function() {
+    this.state = "iddle";  
+    console.log(`${this.name} woke up`);
+  };
+
+  cat.eat = function(amount) {
+    this.state = "eating";
+    console.log(`${this.name} is ${this.state}
+                 ${amount} unit(s) of food.`);
+
+    if (this.hunger -= amount <= 0) {
+      this.energy += amount;
+    } else {
+      this.wakeup();
+    }
+  };
+
+  cat.wander = function() {
+    this.state = "wandering";
+    console.log(`${this.name} is ${this.state}`);
+
+    if (--this.energy < 1) {
+      this.sleep(5);
+    }
+  };
+```
+- 
 
 ### Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
@@ -1229,3 +1291,4 @@ export default function objectEquals(a, b) {
 - **High-order functions**: because they take another function as argument or return a function
 - **Rendering** is the act of displaying something in the screen
 - A **class** is an abstract representation of an object
+- Prototype Inheritance: Create between links and parents objects
