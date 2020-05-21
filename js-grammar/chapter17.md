@@ -178,3 +178,74 @@ console.log(kitten); // returns {name: "Luna", state: "sleeping"}, where's hunge
 ```javascript
 console.log(kitten.hunger); // returns 1... actual wtf?
 ```
+- Ok when `kitten.hunger` is called, object does not contains `hunger` so it goes back to instance and wont find the method
+- Then goes back to it's parent `cat` and finally finds it!
+- Now! let's do it correctly!
+```javascript
+  const prototype = {
+    sleep(amount) { /* implement */ };
+    wakeup() { /* implement */ };
+    eat(amount) { /* implement */ };
+    wander() { /* implement */ };
+  };
+
+  function Cat(name, hunger, energy, state) {
+    let cat = Object.create(prototype);
+
+    cat.name = name;
+    cat.hunger = hunger;
+    cat.energy = energy;
+    cat.state = state;
+
+    return cat;
+  };
+```
+- Using this way, we declare a **shared** prototype object and this way we do not have an extra space of memory
+
+#### 17.2.6 Function constructor
+- Let's recall that each object has is own `ghost prototye` reference
+- When we do the following, we are ensuring that prototype object has correct references:
+```javascript
+  function Cat(name, hunger, energy, state) {
+    let cat = Object.create(prototype);
+
+    cat.prototype.sleep = function { /* implement */ };
+    cat.prototype.wakeup = function { /* implement */ };
+    cat.prototype.eat = function { /* implement */ };
+    cat.prototype.wander = function { /* implement */ };
+
+    cat.name = name;
+    cat.hunger = hunger;
+    cat.energy = energy;
+    cat.state = state;
+
+    return cat;
+  };
+```
+- Therefore the main purpose of `prototype` is to server as a special lookup objet, which will be shared across all instances of object instantiated.
+- This action will preserve memory!
+
+#### 17.2.7 Along came new operator
+- So forget about all that crap... and lets use `new` operator...WHY!!!!!
+- It automatically does previously mentioned (prototype linking)
+```javascript
+  function Cat(name, hunger, energy, state) {
+    cat.name = name;
+    cat.hunger = hunger;
+    cat.energy = energy;
+    cat.state = state;
+  };
+
+  Cat.prototype.sleep = function { /* implement */ };
+  Cat.prototype.wakeup = function { /* implement */ };
+  Cat.prototype.eat = function { /* implement */ };
+  Cat.prototype.wander = function { /* implement */ };
+
+  let luna = new Cat("Luna", 8, 3, "iddle");
+  luna.sleep();
+
+  let felix = new Cat("Felix", 5, 1, "sleeping");
+  felix.wakeup();
+```
+
+#### 17.2.8 ES6 The class keyword
