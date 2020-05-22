@@ -249,3 +249,28 @@ console.log(kitten.hunger); // returns 1... actual wtf?
 ```
 
 #### 17.2.8 ES6 The class keyword
+- All resumes here, with ES6 and `class` keyword
+- It's a bad practice to have to touch `prototype` object in Javascript
+```javascript
+  // Good example
+  class Cat {
+    constructor(name, hunger, energy, state) {
+      this.name = name;
+      this.hunger = hunger;
+      this.energy = energy;
+      this.state = state;
+    };
+
+    sleep() { /* implement */ };
+    wakeup() { /* implement */ };
+    eat() { /* implement */ };
+    wander() { /* implement */ };
+  }
+
+  let luna = new Cat("Luna", 8, 3, "iddle");
+  luna.sleep();
+
+  let felix = new Cat("Felix" 5, 1, "sleeping");
+  felix.wakeup();
+```
+- This approach let Javascript to worry about prototype, not us
