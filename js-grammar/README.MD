@@ -19,7 +19,7 @@ Condensed knowledge for Javascript
 - [Chapter 17 - Prototype](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter17.md)
 - [Chapter 18 - Object Oriented Programming](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter18.md)
 - [Chapter 19 - Event loop](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter19.md)
-- [Chapter 20 - Call Stack](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapterr20.md)
+- [Chapter 20 - Call Stack](https://github.com/janvmusic/2020-learning/blob/master/js-grammar/chapter20.md)
 
 ## Notes & Concepts
 - Hoisting: default behavior of moving all the declarations at the top of the scope before code execution. Functions and variables are moved to the top before it's execution
