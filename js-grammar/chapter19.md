@@ -1,0 +1,20 @@
+### Chapter 19 - Event Loop
+- Understanding event loop give us awareness of how it works, how events occur.
+- When we call functions, they are placed in a `Call Stack` waiting for it's turn to run
+- This could be good for a deterministic approach, it means that one function runs after the previous
+- However in real life we have:
+  - HTTP calls
+  - AJAX
+  - etc
+- So for this reason, when an event occurs it's handed to the event loop
+- The event loop is a `process` that keeps listening in case of any event occurs
+- When this happens, the event loop pickups the task and performs it
+- It also takes care of updating browsers view
+- The whole user experience will depend on of how optimized your code for the event loop
+- In modern browsers **updating** the view usually consists in 4 steps:
+  - Checking for `requestAnimationFrame`
+  - CSS style calculation
+  - Determine layout position
+  - Render
+- Never use setTimeout or setInterval to render stuffs. It's a bad practice
+- Instead use CSS to create smooth animations
