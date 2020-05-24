@@ -22,7 +22,7 @@
 
 #### 3.3 - Literal Values
 - Literal representation of a number, boolean, text & so on
-- Operations available (+,-,/,*, etc)
+- Operations available (+,-,/, etc)
 - Variable types: number, string, [], {}, boolean, function
 - Javascript function can be used as values or parameters to other functions. These are called `function expression`
 - It's uncommon to use constructors for primitive values; However use the literal notation

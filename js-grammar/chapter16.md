@@ -52,4 +52,3 @@
 ```
 - This creates a problem because `getName` is copied 4 times. Not reused!
 
-### Chapter 17 Prototype

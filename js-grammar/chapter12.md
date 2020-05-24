@@ -70,7 +70,7 @@
   - Building a new list or objects from scratch
   - For anything else, use A LOOP!
   - To mutate original input arguments
-  - To perform side efects, like call APIs and routing transitions
+  - To perform side effects, like call APIs and routing transitions
   - To call non-pure functions, like **Date.now()** or **Math.random()**
 
 #### 12.0.10 Array.flat
@@ -149,7 +149,7 @@
     console.log(match.groups.bird);
   }
 ```
-- Do use `string.matchAll` intead of `regex.exec` and use `string.match` with `/g` flag.
+- Do use `string.matchAll` instead of `regex.exec` and use `string.match` with `/g` flag.
 
 #### 12.0.14 Comparing 2 Objects
 - `==` and `===` compares by reference, so it's no good for _objects_ because we need to compare them by value

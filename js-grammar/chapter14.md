@@ -2,10 +2,10 @@
 - **First-order** functions are regular functions, which receives parameters and so
 - **Abstraction** is the quality of dealing with ideas rather than gritty details
 - **First-order** functions that applies an action
-- **High-order** functions dont need to know exactly what are they going to do (abstract the details)
+- **High-order** functions don't need to know exactly what are they going to do (abstract the details)
 - **map** function is an abstraction of `for...loop`
 - Examples: `Array.map`, `Array.reduce`, `setTimeout` and `addEventListener` are some good examples of **high-order** functions
-- Think about solving problem theorethically without think about implementation details
+- Think about solving problem theoretically without think about implementation details
 
 #### 14.0.4 Iterators
 - `Array.map` is one of the most common higher-order functions

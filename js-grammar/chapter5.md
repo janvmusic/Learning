@@ -16,7 +16,7 @@
 ```
 - To get "number" from the previous example you will need to use `number.valueOf`
 - `bigint` was added in EcmaScript 10, it's not available in other versions
-- `bigint` allows you to specify numbers bigger than Number.MAX_SAFE_INTEGER
+- `bigint` allows you to specify numbers bigger than `Number.MAX_SAFE_INTEGER`
 - _Equality_ works among both types
 ```javascript
   10n === BigInt(10) // compares value & value type

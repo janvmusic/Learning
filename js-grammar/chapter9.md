@@ -38,7 +38,7 @@
   // a = 1 because 2,3,4 are the REST 
   // args = 2,3,4,2,9
 ```
-- Flattening arrys with `...spread`
+- Flattening arrays with `...spread`
 ```javascript
   let names = ['felix', 'luna'];
   const cats = [...names, 'Sol']
@@ -82,7 +82,7 @@
   let { coco, negrita } = perros.manada.casa
 ```
 - If a variable is not found in the object, then it uses `undefined`
-- You can use* **spread** to easily merge objects or arrays
+- You can use **spread** to easily merge objects or arrays
 ```javascript
   let a = { p: 1, q: 2 };
   let b = { r: 3, s: 4 };

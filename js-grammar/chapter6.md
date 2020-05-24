@@ -1,5 +1,5 @@
 ### Chapter 6 - Type coercion madness
-- When `+` operator finds objects of incompatible type, it will attempt to _coerce_ those objects to their valies in string format
+- When `+` operator finds objects of incompatible type, it will attempt to _coerce_ those objects to their values in string format
 - If `+` finds a string, this type will take precedence
 - Besides operators, _Type coercion_ could happen in constructors
 ```javascript

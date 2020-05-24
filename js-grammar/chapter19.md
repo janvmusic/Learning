@@ -16,5 +16,5 @@
   - CSS style calculation
   - Determine layout position
   - Render
-- Never use setTimeout or setInterval to render stuffs. It's a bad practice
+- Never use `setTimeout` or `setInterval` to render stuffs. It's a bad practice
 - Instead use CSS to create smooth animations

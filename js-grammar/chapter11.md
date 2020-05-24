@@ -105,7 +105,7 @@ let generator = generator();
 console.log(generator.next().value); // prints one
 console.log(generator.next().value); // prints two
 ```
-- **Generators** are one-time use functions. you should not attempt to reuse a generator fiunction more than once. They are not a regular functions!!
+- **Generators** are one-time use functions. you should not attempt to reuse a generator function more than once. They are not a regular functions!!
 
 #### 11.2.1 for...of Loop
 - `Strings` are **iterables**, you can walk each character using a `for...of` statement

@@ -49,7 +49,7 @@ var fun = function() {
 - `var` is deprecated, uses _window_ & right now is used to support legacy
 
 #### Scope visibility
-- When a variable is declared in the _global scope_ there's no difference between declare a variable using `let`, `const` or `var` (Talking about scope). They all propagate to innser scopes
+- When a variable is declared in the _global scope_ there's no difference between declare a variable using `let`, `const` or `var` (Talking about scope). They all propagate to inner scopes
 - `const` & `let` are not hoisted, `var` yes
 - All variables remain limited to their scope
 - A _function closure_ is a function trapped in another function

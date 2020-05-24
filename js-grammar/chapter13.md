@@ -14,7 +14,7 @@
 
 #### 13.1.1 Function Anatomy
 - `function` keyword + `{functionName}` + `parameters`
-- `function update (a, b, c, d = "Hello")` in this definition we can se that `d` has a default value
+- `function update (a, b, c, d = "Hello")` in this definition we can see that `d` has a default value
 - `return` keyword is optional.
 - The `function` will return anyway once all statements in its body are done executing, even if return keyword is not specified
 - ES5 => `this` keyword is bind to current context
@@ -79,8 +79,8 @@
 ```
 
 #### 13.1.3 Checking for types
-- Javascript is a dynamically-typed language. The type of a variable is determiend by its value.
-- Variable definition symply assumes the type
+- Javascript is a dynamically-typed language. The type of a variable is determined by its value.
+- Variable definition simply assumes the type
 - This can cause subtle bugs...
 ```javascript
   function Fun(func) {

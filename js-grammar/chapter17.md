@@ -11,7 +11,7 @@
 - Note: _prototype_ is not available on **instances**; It's only available in the constructor function
 - Note: On an _instance_ you can access to prototype via:
   - `__proto_+`; In fact this is a getter!
-  - Object.getPrototypeOf(instance); This is the prefered way
+  - Object.getPrototypeOf(instance); This is the preferred way
 
 #### 17.0.2 Prototype on Object Literal
 - A **JavaScript object literal** is a comma-separated list of name-value pairs wrapped in curly braces.
@@ -52,7 +52,7 @@
 #### 17.1.1 Exenting your own objects
 - What if we want to have something like _Java Inheritance_?
   - You could directly mess with prototype... Bad idea
-  - Maybe you could create a new prototype and replace origina? ... hacky
+  - Maybe you could create a new prototype and replace original? ... hacky
   - In EC6 you should use `class` and `extends` that way you do not worry about prototype links
 
 #### 17.1.2 constructor property
@@ -160,7 +160,7 @@ function Cat(name, hunger, energy, state) {
 - Now `Luna` & `Felix` share methods via `prototype`
 
 #### 17.2.4 Creating objects using Object.create
-- You can asd well use `Object.create` function like this:
+- You can as well use `Object.create` function like this:
 ```javascript
 const cat = {
   name: "Felix",
@@ -222,7 +222,7 @@ console.log(kitten.hunger); // returns 1... actual wtf?
     return cat;
   };
 ```
-- Therefore the main purpose of `prototype` is to server as a special lookup objet, which will be shared across all instances of object instantiated.
+- Therefore the main purpose of `prototype` is to server as a special lookup object, which will be shared across all instances of object instantiated.
 - This action will preserve memory!
 
 #### 17.2.7 Along came new operator
