@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info: 
+  title: Sample API
+  description: Just an example
+  version: 0.1.9
+
+servers:
+  - url: http://api.example.com/v1
+    description: Optional server description, e.g. Main (production) server
+  - url: http://staging-api.example.com
+    description: Optional server description, e.g. Internal staging server for testing
+  - url: https://{customerId}.example.com:{port}/v2
+    variables:
+      customerId:
+        default: demo
+        description: Customer ID assigned by the service provider
+      port:
+        enum:
+          - '443'
+          - '8443'
+        default: '443'
+
+paths:
+  /users:
+    get:
+      summary: Returns a list of users
+      description: some dummy description here
+      responses:
+        '200': # status code
+          description: A JSON array of user names
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: string
+                  
+  /users/:
+    post:
+      summary: Creates a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{userId}:
+    get:
+      summary: Returns a user by ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Parameter description
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A user object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: The specified user ID is invalid
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+components:
+  schemas:
+    User:
+      properties:
+        id: 
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Jessica Smith
+      required:
+        - id
+        - name
+
