@@ -6,5 +6,5 @@ I'm proud of this :D!!!!
 - [Javascript Grammar](https://github.com/janvmusic/2020-learning/tree/master/js-grammar)
 - [CSS Design]()
 - [Graphql]()
-- [Swagger](https://github.com/janvmusic/2020-learning/blob/master/swaggerio.md)
+- [Swagger](https://github.com/janvmusic/2020-learning/tree/master/swagger)
 - [Articles](https://github.com/janvmusic/2020-learning/blob/master/articles/)
