@@ -1,6 +1,7 @@
 ## Swagger IO 
+
 Condensed knowledge for Swagger
--
+
 ## Table of Contents
 - [What Is OpenAPI?](https://github.com/janvmusic/2020-learning/blob/master/swagger/openapi.md)
 - [Basic Structure](https://github.com/janvmusic/2020-learning/blob/master/swagger/basic-structure.md)
