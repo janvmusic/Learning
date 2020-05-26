@@ -1,7 +1,4 @@
-### Source
-- Medium: [Functional Programming with Java](https://medium.com/better-programming/functional-programming-with-java-an-introduction-daa783355731)
-
-### What is functional programming?
+## What is functional programming?
 - A formal system in mathematical logic for expressing computation based on function abstraction and aplication using variable binding and substitution
 - With help of a declarative programmint style, `FP` tries to bind our code in pure mathematical functions to build evaluable expressions
 
@@ -115,3 +112,6 @@ Function<Integer, Integer> squareAndMultiplyByTen = square.andThen(multiplyByTen
   - No illegal state: Design your state to always be legal; No nulls, exceptions or locking/synchronization
   - Generics: Rely on correct type instead of use of `Object` or `Instance of`
   - Avoid magic: Always repeatable, no unpredictable stuff
+
+### Source
+- [Functional Programming with Java](https://medium.com/better-programming/functional-programming-with-java-an-introduction-daa783355731)
