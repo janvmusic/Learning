@@ -1,4 +1,4 @@
-### Service Mesh
+## Service Mesh
 #### What is a service Mesh?
 - It's a configurable, low-latency infrastructure layer design to handle a high volume of network communication among application infrastructure services
 - Ensures that communication, among containerized APIs, is fast, reliable and secure
