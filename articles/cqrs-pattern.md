@@ -86,6 +86,6 @@
   - Code complexity increments due handle of events
   - Update of `read` objects is costly, specially if calculation is required. A good approach to solve this is to have `snapshots` often
 
-#### Source
+### Source
 [Command and Query Responsibility Segregation (CQRS) pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
 

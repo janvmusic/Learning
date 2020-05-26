@@ -1,3 +1,8 @@
 ## Table of contents:
+
+### Java
 - [Functional Programming with Java](https://github.com/janvmusic/2020-learning/blob/master/articles/funtional-programming-java.md)
+
+### Architecture Design
 - [What is a service mesh?](https://github.com/janvmusic/2020-learning/blob/master/articles/service-mesh.md)
+- [Command and Query Responsibility Segregation (CQRS)](https://github.com/janvmusic/2020-learning/blob/master/articles/cqrs-pattern.md)
