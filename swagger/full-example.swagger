@@ -3,12 +3,19 @@ info:
   title: Sample API
   description: Just an example
   version: 0.1.9
+  termsOfService: /terms-of-use # Relative url
+
+externalDocs:
+  url: /docs
+  description: Find more info here
 
 servers:
   - url: http://api.example.com/v1
     description: Optional server description, e.g. Main (production) server
+
   - url: http://staging-api.example.com
     description: Optional server description, e.g. Internal staging server for testing
+
   - url: https://{customerId}.example.com:{port}/v2
     variables:
       customerId:
@@ -19,6 +26,39 @@ servers:
           - '443'
           - '8443'
         default: '443'
+  
+  - url: '{protocol}://api.example.com'
+    variables:
+      protocols:
+        enum:
+          - http
+          - https
+        default: https
+  
+  - url: 'https://{environment}.example.com/v2'
+    variables:
+      environment:
+        default: api # prod server
+        enum:
+          - api 
+          - api.dev
+          - api.staging
+  
+  - url: 'https://{server}/v2'
+    variables:
+      server:
+        default: https://api.example.com # SaaS server
+  
+  - url: https://{region}.api.example.com
+    variables:
+      region:
+        default: westus
+        enum: 
+          - westus
+          - eastus2
+          - westcentraulus
+          - westeurope
+          - southeastasia
 
 paths:
   /users:
@@ -80,6 +120,22 @@ paths:
           description: User not found
         default:
           description: Unexpected error
+
+  /files:
+    description: File upload and download
+    servers:
+      - url: https://files.example.com
+        description: Override base path for all operations with the /files paths
+  
+  /ping:                                                                                                
+    get:
+      servers: 
+        - url: https:echo.example.com
+          description: Override base path for the Get /ping operation
+      responses:
+        '200':
+          description: Mock response.
+
 components:
   schemas:
     User:
@@ -93,4 +149,12 @@ components:
       required:
         - id
         - name
+
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/dialog
+          tokenUrl: /oauth/token
 
