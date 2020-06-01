@@ -23,6 +23,6 @@ Condensed knowledge for Swagger
 - [Grouping Operations With Tags]()
 - [OpenAPI Extensions]()
 - [2.0]()
-- [3.0 Full Example](https://github.com/janvmusic/2020-learning/blob/master/swagger/full-example.swagger)
+- [3.0 Full Example](https://github.com/janvmusic/2020-learning/blob/master/swagger/full-example.yml)
 
 ## Notes & Concepts
