@@ -114,7 +114,7 @@ components:
           type: boolean 
 ```
 - To define same media type for multiple elements you can use: `application/*`, `image/*`, `*/*`, etc
-```
+```yaml
 paths:
   /info/logo:
     get:

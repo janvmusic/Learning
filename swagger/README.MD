@@ -6,7 +6,7 @@ Condensed knowledge for Swagger
 - [What Is OpenAPI?](https://github.com/janvmusic/2020-learning/blob/master/swagger/openapi.md)
 - [Basic Structure](https://github.com/janvmusic/2020-learning/blob/master/swagger/basic-structure.md)
 - [API Server and Base Path](https://github.com/janvmusic/2020-learning/blob/master/swagger/api-server-base-path.md)
-- [Media Types]()
+- [Media Types](https://github.com/janvmusic/2020-learning/blob/master/swagger/media-types.md)
 - [Paths and Operations]()
 - [Describing Parameters]()
 - [Parameter Serialization]()

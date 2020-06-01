@@ -66,13 +66,13 @@ paths:
           in: path
           required: true
           description: Parameter description
-	        schema:
-	          type: integer
-	          format: int64
-	          minimum: 1
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
       responses:
         '200':
-	        description: OK
+          description: OK
 ```
 
 #### Request Body
