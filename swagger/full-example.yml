@@ -98,6 +98,7 @@ paths:
   /users/{userId}:
     get:
       summary: Returns a user by ID
+      operationId: getUserById
       parameters:
         - name: userId
           in: path
@@ -120,6 +121,9 @@ paths:
           description: User not found
         default:
           description: Unexpected error
+      externalDocs:
+        description: Learn more about user operations provided by this API.
+        url: http://api.example.com/docs/user-operations/
 
   /files:
     description: File upload and download
@@ -149,7 +153,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/Employee'
-  
+
   /info/logo:
     get:
       responses:
@@ -159,7 +163,7 @@ paths:
             image/*:
               schema:
                 type: string
-                format: binary                
+                format: binary
 
 components:
   schemas:
@@ -192,3 +196,5 @@ components:
         authorizationCode:
           authorizationUrl: /oauth/dialog
           tokenUrl: /oauth/token
+
+
