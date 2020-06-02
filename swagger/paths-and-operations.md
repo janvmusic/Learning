@@ -75,4 +75,64 @@ paths:
         description: Learn more
         url: http://example.com
 ```
+- `tags` keyword is used to group operations logically by resources or any other qualifier
+
+### Operation parameters
+- **Operations** can receive parameters via `path`, `query string`, `headers` and `cookies`
+- They can also be included in `request body` such as POST, PUT, PATCH
+
+### Query String in paths
+- Incorrect usage:
+```yaml
+paths:
+  /users?role={role}
+```
+- Correct usage:
+```yaml
+paths:
+  /users:
+    get:
+      parameters:
+        - in: query
+          name: role
+          schema:
+            type: string
+            enum: [user, poweruser, admin]
+          required: true
+```
+- As you can notice, that it's impossible to have multiple paths that differ only in a query string
+```
+GET /users?firstName=value&lastName=value
+GET /users?role=value
+```
+
+### operationId
+- `operationId` is an optional unique string, used to identify an operation.
+- If provided, these IDs must be unique
+```yaml
+/users:
+  get:
+    operationId: getUsers
+    summary: Gets all users
+    ...
+  post:
+    operationId: addUser
+    summary: add a user
+    ...
+
+/user/{id}
+  get:
+    operationId: getUserById
+    summary: Gets a user by ID
+    ...
+```
+
+### Deprecated operations
+- You can mark one operation as deprecated
+- Use keyword: `deprecated`
+```yaml
+/pet/findByTags:
+  get:
+    deprecated: true
+```
 

@@ -63,6 +63,7 @@ servers:
 paths:
   /users:
     get:
+      operationId: getUsers
       summary: Returns a list of users
       description: some dummy description here
       responses:
@@ -74,9 +75,8 @@ paths:
                 type: array
                 items: 
                   type: string
-                  
-  /users/:
     post:
+      operationId: addUsers
       summary: Creates a new user
       requestBody:
         required: true
@@ -97,8 +97,8 @@ paths:
 
   /users/{userId}:
     get:
-      summary: Returns a user by ID
       operationId: getUserById
+      summary: Returns a user by ID
       parameters:
         - name: userId
           in: path
@@ -122,8 +122,50 @@ paths:
         default:
           description: Unexpected error
       externalDocs:
-        description: Learn more about user operations provided by this API.
+        description: Learn more about user operations provided by this API
         url: http://api.example.com/docs/user-operations/
+        
+  /users/{employeeId}:
+    get:
+      deprecated: true
+      operationId: getUserByEmployeeId
+      summary: Returns a user by employee ID
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          description: Parameter description
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A user object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: The specified user ID is invalid
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+      externalDocs:
+        description: Learn more about user operations provided by this API
+        url: http://api.example.com/docs/user-operations/
+        
+  /user/role:
+    get:
+      parameters:
+        - in: query
+          name: role
+          schema:
+            type: string
+            enum: [user, poweruser, admin]
+          required: true
+      responses:
+        '200':
+          description: OK
 
   /files:
     description: File upload and download
