@@ -168,10 +168,14 @@ paths:
           description: OK
 
   /files:
-    description: File upload and download
-    servers:
-      - url: https://files.example.com
-        description: Override base path for all operations with the /files paths.
+    get:
+      description: File upload and download
+      servers:
+        - url: https://files.example.com
+          description: Override base path for all operations with the /files paths.
+      responses:
+        '200':
+          description: Mock response.
         
   
   /ping:                                                                                              
@@ -261,5 +265,4 @@ components:
         authorizationCode:
           authorizationUrl: /oauth/dialog
           tokenUrl: /oauth/token
-
 
