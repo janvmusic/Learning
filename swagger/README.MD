@@ -8,7 +8,7 @@ Condensed knowledge for Swagger
 - [API Server and Base Path](https://github.com/janvmusic/2020-learning/blob/master/swagger/api-server-base-path.md)
 - [Media Types](https://github.com/janvmusic/2020-learning/blob/master/swagger/media-types.md)
 - [Paths and Operations](https://github.com/janvmusic/2020-learning/blob/master/swagger/paths-and-operations.md)
-- [Describing Parameters]()
+- [Describing Parameters](https://github.com/janvmusic/2020-learning/blob/master/swagger/describing-parameters.md)
 - [Parameter Serialization]()
 - [Describing Request Body]()
 - [Describing Responses]()
