@@ -66,6 +66,15 @@ paths:
       operationId: getUsers
       summary: Returns a list of users
       description: some dummy description here
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            $ref: '#/components/parameters/offsetParam'
+        - in: query
+          name: limit
+          schema:
+            $ref: '#/components/parameters/limitParam'
       responses:
         '200': # status code
           description: A JSON array of user names
@@ -96,18 +105,30 @@ paths:
                 $ref: '#/components/schemas/User'
 
   /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: Parameter description
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
     get:
       operationId: getUserById
-      summary: Returns a user by ID
+      summary: Gets one or more users by ID.
       parameters:
-        - name: userId
-          in: path
+        - in: path
+          name: userId
           required: true
-          description: Parameter description
+          description: A comma-separated list of user IDs.
           schema:
-            type: integer
-            format: int64
-            minimum: 1
+            type: array
+            items:
+              type: integer
+            minItems: 1
+          explode: false
+          style: simple
       responses:
         '200':
           description: A user object.
@@ -124,7 +145,15 @@ paths:
       externalDocs:
         description: Learn more about user operations provided by this API
         url: http://api.example.com/docs/user-operations/
-        
+    
+    # DELETE /users/{id} - uses a single ID.
+    # Reuses the {id} parameter definition from the path level.
+    delete:
+      summary: Deletes the user with the specified ID.
+      responses:
+        '204':
+          description: User was deleted.
+      
   /users/{employeeId}:
     get:
       deprecated: true
@@ -163,6 +192,13 @@ paths:
             type: string
             enum: [user, poweruser, admin]
           required: true
+        - in: query
+          name: rel_date
+          required: true
+          schema:
+            type: string
+            enum:
+              - now
       responses:
         '200':
           description: OK
@@ -178,8 +214,16 @@ paths:
           description: Mock response.
         
   
-  /ping:                                                                                              
+  /ping:
     get:
+      summary: Checks if the server is alive
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
       servers: 
         - url: https:echo.example.com
           description: Override base path for the Get /ping operation
@@ -198,16 +242,30 @@ paths:
                 type: string
                 format: binary
 
-  /employees:                                                                                         
-    get:                                                                                              
-      summary: list of employees                                                                      
+  /employees:
+    get:
+      summary: list of employees
+      parameters:
+        - in: query
+          name: filter
+      
+          # Wrap schema into content.<media-type>
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  color:
+                    type: string
       responses:
         '200':
           description: OK
           content:
-            application/json:                                                                       
+            application/json:       
               schema:
-                $ref: '#/components/schemas/Employee'                                               
+                $ref: '#/components/schemas/Employee'              
             application/xml:
               schema:
                 $ref: '#/components/schemas/Employee'
@@ -226,6 +284,25 @@ paths:
           schema:
             type: integer
           description: Maximum result size
+        - in: query
+          name: color
+          schema:
+            type: array
+            items:
+              type: string
+          # Serialize as color=blue,black,brown
+          style: form
+          explode: false
+        - in: cookie
+          name: debug
+          schema:
+            type: integer
+            enum: [0, 1]
+            default: 0
+        - in: cookie
+          name: csrftoken
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -233,8 +310,160 @@ paths:
             application/json:
               schema:
                 type: integer
+  
+  /countries:
+    get:
+      summary: Get list of countries
+      parameters:
+        - in: query
+          name: metadata
+          schema:
+            type: boolean
+          allowEmptyValue: true
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+      responses:
+        '200':
+          description: OK
+  
+  /products:
+    get:
+      summary: Returns a list of procuts based on ids
+      parameters:
+        - in: query
+          name: ids
+          description: You can use multiple parameters here
+          required: true
+          schema:
+            type: array
+            items: 
+              type: integer
+          style: form
+          explode: false
+          examples:
+            oneId: 
+              summary: Example of single id
+              value: [5] # This represents ?ids=5
+            multipleIds:
+              summary: Example of multiple ids
+              value: [5,10,15] # this represents ?ids=5,10,15
+      responses:
+        '200':
+          description: OK
+  
+  /products/{productId}:
+    parameters: # path level parameters
+      - in: path
+        name: productId
+        schema:
+          type: integer
+        required: true
+        description: Product ID used to perform operations
+    get:
+      summary: get's a product by ID
+      parameters:
+      - in: query
+        name: metadata
+        schema:
+          type: boolean
+        required: false
+        description: if true, then show extra info of product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    patch:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+  /reports:
+    get:
+      parameters:
+        - name: rdate
+          in: query
+          description: A relative range of dates, already predefined in this enum [Today, LastWeek]
+          schema: 
+            type: string
+            enum: 
+              - today
+              - Today
+              - TODAY
+              - lastweek
+              - LastWeek
+              - LASTWEEK
+        - name: start_date
+          in: query
+          description: > 
+            Initial date for report, needs to be less than `end_date`.
+            Must be used together `end_date`
+            Incompatible with `rdate`
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: >
+            End date for report, needs to be greater than `start_date`.
+            Must be used together `start_date`
+            Incompatible with `rdate`
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Either `rdate` or `start_date`+`end_date` are required
 
 components:
+  parameters:
+    offsetParam:  # <-- Arbitrary name for the definition that will be used to refer to it.
+                  # Not necessarily the same as the parameter name.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      description: The number of items to skip before starting to collect the result set.
+    limitParam:
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+      description: The numbers of items to return.
   schemas:
     User:
       properties:
@@ -256,7 +485,17 @@ components:
         name:
           type: string
         fullTime: 
-          type: boolean    
+          type: boolean
+    
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
 
   securitySchemes:
     oauth2:
