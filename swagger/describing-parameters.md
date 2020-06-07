@@ -125,7 +125,7 @@ paths:
 - Example: Cookie: `name=value`
 - Multiple values are set in a cookie separated by a semicolon an space
 - Use `in: cookie`
-```
+```yaml
   parameters:
     - in: cookie
       name: debug
