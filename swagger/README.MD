@@ -10,7 +10,7 @@ Condensed knowledge for Swagger
 - [Paths and Operations](https://github.com/janvmusic/2020-learning/blob/master/swagger/paths-and-operations.md)
 - [Describing Parameters](https://github.com/janvmusic/2020-learning/blob/master/swagger/describing-parameters.md)
 - [Parameter Serialization](https://github.com/janvmusic/2020-learning/blob/master/swagger/parameter-serialization.md)
-- [Describing Request Body]()
+- [Describing Request Body](https://github.com/janvmusic/2020-learning/blob/master/swagger/describing-request-body.md)
 - [Describing Responses]()
 - [Data Models (Schemas)]()
 - [Adding Examples]()
