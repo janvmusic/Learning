@@ -9,7 +9,7 @@ Condensed knowledge for Swagger
 - [Media Types](https://github.com/janvmusic/2020-learning/blob/master/swagger/media-types.md)
 - [Paths and Operations](https://github.com/janvmusic/2020-learning/blob/master/swagger/paths-and-operations.md)
 - [Describing Parameters](https://github.com/janvmusic/2020-learning/blob/master/swagger/describing-parameters.md)
-- [Parameter Serialization]()
+- [Parameter Serialization](https://github.com/janvmusic/2020-learning/blob/master/swagger/parameter-serialization.md)
 - [Describing Request Body]()
 - [Describing Responses]()
 - [Data Models (Schemas)]()
