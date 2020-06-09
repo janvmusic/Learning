@@ -443,6 +443,43 @@ paths:
         '400':
           description: Either `rdate` or `start_date`+`end_date` are required
 
+  /pets:
+    post:
+      summary: add a new pet 
+      requestBody: 
+        description: Creates a new pet 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetForm'
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '201':
+          description: Created
+
+  /avatar:
+    put:
+      summary: Upload an avatar
+      requestBody:
+        required: true
+        content:
+          image/*:
+            schema:
+              type: string  
+              format: binary
+      responses:
+        '201':
+          description: Created
+
 components:
   parameters:
     offsetParam:  # <-- Arbitrary name for the definition that will be used to refer to it.
@@ -496,6 +533,28 @@ components:
           type: string
         price:
           type: number
+    
+    Pet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        owner:
+          type: string
+          
+    PetForm:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        owner:
+          type: string
+        formType:
+          type: string
 
   securitySchemes:
     oauth2:
