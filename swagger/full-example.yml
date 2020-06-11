@@ -446,6 +446,7 @@ paths:
   /pets:
     post:
       summary: add a new pet 
+      deprecated: true
       requestBody: 
         description: Creates a new pet 
         required: true
@@ -466,6 +467,23 @@ paths:
         '201':
           description: Created
 
+  /pets/v2:
+    post:
+      summary: add a new pet 
+      requestBody: 
+        description: Creates a new pet 
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/Cat'
+                - $ref: '#/components/schemas/Dog'
+                - $ref: '#/components/schemas/Fish'
+      responses:
+        '201':
+          description: Created
+
   /avatar:
     put:
       summary: Upload an avatar
@@ -479,6 +497,33 @@ paths:
       responses:
         '201':
           description: Created
+          
+  /cars:
+    post:
+      summary: Add a new car specification
+      requestBody:
+        $ref: '#/components/requestBodies/CarRequest'
+      responses:
+        '201':
+          description: created
+
+  /cars/{carId}:
+    put:
+      summary: Update a car specification
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          description: Parameter description
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        $ref: '#/components/requestBodies/CarRequest'
+      responses:
+        '201': 
+          description: Updated
 
 components:
   parameters:
@@ -555,6 +600,60 @@ components:
           type: string
         formType:
           type: string
+
+    Dog:
+      type: object
+      properties:
+        id:
+          type: integer
+        dogName:
+          type: string
+        owner:
+          type: string
+          
+    Cat:
+      type: object
+      properties:
+        id:
+          type: integer
+        catName:
+          type: string
+        owner:
+          type: string
+          
+    Fish:
+      type: object
+      properties:
+        id:
+          type: integer
+        fishName:
+          type: string
+        owner:
+          type: string
+          
+    Car:
+      type: object
+      properties:
+        year:
+          type: integer
+        make:
+          type: string
+          enum:
+            - Nissan
+            - Mazda
+            - Toyota
+            - Lexus
+            - Acura
+        model:
+          type: string
+          
+  requestBodies:
+    CarRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Car'
 
   securitySchemes:
     oauth2:
