@@ -57,4 +57,58 @@ function helloWorld(sayHi) {
 ```
 
 ### Specifying attributes in JSX
+- If a tag is empty you can close with `/>`, like XML
+- JSX tags can contain children
+```javascript
+const avatar = <img src={user.avatarUrl} />
+
+const greetings = (
+  <div>
+    <h1>Hello</h1>
+    <h2>Good to see you here</h2>
+  </div>
+);
+```
+
+### JSX prevents injection attacks
+- It's safe to embed user input in JSX
+- By default **React DOM** scapes any value embedded in JSX before rendering them
+- Everything is converted to a String before being rendered. This prevents **XSS attacks**
+```javascript
+const title = response.potentiallyMaliciousInput;
+
+// this is safe to do
+const element = <h1>{title}</h1>
+```
+
+### JSX represents objects
+- Babel compules JSX down to `React.createElement()` calls
+```javascript
+const greetings = (
+  <div>
+    <h1>Hello</h1>
+    <h2>Good to see you here</h2>
+  </div>
+);
+```
+- This is equals to:
+```javascript
+const element = React.createElement(
+  'h1',
+  {className: 'greeting'},
+  'Hello, world!'
+);
+```
+- At the end React creates an object like this:
+```javascript
+// Note: this structure is simplified
+const element = {
+  type: 'h1',
+  props: {
+    className: 'greeting',
+    children: 'Hello, world!'
+  }
+};
+```
+- This is called **React Element**
 
