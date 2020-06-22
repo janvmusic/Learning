@@ -9,7 +9,6 @@ Condensed knowledge for Swagger
 - [State and Lifecycle](https://github.com/janvmusic/2020-learning/blob/master/react/state-and-lifecycle.md)
 - [Handling events](https://github.com/janvmusic/2020-learning/blob/master/react/handling-events.md)
 - [Conditional Rendering](https://github.com/janvmusic/2020-learning/blob/master/react/conditional-rendering.md)
-- [List and Keys](https://github.com/janvmusic/2020-learning/blob/master/react/lists-and-keys.md)
-
+- [List and Keys](https://github.com/janvmusic/2020-learning/blob/master/react/list-and-keys.md)
 
 ## Notes & Concepts
