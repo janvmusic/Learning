@@ -30,12 +30,57 @@ function WelcomeDialog() {
 }
 ```
 - All elements inside `<FancyBoder>` are passed
-#### TOPIC
-content
+- While it's less common, you can pass as well several components
+```javascript
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">
+        {props.left}
+      </div>
 
-#### TOPIC2
-content
+      <div className="SplitPane-right">
+        {props.right}
+      </div>
+    </div>
+  );
+}
 
-#### SOURCE Link
-[Link Title](http://example.com)
+function App() {
+  return (
+    left={<Contacts />}
+    right={<Chat />}
+  );
+}
+```
+- `Contact` and `Chat` are objects, so they can be passed to other components via `props`
+
+### Specialization
+- We can simulate specialization when we a more **specific** component render a more **generic** component
+```javascript
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+    </FancyBorder>
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    <Dialog title="Welcome" message="Thank you for your visit" />
+  );
+}
+```
+- **Composition** also works on components defined as classes
+
+### So what about inheritance?
+- It's not recommended
+- **Props** and **composition** brings flexibility
+- If you need non UI elements, exact it to other element
 
