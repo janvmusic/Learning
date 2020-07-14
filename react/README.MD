@@ -16,5 +16,7 @@ Condensed knowledge for Swagger
 - [Thinking in React](https://github.com/janvmusic/2020-learning/blob/master/react/thinking-in-react.md)
 
 ### Advanced Guides
-- [Accessibility]()
+- [Accessibility](https://github.com/janvmusic/2020-learning/blob/master/react/accessibility.md)
+- [Code Splitting](https://github.com/janvmusic/2020-learning/blob/master/react/code-splitting.md)
+- [Context]()
 
