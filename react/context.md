@@ -126,8 +126,53 @@ function Page(props) {
 - This pattern is _in most cases_ sufficient enough.
 - However if you need _same data_ through different components and nesting levels, **Context** let's you _broadcast_ such data.
 
-#### TOPIC2
-content
+### API
+#### React.createContext
+```javascript
+const MyContext = React.createContext(defaultValue);
+```
+- When react renders a components that subscribes to this **Context**, it will read the current context value from  the closest matching _Provider_ above in the tree
+- The `defaultValue` is our `fallback`; It's only going to be used if we cannot find context in the tree
+- Passing `undefined` does not mean that it will use `defaultValue` be careful
+
+#### Context.provider
+- Every *Context* react creates comes with a *Provider*
+- *Provider* allows components to _consume_ _Context_
+```javascript
+<MyContext.provider value={/* some value */}>
+```
+- Accepts a `value` prop to be passed to consuming components
+- One *Provider* can be connected to *many* consumers (1 to N)
+- *Providers* can be nested, this will override other *Providers*
+- Any change to `value` in the *Context*, will trigger re-renders to consumers
+- The propagation from a Provider to its descendant consumers is not subject to the `shouldComponentUpdate` method
+- Changes are determined by comparing the new and old values using the same algorithm as `Object.is`
+
+#### Class.contextType
+```javascript
+class MyClass extends React.Component {
+  componentDidMount() {
+    /* perform a side-effect at mount using the value of MyContext */
+    let value = this.context;
+  }
+
+  componentDidUpdate() {
+    let value = this.context;
+  }
+
+  componentWillUnmount() {
+    let value = this.context;  
+  }
+
+  render() {
+    /* render something based on the value of MyContext */
+    let value = this.context;
+  }
+}
+
+MyClass.contextType = MyContextType
+```
+- 
 
 #### SOURCE Link
 [Link Title](http://example.com)
