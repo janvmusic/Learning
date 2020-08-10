@@ -172,8 +172,121 @@ class MyClass extends React.Component {
 
 MyClass.contextType = MyContextType
 ```
-- 
+- You can assign `contextType` property
+- This lets you consume the nearest current value of that Context type using `this.context`
+- **Note:** Through the API you can only subscribe to **one** context
+```javascript
+class MyClass extends React.Component {
+  static contextType = MyContext;
+  render() {
+    let value = this.context;
+  }
+}
+```
 
-#### SOURCE Link
-[Link Title](http://example.com)
+#### Context.Consumer
+```javascript
+  <MyContext.Consumer>
+    {value => /* do something */}
+  </MyContext.Consumer>
+```
+- This lets you subscribe to a context within a function component
+- Child element needs to be a function
+- The `value` argument passed will be matched against it's closest context prop
+- `value` could be equal to `defaultValue`
 
+#### Context.displayName
+- Context objects accepts a `displayName` string property
+- React `DevTools` uses this string to determine what to display for the context
+```javascript
+const MyContext = React.createContext(/* some value */);
+MyContext.displayName = 'MyDisplayName';
+
+<MyContext.Provider> // MyDisplayName.provider
+<MyContext.Consumer> // MyDisplayName.Consumer
+```
+
+### Examples
+#### Dynamic Context
+- Create the context
+```javascript
+export const themes = {
+  light: {
+    foreground: '#000000',
+    background: '#eeeeee',
+  },
+  dark: {
+    foreground: '#ffffff',
+    background: '#222222',
+  },
+};
+
+export const ThemeContext = React.createContext(themes.dark);
+```
+
+- Then we create the consumer, in this case button
+```javascript
+import { ThemeContext } from './theme-context';
+
+class ThemedButton extends React.Component {
+  render() {
+    let props = this.props;
+    let theme = this.context;
+
+    return (
+      <button
+        {...props}
+        style={{backgroundColor: theme.background}}
+      />
+    );
+  }
+}
+
+ThemedButton.contextType = ThemeContext;
+export default ThemedButton;
+```
+
+- Now let's place this in practice
+```javascript
+import { ThemeContext, themes } from './theme-context';
+import ThemeButton from './themed-button';
+
+// An intermediate component taht uses the ThemedButton
+function Toolbar(props) {
+  return (
+    <ThemedButton onClick={props.changeTheme}>
+      Change Theme
+    </ThemedButton>
+  );
+}
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      theme: themes.light,
+    };
+
+    this.toggleTheme = () => {
+      this.setState(state => ({ 
+        theme: state.theme === themes.dark ? themes.light : themes.dark,
+      }));
+    };
+  }
+
+  render() {
+    return (
+      <Page>
+        <ThemeContext.Provider value={this.state.theme}>
+          <Toolbar changeTheme={this.toggleTheme} />
+        </ThemeContext.Provider>
+        <Section>
+          <ThemedButton />
+        </Section>
+      </Page
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.root);
+```
