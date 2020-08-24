@@ -290,3 +290,129 @@ class App extends React.Component {
 
 ReactDOM.render(<App />, document.root);
 ```
+
+### Updating Context from a Nested Component
+- It's often required to update the context from a Component that is nested somewhere deeply in the component tree
+- This is solved by passing a function through the components
+```javascript
+export const ThemeContext = React.createContext({
+  theme: themes.dark,
+  toggleTheme: () => {},
+});
+```
+
+- theme-toggler-button.js
+```javascript
+import {ThemeContext} from './theme-context';
+
+function ThemeTogglerButton() {
+  return (
+    <ThemeContext.Consumer>
+      {({theme, toggleTheme}) => (
+        <button
+          onClick={toggleTheme}
+          style={{backgroundColor: theme.background}}>
+          Toggle Theme
+        </button>
+      )}
+    </ThemeContext.Consumer>
+  );
+}
+
+export default ThemeTogglerButton;
+```
+
+- Now let's practice!
+```javascript
+import {ThemeContext, themes} from './theme-context';
+import ThemeTogglerButton from './theme-toggler-button';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.toggleTheme = () => {
+      this.setState(state => ({
+        theme: state.theme === themes.dark
+          ? themes.light
+          : themes.dark,
+      }));
+    };
+
+    this.state = {
+      theme: themes.light,
+      toggleTheme: this.toggleTheme,
+    };
+  }
+
+  render() {
+    return (
+      <ThemeContext.Provider value={this.state}>
+        <Content />
+      </ThemeContext.Provider>
+    );
+  }
+}
+
+function Content() {
+  return (
+    <div>
+      <ThemeTogglerButton />
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.root);
+```
+
+### Consuming Multiple Contexts
+- To keep `context-rendering` fast, we need to make each context consumer a separate node in the tree
+```javascript
+// Theme context, default to light theme
+const ThemeContext = React.createContext('light');
+
+// Signed-in user context
+const UserContext = React.createContext({
+  name: 'Guest',
+});
+
+class App extends React.Component {
+  render() {
+    const { signedInUser, theme } = this.props;
+
+    return (
+      <ThemeContext.Provider value={theme}>
+        <UserContext.Provider value={signedInUser}>
+          <Layout />
+        </UserContext.Provider>
+      </ThemeContext.Provider>
+    );
+  }
+}
+
+function Layout() {
+  return (
+    <div>
+      <Sidebar />
+      <Content />
+    </div>
+  );
+}
+
+function Content() {
+  return(
+    <ThemeContext.Consumer>
+      {theme => (
+        <UserContext.Consumer>
+          {user => (
+            <ProfilePage user={user} theme={theme} />
+          )}
+        </UserContext.Consumer>
+      )}
+    </ThemeContexts.Consumer>
+  );
+}
+```
+- If this happens often(2 contexts) you should consider to create a component that provides both
+
+### Caveats
