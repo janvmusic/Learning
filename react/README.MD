@@ -18,5 +18,7 @@ Condensed knowledge for Swagger
 ### Advanced Guides
 - [Accessibility](https://github.com/janvmusic/2020-learning/blob/master/react/accessibility.md)
 - [Code Splitting](https://github.com/janvmusic/2020-learning/blob/master/react/code-splitting.md)
-- [Context]()
+- [Context](https://github.com/janvmusic/2020-learning/blob/master/react/context.md)
+- [Error Boundaries](https://github.com/janvmusic/2020-learning/blob/master/react/error-boundaries.md)
+- [Forwarding refs](https://github.com/janvmusic/2020-learning/blob/master/react/forwarding-refs.md)
 

@@ -416,3 +416,39 @@ function Content() {
 - If this happens often(2 contexts) you should consider to create a component that provides both
 
 ### Caveats
+- `Context` uses reference identity to determine when to **re-render**
+- Following code snippet will re-render all consumers because a new object is created every time
+```javascript
+class App extends React.Component {
+  render() {
+    return (
+      <MyContext.Provider value={{ something: 'something' }}
+        <Toolbar />
+      </MyContext.Provider>
+    );
+  }
+}
+```
+
+- To fix this, you should lift this to parent's state
+```javascript
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: {
+        something: 'something',
+      };
+    }
+  }
+
+  render() {
+    return (
+      <Provider value={this.state.value}>
+        <Toolbar />
+      </Provider>
+    );
+  }
+}
+```
+
