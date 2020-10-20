@@ -26,8 +26,73 @@ const ref = React.createRef();
 - `ref` argument needs to be used inside a `React.forwardRef` component
 
 ### Forwarding refs in high-order components
--  
+- This technique can also be particularly useful with higher-order components
+```javascript
+function logProps(WrappedComponent) {
+  class LogProps extends React.Component {
+    componentDidUpdate(prevProps) {
+      console.log('old props:', prevProps);
+      console.log('new props:', this.props);
+    }
 
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
 
+  return LogProps;
+}
+```
+- The `logProps` HOC passes all the _props_ through the component it wraps.
+```javascript
+class FancyButton extends React.Component {
+  focuts() {
+    // ...
+  }
+
+  // ...
+}
+
+// Rather than exporting FancyButton, we export LogProps
+// It will render a FancyButton though
+export default logProps(FancyButton);
+```
+- However, in this example we have no access to `refs`
+- `ref` is not a prop!
+```javascript
+import FancyButton from './FancyButton';
+
+const ref = React.createRef();
+<FancyButton
+  label="Click Me"
+  handleClick={handleClick}
+  ref={ref}
+/>;
+```
+- Now we are passing `ref` as part of our `FancyButton`
+- How we get the `ref` prop ? Of course `forwardRef`!
+```javascript
+function logProps(WrappedComponent) {
+  class LogProps extends React.Component {
+    componentDidUpdate(prevProps) {
+      console.log('old props:', prevProps);
+      console.log('new props:', this.props);
+    }
+
+    render() {
+      const { forwardedRef, ...rest } = this.props;
+      
+      // Assign the custom prop "forwardedRef" as a ref
+      return <Component ref={forwardedRef} {...rest} />
+    }
+
+    return React.forwardRef((props, ref) => {
+      return <LogProps {...props} forwardedRef={ref} />;
+    });
+  }
+
+  return LogProps;
+}
+```
 
 
