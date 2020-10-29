@@ -66,3 +66,23 @@
 - Sometimes the value of having a feature right now is so great that it outweighs any future increase in cost
 - Technical debt: code that we will need to pay in the future, probably with interests
 - The break-even point for design depends on the programmer. 
+
+## 1.4 A Brief introduction to Object-Oriented Programming
+- Objects pass messages between them
+
+### 1.4.1 Procedural Languages
+- They have data types
+- Each data type describes a very specific kind of thing
+- Each variable type has it's own capabilities
+- Every possible data type and operation already exists; these things are part of the syntax of the language
+- Data & Operations are completely different things
+
+### 1.4.2 Object Oriented Languages
+- Object and behavior are part of the same unit
+- Each object **encapsulates** or **hides** data from the world.
+- Every object decides how much, or how little of it's data to expose
+- Class: blueprint for the construction of similar objects.
+- A **class** defines _methods_ (behavior) and _attributes_ (variables). Methods get invoked in response to messages!
+- Once a **class** exists, it could be **instantiated** or create new instances of a object
+- Every **instance** shares method names and behavior as other instances
+- OOP languages constructs themselves based on _Class_ class
