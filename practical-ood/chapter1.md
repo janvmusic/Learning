@@ -1,4 +1,4 @@
-## In Praise of Design
+## Chapter 1: In Praise of Design
 ### 1.1.1 The problem design solves
 - Unfortunately, something *will* change. It always does
   - Customers didn't know what they wanted
