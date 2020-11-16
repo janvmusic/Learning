@@ -82,7 +82,7 @@ const element = <h1>{title}</h1>
 ```
 
 ### JSX represents objects
-- Babel compules JSX down to `React.createElement()` calls
+- Babel compiles JSX down to `React.createElement()` calls
 ```javascript
 const greetings = (
   <div>

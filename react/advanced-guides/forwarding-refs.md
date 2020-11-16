@@ -46,7 +46,7 @@ function logProps(WrappedComponent) {
 - The `logProps` HOC passes all the _props_ through the component it wraps.
 ```javascript
 class FancyButton extends React.Component {
-  focuts() {
+  focus() {
     // ...
   }
 

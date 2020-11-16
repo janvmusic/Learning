@@ -10,6 +10,8 @@
 - **HOC** doesn't modify the input component, nor does it use inheritance to copy it's behavior.
 - **HOC** composes the original component by _wrapping_ it in the container component.
 - **HOC**, as part of functional programming, is a pure function with zero **side-effects**
+
+### Don't mutate the original component. Use composition
 - Example:
 ```javascript
 // This function takes a component...
@@ -78,4 +80,62 @@ function logProps(WrappedComponent) {
   }
 } 
 ```
-- You can think of **HOC** as parametrized containers.
+- You can think of **HOC** as parameterized containers.
+
+### Convention: Pass unrelated Props through to the Wrapped Component
+- HOCs add futures to a component; HOCs should not alter it's contract
+- example:
+```javascript
+render () {
+  // Remove HOCs specific props
+  const { extraProp, ...passThroughProps } = this.props;
+  
+  // Inject props to wrapped component
+  const injectedPropts = someStateOrInstanceMethod;
+
+  // Pass props to wrapped component
+  return (
+    <WrappedComponent
+      injectedProp={injectedProp}
+      {...passThroughProps}
+    />
+  );
+}
+```
+
+### Convention: Maximizing Composability
+- Single parameters
+```javascript
+const NavbarWithRouter = withRouter(Navbar);
+```
+- Multiple parameters
+```javascript
+const CommentWithRelay = Relay.createContainer(Comment, config);
+```
+- Most common; partially executed
+```javascript
+const ConnectedComment = connect(commentSelected, commentActions)(CommentList)
+```
+- Note: `connect` is a **High Order Function** that returns a **HOC**
+- What problem solves having this? Well _Composability_ You use single parameter HOC which makes them easy to pass along `Component => Component`
+
+### Convention: Wrap the display name for easy debugging
+- The most common technique is to wrap the display name of the wrapped component.
+```javascript
+function withSubscription(WrappedComponent) {
+  class WithSubscription extends React.Component {/* ... */}
+  WithSubscription.displayName = `WithSubscription(${getDisplayName(WrappedComponent)})`;
+  return WithSubscription;
+}
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
+```
+
+### Caveats
+#### Do not use HOCs inside the render method
+- React diffing algorithm uses component identity to determine wether it should update the existing subtree or throw it away and mount a new one (called **Reconciliation**)
+
+
+

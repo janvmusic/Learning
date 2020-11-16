@@ -1,6 +1,6 @@
 ## Components and Props
 - **Components** lets you create reusable UI elements
-- Conceptually **Componets** are Javascript functions, they accept inputs and return react elements
+- Conceptually **Components** are Javascript functions, they accept inputs and return react elements
 
 ### Function and Class component
 - Components accepts **Props**
@@ -33,7 +33,7 @@ const element = <Welcome name="Sarah" />
 - Components can use other **Components** for their output
 
 ### Extracting components
-- As part of best practices, Components should refrain to **Dont Repeat Yourself** and **Single Responsibility**
+- As part of best practices, Components should refrain to **Don't Repeat Yourself** and **Single Responsibility**
 - Don't be afraid to extract logic to smaller components
 - Remember the main objective of **Components** is to be reusable!
 
