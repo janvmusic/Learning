@@ -136,6 +136,57 @@ function getDisplayName(WrappedComponent) {
 ### Caveats
 #### Do not use HOCs inside the render method
 - React diffing algorithm uses component identity to determine wether it should update the existing subtree or throw it away and mount a new one (called **Reconciliation**)
+- Using HOC creates a new component each time, so that would mean extra renders 
+```javascript
+render() {
+  // A new version of EnhancedComponent is created on every render
+  // EnhancedComponent1 !== EnhancedComponent2
+  const EnhancedComponent = enhace(MyComponent);
+  
+  // That causes the entire subtree to unmount/remount each time!
+  return <EnhancedComponent />;
+}
+```
+- Remounting a component causes the state of that component and all of its children to be lost
+- The ideal would be apply HOC outside the component definition
+
+#### Static methods must be copied over
+- Static methods are not carried over when using HOCs
+```javascript
+// Define a static method
+WrappedComponent.staticMethod = function() {/*...*/}
+const EnhancedComponent = enhance(WrappedComponent);
+
+// The enhanced component has no static method
+typeof EnhancedComponent.staticMethod === 'undefined' // true
+```
+- To solve this, manually copy static methods before returning new component:
+```javascript
+function enhance(WrappedComponent) {
+  class Enhace extends React.Component { /* ... */ }
+
+  Enhace.staticMethod = WrappedComponent.staticMethod;
+  return Enhace;
+}
+```
+- Previous solution requires you to know all static methods. You can also use `hoist-non-react-static`
+- Another solution is to export the static methods separately from the component itself
+```javascript
+// Instead of...
+MyComponent.someFunction = someFunction;
+export default MyComponent;
+
+// ...export the method separately...
+export { someFunction };
+
+// ...and in the consuming module, import both
+import MyComponent, { someFunction } from './MyComponent.js';
+```
+
+### Refs aren't passed through
+- `Refs` are not real props, `Refs` are handled specially by react.
+- Remember to use `React.forwardRef`
+
 
 
 
