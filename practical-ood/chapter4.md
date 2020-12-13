@@ -113,4 +113,3 @@ customer.bicycle.wheel.tire # this is wrong
 #### 4.5.4 Listening to Demeter
 - Within the _chain calls_ we can find a problem: "There's some behavior way over there that I need right here, an I know to get it"
 - These types of call only tells you what is missing in the public interface
-- 
