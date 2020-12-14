@@ -77,4 +77,3 @@
 - Duck typing detaches public interfaces from specific classes
 - Duck types focuses on "what" not "how"
 - Duck types reveals hidden abstractions
-- 
