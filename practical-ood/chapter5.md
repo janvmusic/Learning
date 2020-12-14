@@ -48,4 +48,33 @@
 - If creating a _duck type_ reduces usage of unstable dependencies, good, refactor!
 - Changing base classes is known as `Monkey Patching` DON'T
 
-#### 5.3 Conquering the fear of Duck Typing
+### 5.3 Conquering the fear of Duck Typing
+#### 5.3.1 Subverting duck types with Static Typing
+- Relying on dynamic typing makes some people uncomfortable.
+- Statically typed languages lose flexibility due `type check`
+- Once we remove the `class` from the message, `duck type` has it's value
+
+#### 5.3.2 Static vs Dynamic Typing
+- Static: Good
+  - Compiler checks for type errors at compile time
+  - Visible type serves as documentation
+  - Compile code is optimized to run quickly
+- Static: Bad
+  - Programmers can't infer an object from it's context
+  - The app will run slow without optimizations
+- Dynamic: Good
+  - Code is interpreted, no compile required
+  - Metaprogramming is easier
+  - Source code does not reveal the typing
+
+#### 5.3.3 Embracing Dynamic typing
+- Usually a well tuned statically languages will outperform interpreted languages
+- The illusion of static types could be dangerous due `casting`
+- If you problem required `Static Types` then chose something different to ruby. Do not try to add static type to the language
+
+## 5.4 Summary
+- Messages are the center of OOP
+- Duck typing detaches public interfaces from specific classes
+- Duck types focuses on "what" not "how"
+- Duck types reveals hidden abstractions
+- 
