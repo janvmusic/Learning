@@ -45,7 +45,7 @@ serving changeability than it is the act of achieving perfection.
 #### 2.2.4 Determining when to make design decisions
 - Ask yourself: _"Whats the future cost of not doing today?"_
 - When the future cost of doing nothing is the same as the current cost, postpone the decision.
-- Remember: _The patterns that you stablish today will be replicated forever_
+- Remember: _The patterns that you establish today will be replicated forever_
 - A good designer **understands this tension** (now or later) by making informed tradeoff between the needs of the present and the possibilities of the future
 
 ### 2.3 Writing code that embraces change
