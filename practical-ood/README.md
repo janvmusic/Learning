@@ -6,6 +6,8 @@
 - [Chapter 3 - Managing Dependencies](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter3.md)
 - [Chapter 4 - Creating flexible interfaces](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter4.md)
 - [Chapter 5 - Reducing costs with Duck Typing](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter5.md)
+- [Chapter 6 - Acquiring behavior through inheritance](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter6.md)
+- [Chapter 7 - Sharing role behavior with Modules](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter7.md)
 
 ## Notes & Concepts
 - How do you define _dependency inversion_?
