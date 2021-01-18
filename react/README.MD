@@ -23,4 +23,5 @@ Condensed knowledge for Swagger
 - [Forwarding refs](https://github.com/janvmusic/2020-learning/blob/master/react/advanced-guides/forwarding-refs.md)
 - [Fragments](https://github.com/janvmusic/2020-learning/blob/master/react/advanced-guides/fragments.md)
 - [High Order Components](https://github.com/janvmusic/2020-learning/blob/master/react/advanced-guides/high-order-components.md)
+- [JSX in Depth](https://github.com/janvmusic/2020-learning/blob/master/react/advanced-guides/jsx-in-depth.md)
 
