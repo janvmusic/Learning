@@ -208,3 +208,28 @@ $b: #E16A2E;
   background-color: mix($a, $b, 30%);
 }
 ```
+
+#### 1.1.10 The idea behind CSS
+- It models the idea of a **waterfall**
+- _Children_ elements get their properties from the _parent_ element
+- The _selectors_ help us to **traverse through** elements
+- Remember that CSS uses _space_ as part of the selector
+```css
+/* This means, look inside footer all span elements */
+footer span { color: green; }
+```
+
+#### 1.1.11 CSS Selectors
+```css
+/* Look for elements which have id as "id" */
+#id {}
+
+/* Look for all element which have class as "class1" */
+.class1 {}
+
+/* loof for all element which have an id as "id" and have child element with class as "class1" */
+#parent .class1 {}
+```
+
+#### 1.1.12 Forgiving Nature
+- If CSS cannot be applied/downloading fallbacks to _fail gracefully_
