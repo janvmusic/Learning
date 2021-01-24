@@ -3,10 +3,10 @@ This is a directory of things that I've been studying during 2020. I do not domi
 I'm proud of this :D!!!!
 
 ### Topics
-- [Javascript Grammar](https://github.com/janvmusic/2020-learning/tree/master/js-grammar)
-- [CSS Design](https://github.com/janvmusic/2020-learning/tree/master/css-design)
+- [Javascript Grammar](js-grammar/README.MD)
+- [CSS Design](css-design/README.MD)
 - [Graphql]()
-- [Swagger](https://github.com/janvmusic/2020-learning/tree/master/swagger)
-- [React](https://github.com/janvmusic/2020-learning/tree/master/react)
-- [Articles](https://github.com/janvmusic/2020-learning/blob/master/articles/)
-- [Practical OOD](https://github.com/janvmusic/2020-learning/tree/master/practical-ood)
+- [Swagger](swagger/README.MD)
+- [React](react/README.MD)
+- [Articles](articles/README.MD)
+- [Practical OOD](practical-ood/README.MD)

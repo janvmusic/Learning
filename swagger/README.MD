@@ -3,14 +3,14 @@
 Condensed knowledge for Swagger
 
 ## Table of Contents
-- [What Is OpenAPI?](https://github.com/janvmusic/2020-learning/blob/master/swagger/openapi.md)
-- [Basic Structure](https://github.com/janvmusic/2020-learning/blob/master/swagger/basic-structure.md)
-- [API Server and Base Path](https://github.com/janvmusic/2020-learning/blob/master/swagger/api-server-base-path.md)
-- [Media Types](https://github.com/janvmusic/2020-learning/blob/master/swagger/media-types.md)
-- [Paths and Operations](https://github.com/janvmusic/2020-learning/blob/master/swagger/paths-and-operations.md)
-- [Describing Parameters](https://github.com/janvmusic/2020-learning/blob/master/swagger/describing-parameters.md)
-- [Parameter Serialization](https://github.com/janvmusic/2020-learning/blob/master/swagger/parameter-serialization.md)
-- [Describing Request Body](https://github.com/janvmusic/2020-learning/blob/master/swagger/describing-request-body.md)
+- [What Is OpenAPI?](openapi.md)
+- [Basic Structure](basic-structure.md)
+- [API Server and Base Path](api-server-base-path.md)
+- [Media Types](media-types.md)
+- [Paths and Operations](paths-and-operations.md)
+- [Describing Parameters](describing-parameters.md)
+- [Parameter Serialization](parameter-serialization.md)
+- [Describing Request Body](describing-request-body.md)
 - [Describing Responses]()
 - [Data Models (Schemas)]()
 - [Adding Examples]()
@@ -23,6 +23,6 @@ Condensed knowledge for Swagger
 - [Grouping Operations With Tags]()
 - [OpenAPI Extensions]()
 - [2.0]()
-- [3.0 Full Example](https://github.com/janvmusic/2020-learning/blob/master/swagger/full-example.yml)
+- [3.0 Full Example](full-example.yml)
 
 ## Notes & Concepts

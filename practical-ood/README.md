@@ -1,15 +1,15 @@
 ## Practical Object Oriented Design
 
 ## Table of Contents
-- [Chapter 1 - In Praise of Design](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter1.md)
-- [Chapter 2 - Designing Classes with a Single Responsibility](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter2.md)
-- [Chapter 3 - Managing Dependencies](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter3.md)
-- [Chapter 4 - Creating flexible interfaces](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter4.md)
-- [Chapter 5 - Reducing costs with Duck Typing](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter5.md)
-- [Chapter 6 - Acquiring behavior through inheritance](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter6.md)
-- [Chapter 7 - Sharing role behavior with Modules](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter7.md)
-- [Chapter 8 - Combining objects with Composition](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter8.md)
-- [Chapter 9 - Design cost-effective tests](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter9.md)
+- [Chapter 1 - In Praise of Design](chapter1.md)
+- [Chapter 2 - Designing Classes with a Single Responsibility](chapter2.md)
+- [Chapter 3 - Managing Dependencies](chapter3.md)
+- [Chapter 4 - Creating flexible interfaces](chapter4.md)
+- [Chapter 5 - Reducing costs with Duck Typing](chapter5.md)
+- [Chapter 6 - Acquiring behavior through inheritance](chapter6.md)
+- [Chapter 7 - Sharing role behavior with Modules](chapter7.md)
+- [Chapter 8 - Combining objects with Composition](chapter8.md)
+- [Chapter 9 - Design cost-effective tests](chapter9.md)
 
 ## Notes & Concepts
 - How do you define _dependency inversion_?

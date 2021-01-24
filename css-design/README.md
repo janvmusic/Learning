@@ -2,5 +2,5 @@
 Learning CSS from a good book
 
 ### Topics
-- [Chapter 1 - Basics](https://github.com/janvmusic/2020-learning/blob/master/css-design/chapter1.md)
-- [Chapter 2 - Pseudo Selectors & Elements ](https://github.com/janvmusic/2020-learning/blob/master/css-design/chapter2.md)
+- [Chapter 1 - Basics](chapter1.md)
+- [Chapter 2 - Pseudo Selectors & Elements ](chapter2.md)
