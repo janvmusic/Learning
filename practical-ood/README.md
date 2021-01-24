@@ -9,6 +9,7 @@
 - [Chapter 6 - Acquiring behavior through inheritance](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter6.md)
 - [Chapter 7 - Sharing role behavior with Modules](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter7.md)
 - [Chapter 8 - Combining objects with Composition](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter8.md)
+- [Chapter 9 - Design cost-effective tests](https://github.com/janvmusic/2020-learning/blob/master/practical-ood/chapter9.md)
 
 ## Notes & Concepts
 - How do you define _dependency inversion_?
