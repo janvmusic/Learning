@@ -25,3 +25,5 @@ Condensed knowledge for Swagger
 - [High Order Components](advanced-guides/high-order-components.md)
 - [JSX in Depth](advanced-guides/jsx-in-depth.md)
 
+### Notes
+- **Declarative**: Programming parading is a way of specifying what a program should do, rather than specifying how to do it.
