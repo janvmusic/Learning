@@ -14,7 +14,7 @@ end
 ```
 
 ## 2. Types of Associations
-- Rails supports 6 types of associations
+Rails supports 6 types of associations
   - belongs_to
   - has_one
   - has_many
@@ -95,7 +95,7 @@ physician.patients
 physician.patients = patients
 ```
 ### 2.5 has_one through
-- This association indicates that the declaring model can be matched with one instance of another model by `through` model
+This association indicates that the declaring model can be matched with one instance of another model by `through` model
 ![HasOneThrough](../img/has_one_through.png)
 
 ### 2.6 has_and_belongs_to_many
@@ -166,8 +166,6 @@ class CreatePictures < ActiveRecord::Migration[6.0]
   end
 end
 ```
-
-
 ![PolymorphicAssociation](../img/polymorphic_association.png)
 
 ### 2.10 Self joins
@@ -341,7 +339,7 @@ irb> a.first_name == b.writer.first_name
 - In DB language this creates a column which makes reference to another table
 - `1-to-1` or `1-to-Many`
 #### 4.1.1 Methods added by belongs_to
-- By declaring an association of this kind, your model wins 6 methods
+By declaring an association of this kind, your model wins 6 methods
 ```
   - association
   - association=(associate)
@@ -413,20 +411,19 @@ end
 ```
 
 ##### 4.1.2.7 :inverse_of
-- specifies the name of the `has_many` or `has_one` association that is the inverse of this association.
+specifies the name of the `has_many` or `has_one` association that is the inverse of this association.
 
-##### 4.1.2.8 Polymorphic
-- Passing `true` just enabled polymorphic associations
+##### 4.1.2.8 :polymorphic
+Passing `true` just enabled polymorphic associations
 
 ##### 4.1.2.9 :touch
-- If sets to `true` then associated objects will get updates on `updated_at` or `updated_on` whenever this object is saved or destroyed
+If set to `true` then associated objects will get updates on `updated_at` or `updated_on` whenever this object is saved or destroyed
 
-##### 4.1.2.10 validate
-- If set to `true` then associated objects will be validated before save this object.
-- By default is false
+##### 4.1.2.10 :validate
+If set to `true` then associated objects will be validated before save this object. By default is false
 
 ##### 4.1.2.11 :optional
-- The presence of the associated object wont be validated. By default `false` 
+The presence of the associated object wont be validated. By default `false` 
 
 #### 4.1.3 Scopes for belongs_to
 - Used to add customization to the query used by active record
@@ -438,18 +435,85 @@ end
 ```
 - You can use any standard query methods. such as:
   - where    => Standard where 
-  - includes => Specify second order associations
+  - includes => Specify second order associations (eager loaded)
   - readonly => Read only when loaded
   - select   => Ability to override select method
 
 #### 4.1.4 Do any associated objects exists?
-- You can check this with: `association.nil?`
+You can check this with: `association.nil?`
 ```ruby
 if @book.author.nil?
   @msg = "No author found for this book"
 end
 ```
 
+### 4.2 has_one association reference
+- Declares 1-to-1 associations
+- Just as `belongs_to` adds 6 methods to your model
+- This could be consider the counter part for `belongs_to`
+
+#### 4.2.2 Options for has_one
+These options behave the same as in `belongs_to`
+- :autosave
+- :class_name
+- :foreign_key
+- :inverse_of
+- :primary_key
+- :touch
+- :validate
+
+##### 4.2.2.1 :as
+This option will set the association as **polymorphic**
+
+##### 4.2.2.4 :dependent
+Controls what happens when the associated owner object is destroyed
+- `:destroy` => cascade effect
+- `:delete`  => DB delete without callbacks
+- `:nullify` => Callbacks are not executed and FK is set to null (orphans the record)
+- `:restrict_with_exception` => Raises an exception `DeleteRestrictionError` if there's an associated record
+- `:restrict_with_error`     => Causes an error if there's an associated record
+
+##### 4.2.2.8 :source
+This option specifies the source association name for `has_one :through`
+
+##### 4.2.2.9 :source_type
+Specifies the source type for `has_one :through` association that proceeds through a polymorphic association
+```ruby
+class Author < ApplicationRecord
+  has_one :book
+  has_one :hardback, through: :book, source: :format, source_type: "Hardback"
+  has_one :dust_jacket, through: :hardback
+end
+
+class Book < ApplicationRecord
+  belongs_to :format, polymorphic: true
+end
+
+class Paperback < ApplicationRecord; end
+
+class Hardback < ApplicationRecord
+  has_one :dust_jacket
+end
+
+class DustJacket < ApplicationRecord; end
+
+```
+
+##### 4.2.2.10 :through
+Specifies the join model through which to perform the query
+
+#### 4.2.5 When are objects saved?
+- Objects are automatically saved in order to update its foreign key
+- Any object being replaced will be saved because its FK is being replaced
+- If it fails to save then returns false and the assignment itself is cancelled
+- This relationship could be like this:
+```
+`has_one`    => Parent
+`belongs_to` => child
+```
+- If the parent is not **saved** then children objects are not saved. They will be saved once the parent it is
+
+### 4.3 has_many association reference
 # Notes:
 - **Reference consistency**: Does not validate `orphaned records`
 You can read more [here](https://database.guide/what-is-referential-integrity/)
