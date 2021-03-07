@@ -508,12 +508,229 @@ Specifies the join model through which to perform the query
 - If it fails to save then returns false and the assignment itself is cancelled
 - This relationship could be like this:
 ```
-`has_one`    => Parent
-`belongs_to` => child
+has_one    => Parent
+belongs_to => child
 ```
 - If the parent is not **saved** then children objects are not saved. They will be saved once the parent it is
 
 ### 4.3 has_many association reference
+- It will create a `1-to-many` association
+- In DB terms the other class with have a foreign key that refers to instances of this class
+
+#### 4.3.1 Methods added by has_many
+You gain 17 methods adding this association to your model
+
+##### 4.3.1.1 Collection
+Returns a relation of all the objects associated.
+
+```ruby
+@books = @author.books 
+```
+
+##### 4.3.1.2 collection<<(object, ...)
+Adds one or more objects to the relation
+```ruby
+@author.books << @new_book
+```
+
+##### 4.3.1.3 delete(object, ...)
+Removes one or more objects from the collection by setting foreign keys to `NULL`. This will also be affected by `:dependent` option
+```ruby
+@author.books.delete(@book1)
+```
+
+##### 4.3.1.4 collection.destroy(object, ...)
+Removes one or more objects from the collection by running `destroy` on each object
+
+```ruby
+@author.books.destroy(@book1)
+```
+
+##### 4.3.1.5 collection=(objects)
+Assignment of objects to a relationship (add & delete)
+
+##### 4.3.1.6 collection_singular_ids
+Returns the `ids` of the associated collection
+
+##### 4.3.1.7 collection_singular_ids=(objects)
+Sets the new primary keys for the object collection.
+
+##### 4.3.1.8 clear
+Removes the objects from the collection according to the strategy defined by the `dependent` option.
+
+- Default options
+```
+has_many :through => `delete_all`
+has_many          => FK to NULL
+```
+
+##### 4.3.1.9 collection.empty?
+Well self explanatory
+
+##### 4.3.1.10 collection.size
+Returns the size of the collection
+
+##### 4.3.1.11 collection.find
+Finds an element based on the position
+
+##### 4.3.1.12 collection.where
+Finds objects on the collection based on the conditions supplied. Objects are **lazy loaded**
+```ruby
+@available_books = @author.books.where(available: true) # No query yet
+@available_book = @available_books.first # Now the database will be queried
+```
+
+##### 4.3.1.13 collection.exists?(...)
+Well self explanatory
+
+##### 4.3.1.14 collection.build(attributes = {})
+It will create a new collection of the associated object based on an object or a block or objects.
+
+**NOTE**: The objects are not saved!
+```ruby
+@book = @author.books.build(published_at: Time.now,
+                            book_number: "A12345")
+
+@books = @author.books.build([
+  { published_at: Time.now, book_number: "A12346" },
+  { published_at: Time.now, book_number: "A12347" }
+])
+```
+##### 4.3.1.15 collection.create(attributes = {})
+Same as previous method but this time it will be created
+
+##### 4.3.1.16 collection.create!(attributes = {})
+Same as previous methods but it will raise an exception when the association can't be saved
+
+##### 4.3.1.17 collection.reload
+Will get the latests version of the association and will update cache
+
+#### 4.3.2 Options for has_many
+Following options are the same as before
+- :as          => Indicates polymorphic
+- :autosave
+- :class_name  => indicates the source of the relationship
+- :foreign_key => indicates the source of the FK
+- :inverse_of
+- :primary_key
+- :source      => Indicates the source of the polymorphic relationship
+- :source_type => here specifies the type of the `source`
+- :through
+- :validate
+
+##### 4.3.2.4 :counter_cache
+You will need this option if you configured this to `belongs_to`
+
+##### 4.3.2.5 :dependent
+Controls what happens when the associated owner object is destroyed
+- `:destroy`    => cascade effect
+- `:delete_all` => DB delete without callbacks
+- `:nullify`    => Callbacks are not executed and FK is set to null (orphans the record)
+- `:restrict_with_exception` => Raises an exception `DeleteRestrictionError` if there's an associated record
+- `:restrict_with_error`     => Causes an error if there's an associated record
+
+#### 4.3.3 Scopes for has_many
+You can use the following querying methods in the scope block for `has_many`
+- where    => `WHERE` clause
+- group    => `GROUP BY` clause
+- includes => Adds second order associations 
+```
+IF A -> B
+IF B -> C
+THEN A -> C
+```
+- limit    => Only include `n` number of rows in the result
+- offset   => skip the beginning point 
+- order    => `ORDER BY` clause
+- readonly => When associated objects are retrieved, they will be in `readonly` mode
+- select   => Let's you override the `SELECT` statement
+- distinct => Removes duplicates from collection.
+
+#### 4.3.4 When are objects saved?
+When you assign an object to `has_many` association, that object is automatically saved. 
+
+If it's a new object you need to explicitly call `save` to saver the association
+
+`build` does not save, while `create` does
+
+### 4.5 Association callbacks
+Normal callbacks are included in Active Record. However, these are available
+- before_add
+- after_add
+- before_remove
+- after_remove
+
+You can use these options/callbacks adding a call to a method
+```ruby
+class Author < ApplicationRecord
+  has_many: books, before_add: :check_credit_limit
+
+  def check_credit_limit
+    # TODO: implement
+  end
+end
+```
+ 
+You can also add several callbacks passing an array
+```ruby
+class Author < ApplicationRecord
+  has_many: books, before_add: [:check_credit_limit, :calculate_shipping_charges]
+
+  def check_credit_limit
+    # TODO: implement
+  end
+
+  def calculate_shipping_charges
+    # TODO: implement
+  end
+end
+```
+
+If `before_add` or `before_remove` throws `abort` then the add/remove won't get processed (add or remove)
+
+### 4.6 Association Extensions
+You can override proxy objects
+```ruby
+class Author < ApplicationRecord
+  has_many :books do
+    def find_by_book_prefix(book_number)
+      find_by(category_id: book_number[0..2])
+    end
+  end
+end
+```
+
+If you have an extension that needs to be shared by more than one model, you may create a **named extension module**
+```ruby
+module FindRecentExtension
+  def find_recent
+    where("created_at > ?", 5.days.ago)
+  end
+end
+
+class Author < ApplicationRecord
+  has_many :books, -> { extending FindRecentExtension }
+end
+
+class Supplier < ApplicationRecord
+  has_many :deliveries, -> { extending FindRecentExtension }
+end
+```
+
+## 5 Single Table Inheritance
+Sometimes you want to create a table with `types`. You can use this concept. Imagine `[Car, Bicycle, Motorcycle]`
+
+```ruby
+class Car < Vehicle
+end
+
+# Then
+Car.create(color: 'Red', price: 100000)
+
+# will generate
+INSERT INTO "vehicles" ("type", "color", "price") values ('Car', /'Red', 100000)
+```
+
 # Notes:
 - **Reference consistency**: Does not validate `orphaned records`
 You can read more [here](https://database.guide/what-is-referential-integrity/)
