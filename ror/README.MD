@@ -9,7 +9,7 @@ Ruby on Rails learning
   - [Scopes](query-interface/scopes.md)
   - [N+1 Problem](query-interface/n-plus-one.md)
 - [MVC](mvc)
-  - [Views](mvc/views)
+  - [Views](mvc/views.md)
 - [Procs vs Lambdas vs Blocks](blocks_procs_lambdas.md)
 
 ## Notes
