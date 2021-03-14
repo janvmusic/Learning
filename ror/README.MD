@@ -10,6 +10,7 @@ Ruby on Rails learning
   - [N+1 Problem](query-interface/n-plus-one.md)
 - [MVC](mvc)
   - [Views](mvc/views.md)
+  - [Controllers](mvc/controllers.md)
 - [Procs vs Lambdas vs Blocks](blocks_procs_lambdas.md)
 
 ## Notes
