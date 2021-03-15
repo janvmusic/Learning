@@ -3,12 +3,12 @@ This is a directory of things that I've been studying during 2020. I do not domi
 I'm proud of this :D!!!!
 
 ### Topics
-- [Javascript Grammar](js-grammar/README.MD)
-- [CSS Design](css-design/README.MD)
+- [Javascript Grammar](js-grammar)
+- [CSS Design](css-design)
 - [Graphql]()
-- [Swagger](swagger/README.MD)
-- [React](react/README.MD)
-- [Articles](articles/README.MD)
-- [Practical OOD](practical-ood/README.MD)
-- [Ruby on Rails](ror/README.MD)
-- [API](api/README.MD)
+- [Swagger](swagger)
+- [React](react)
+- [Articles](articles)
+- [Practical OOD](practical-ood)
+- [Ruby on Rails](ror)
+- [API](api)
