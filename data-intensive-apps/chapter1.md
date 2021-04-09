@@ -1,4 +1,4 @@
-## Chapter 1: Reliable, Scalable & Maintainable
+# Chapter 1: Reliable, Scalable & Maintainable
 <img src="img/diapps.png" width="300px">
 
 Today, many applications are **Data-Intensive**, as opposed to _compute-intensive_
@@ -52,7 +52,7 @@ Most of the critical faults can be discovered by actively testing. One great exa
 
 We prefer tolerating faults over preventing faults. _Preventions is better than cure_
 
-### Hardware faults
+## Hardware faults
 The first response in our heads its to add redundant systems to prevent failures in large data centers
 - RAID configurations
 - Diesel generators
@@ -66,7 +66,7 @@ With data intensive applications, we are **moving towards** using **software-fau
 One advantage is:
 - For a distributed system, you don't need to have planned downtime. You just disable one node
 
-### Software Errors
+## Software Errors
 We can assume that even hardware malfunctions happen, they are non-related
 
 Another fault type is **systematic error** something that might affect several nodes. These type of errors are harder to anticipate  
@@ -85,7 +85,7 @@ What you could do to mitigate this problem?
 - Measuring monitoring and analyzing system behavior in PROD
 - Health checks
 
-### Human Errors
+## Human Errors
 Humans are known to be unreliable. So how do we make systems for unreliable humans?
 - Design systems in a way that minimizes opportunities for errors
 - Decouple the places where people make the most mistakes from the places where they can cause failures
@@ -94,7 +94,7 @@ Humans are known to be unreliable. So how do we make systems for unreliable huma
 - Set up detailed and clear monitoring (telemetry)
 - Training on how to use
 
-### How important is reliability?
+## How important is reliability?
 A site which is not reliable loses credibility and money!
 Even tho there are moments where we may choose to sacrifice reliability in order to reduce development cost
 
@@ -105,20 +105,20 @@ Even tho there are moments where we may choose to sacrifice reliability in order
 
 **Scalability** => A systems ability to cope with increased load. It tries to answer the questions of "How we are going to cope with the growth or the additional load?"
 
-### Describing load
+## Describing load
 The first step is to define current load on the system; Then only we can discuss growth questions.
 
 Load is defined by _load parameters._ i.e. "X request per Y time"
 It's what **matters to the system**
 
-### Describing performance
+## Describing performance
 You can look at it in 2 ways:
 - When you increase a load parameter and keep the system resources unchanged. How is the performance of your system affected?
 - When you increase a load parameter, how much do you need to increase the resources if you want to keep the performance?
 
 **throughput** => The number of records we can process per second or the total time it takes to run a job a data set of a certain size. 
 
-### Latency and response time
+## Latency and response time
 **Response Time** => it's what the client sees.
 **Latency** => Duration that a request is waiting to be handled
 
@@ -145,7 +145,7 @@ During a parallel calls, customers depend on the slowest request, even in parall
 
 **tail latency amplification** => The chance of getting a slow call if we have multiple backend calls.
 
-### Approaches for Coping with Load
+## Approaches for Coping with Load
 **Vertical Scaling**   -> Moving to a more powerful machine
 **Horizontal Scaling** -> Moving to distributed machines
 
@@ -180,7 +180,7 @@ Design principles of software systems:
 2. **Simplicity** => Make it easy for new engineers to understand the system
 3. **Evolvability** => Make it easy to make a change. Also known as extensibility
 
-### Operability: Making life easy for operations
+## Operability: Making life easy for operations
 Good operations can often work around the limitations of a bad (or incomplete) software, but good **software cannot run reliably with bad operations**
 
 Good operations teams should look for:
@@ -227,7 +227,7 @@ _Abstraction_ => A way to hide a great deal of implementation detail behind a cl
 
 In the field of distributed systems, finding a good abstraction is a complex task.
 
-### Evolvability: Making change easy
+## Evolvability: Making change easy
 It's extreme unlikely that your system's requirements will remain unchanged forever.
 
 _Agile_ framework provides a way to deal with the constant change in software development
