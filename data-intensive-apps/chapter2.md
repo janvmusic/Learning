@@ -1,5 +1,5 @@
 # Chapter 2: Data Models and Query Languages
-<img src="img/ch2.png" width="300px">
+<img tag="chapter 2 map" src="img/ch2.png" width="300px">
 
 _The limit of my language mean the limits of my world._
 

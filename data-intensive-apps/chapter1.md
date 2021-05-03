@@ -1,5 +1,5 @@
 # Chapter 1: Reliable, Scalable & Maintainable
-<img src="img/diapps.png" width="300px">
+<img tag="chapter 1 map"src="img/ch1.png" width="300px">
 
 Today, many applications are **Data-Intensive**, as opposed to _compute-intensive_
 
