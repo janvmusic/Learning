@@ -232,5 +232,56 @@ Disks (ssd or magnetic) have 2 advantages:
 
 Disk writing is used for persistence (append-only log & backup) **reads are served from memory**
 
+## Transaction Processing or Analytics
+> ACID => Atomicity, Consistency, Isolation & Durability
 
+> Transaction processing != ACID
 
+_Transaction processing_ mean allowing clients to make low-latency reads and writes as opposed to _batch processing jobs_.
+
+> OLTP => Online Transaction Processing, records inserted or updated based on the user's input.
+> OLAP => Online Analytics Processing
+
+Data analytics is a different pattern than OLTP, their queries responds to: _how many_ or _total_ and they need to read an massive amount of data and _use_ aggregate functions
+
+> Business intelligence => processed data that helps businesses to take better decisions
+
+| Property | OLTP | OLAP |
+| :------------- | :----------: | -----------: |
+| Read | Small number of records per query, fetched by `key` | Aggregate over large number of records |
+| Write | Low latency writes (Random access) | Bulk import (ETL) or event stream  |
+| Used by | End user and customers | Internal Analysts |
+| What data represents | Latest state of data | History of events |
+| Data set size | GB to TB | TB to PB |
+
+SQL turned out to be pragmatic for OLTP and OLAP
+
+## Data Warehousing
+OLTP systems are usually expected to be highly available and to process transactions with low latency, since they are often critical for business.
+
+A _data warehouse_ is a separate copy db, read-only that does not affect OLTP operations. They get a copy of the OLTP db via ETL
+
+> ETL => Extract, transform, load
+
+## Divergence between OLTP dbs and data warehouses
+The data model used for data warehouse is _relational_, SQL works well with analytics
+
+> Common OLAP operations => Drill-down, slicing and dicing
+
+## Stars and snowflakes
+> Star schema or dimensional modeling => fact table + dimensions (events)
+
+> Dimension table => What, where, who, when, how and why of the event
+
+> Snowflake schema => Similar to star, but with sub dimensions
+
+Snowflake schemas are more normalized than star schemas. However, star schemas are preferred
+
+## Column oriented storage
+OLTP => **row** oriented (key)
+OLAP => **Column** oriented (aggregate values)
+
+The idea behind _column-oriented_ storage is simple: **don't store all the values from one row together, but store all the values from each column together instead.**
+
+## Column compression
+Column-oriented allows to compress data from a query
