@@ -284,4 +284,26 @@ OLAP => **Column** oriented (aggregate values)
 The idea behind _column-oriented_ storage is simple: **don't store all the values from one row together, but store all the values from each column together instead.**
 
 ## Column compression
-Column-oriented allows to compress data from a query
+Column-oriented allows to compress data from a query.
+
+Often the number of `distinct values` in a column is small compared to the number of rows.
+
+## Memory bandwidth and vectorized processing
+For data warehouse queries that need to scan over millions of rows, the bottle neck is the bandwidth for getting data from disk into memory
+
+## Sort order in column storage
+The DB administrator can chose based on what the table will be sorted (using his/her knowledge about common queries)
+
+## Writing to column-oriented storage
+Reads are fast, writes are a pain!
+
+B-trees are not so helpful but LSM-trees yes!
+
+## Aggregation: Data cubes and Materialized Views
+> Materialized view => a table-like object whose contents are the result of some query
+
+A _materialized view_ is different from a _virtual view._ Materialized views are the results of a query written to disk. Meanwhile _virtual view_ is just a shortcut to the query
+
+When the data change the _materialized view_ needs to be updated as well.
+
+> Data Cube/OLAP Cube: a grid of aggregates grouped by different dimensions 
