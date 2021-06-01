@@ -102,12 +102,12 @@ Thrift and Protocol Buffer rely on code generation: after a schema has been defi
 In dynamically typed programming languages (JS, Ruby, Python) there's not much point in generating code since they don't compile the code.
 
 ## The merits of schemas
-Protocol buffers, avro and thrift all of them relies on schemas to describe a binary encoding format.
+Protocol buffers, `avro` and thrift all of them relies on schemas to describe a binary encoding format.
 
 These schemas support validation and are simpler than XML or JSON schemas
 
 But what are the advantages of these _binary encoding_ options?
-- Compact than various bson
+- Compact than various `bson`
 - The schema is a valuable form of documentation. No _type_ surprises
 - Keeping a db of schemas allows you to check forward and backward compatibility
 - Code generation on statically typed programming.
@@ -120,5 +120,91 @@ Forward and backward compatibility are important for evolvability
 > Compatibility => its a relationship between one process that encodes the data, and another process that decodes it.
 
 ## Dataflow through databases
+When a process writes, the data is encoded
 
+When a process reads, the data is decoded
+
+If it's the same process to _write & read_ backwards compatibility is required.
+
+In general, there are several different processes accessing a db at the same time. 
+
+It's likely that  some processes accessing the db will be running new code and some will be running older code
+
+The db might be written by a _newer_ version of the code, and subsequently read by an _older_ version of the code that is still running (forward compatibility)
+
+> preservation of unknown fields -> Keep the records that I don't recognize intact.
+
+### Different values written at different times
+A database generally allows any value to be updated at any time.
+
+> Data outlives the code
+
+Rewriting (also known as _migrating_) data into a new schema is possible, tho, is an expensive task. Avoid if possible!
+
+Schema evolution thus allows the entire database to appear as if it was encoded with a single schema, but in fact it's built on historical changes
+
+## Dataflow through services: REST & RPC
+The most common way to communicate over a networks is: _client_ and _server_
+
+**Important:** Server exposes it's services (API)
+
+The API consists of a standardized set of protocols and data formats (HTTP, URLs, SSL/TLS, HTML, etc...)
+
+There are different clients over the web
+- Browsers
+- Native apps
+- Desktop computer
+
+Usually, the response is  typically not HTML for displaying to a human, but rather an encoding for further processing by the client-side app. 
+
+Clients and servers need to agree on transport protocols & details of that API
+
+Also remember, a server can be as well **consumer** of another server. This approach is used to decompose a large app into smaller services by area of functionality.
+
+Before it was defined as **SOA**, now refined and rebranded as _**microservices architecture**_ 
+
+**Services** expose an application-specific API that only allows inputs and outputs that are predetermined by the business logic. This restriction provides **encapsulation**: _services can impose fine-grained restrictions on what clients _can_ & _cannot_ do.
+
+**Important** A key design goal of a service-oriented/microservices architecture is to make the application easier to change and maintain by making services independently deployable and evolvable.
+
+In architectures like this, we need to **coordinate / expect** old and new `[code|servers|services]` to live together **without having to coordinate**
+
+### Web Services
+> web service => When HTTP is used as the underlying protocol for talking to the service
+
+The main options for a web service are:
+- REST
+- SOAP
+
+**REST** is not a protocol, but **rather a design philosophy** tied to the principles of HTTP. An API designed according to the principles of REST is called _RESTful_
+
+**SOAP** is an XML-based protocol for making network API request, it aims to be **independent from HTTP** and avoids using most HTTP features.
+
+SOAP & XML defines its schema using WSDL. _Web services description language_
+
+SOAP is used by large applications, however its not so welcoming for small companies. This is where REST is winning
+
+Swagger can be used to describe RESTful APIs and produce documentation.
+
+### The problem with Remote Procedure Calls (RPC)
+> Location transparency => RPC tries to call a method or function over the network and make it look as if it's in the same program
+
+What are the main flaws over RPC?
+- A network call is unpredictable, meanwhile a local function call is under control (pass or fail)
+- A local function allays returns: `[result|void|throws an error]`, meanwhile a network call might return without a result due a _timeout_.
+- The actual response might be incorrect, you might get an error but due network, **just the result got lost**
+- A local function is **predictable** in process time. Meanwhile a network call is **wildly variable**.
+- You need to **pass serialized data** when using a network call.
+- With RPC we might get problems due different languages
+
+**Important** So in conclusion, **Local function calls** & **remote procedure calls** are **fundamentally different**
+
+### Current directions for RPC
+> **futures/promises** => Used to encapsulate actions that might fail. Also allows you to simplify _joins_ from different services.
+
+> **Service discovery** => allowing a client to find out at which IP address and port number it can find a particular service.
+
+RPC frameworks are used on requests between services owned by the same organization, typically within the same data center. That's it's strength.
+
+### Data encoding and evolution for RPC
 
