@@ -207,4 +207,55 @@ What are the main flaws over RPC?
 RPC frameworks are used on requests between services owned by the same organization, typically within the same data center. That's it's strength.
 
 ### Data encoding and evolution for RPC
+For evolvability, it is important that RPC clients and servers can be changed and deployed independently.
+
+It's expected that **servers** get the update **first**, then clients, thus...
+- Backward compatibility on request
+- Forward compatibility on responses
+
+**Important**: In RPC, there's **no way to force a client to upgrade**, that's why we need to **keep compatibility all the time**.
+
+### Message-Passing Dataflow
+> REST => Usage of request/responses over HTTP
+
+> RPC => One process sends a request over the network, other process waits for the response as fast as possible
+
+> Database => One process writes encoded data, and another process reads it again sometime in the future
+
+Another dataflow type is: `Async message-passing` which is the middle point between RPC and dbs
+
+**Async message-passing** is similar to:
+- RPC because is a message over the network, the message is sent to a low latency process
+- DBs because a `message broker` will pick-up this message in the future.
+
+Using a **message broker** has several advantages compared with RPC
+- _Improves system reliability_: it acts as a buffer if the recipient is unavailable or overloaded.
+- _Redeliver messages_: If a recipient crashes, it can redeliver the message asap
+- _No need of port and IP_
+- _One message can be send to several recipients_
+- _Decouples the sender from the recipient_
+
+A main different between `RPC` and `Async message-passing` is that communication usually is **one-way**
+
+> Asynchronous: the sender does not wait for the message to be delivered. _Send and forget_
+
+### Message brokers
+> Message brokers => one process sends a message to a named queue or topic. The broker ensures that the message is deliver to one or more _consumer_ or _subscriber_
+
+> Message consumer => as the name indicates, will take the message and consume it
+
+There can be many producers and consumers on the same topic. It's possible to chain producers consumers.
+
+Message brokers typically don't enforce any particular data model.
+
+Remember to keep messages as they are, preserve unknown fields.
+
+### Distributed actor frameworks.
+> Actor model => is a programming model for concurrency in a single process. No need to deal with race conditions, locking and deadlocks
+
+Logic is encapsulated in `actors`. Each `actor` represents one client or entity, it may contain some local state and it communicates to another actor via async messages.
+
+A problem with this approach is that _message delivery_ is not guaranteed.
+
+An actor processes only one message at a time.
 
