@@ -163,7 +163,7 @@ Also remember, a server can be as well **consumer** of another server. This appr
 
 Before it was defined as **SOA**, now refined and rebranded as _**microservices architecture**_ 
 
-**Services** expose an application-specific API that only allows inputs and outputs that are predetermined by the business logic. This restriction provides **encapsulation**: _services can impose fine-grained restrictions on what clients _can_ & _cannot_ do.
+**Services** expose an application-specific API that only allows inputs and outputs that are predetermined by the business logic. This restriction provides **encapsulation**: services can impose fine-grained restrictions on what clients _can_ & _cannot_ do.
 
 **Important** A key design goal of a service-oriented/microservices architecture is to make the application easier to change and maintain by making services independently deployable and evolvable.
 
@@ -258,4 +258,26 @@ Logic is encapsulated in `actors`. Each `actor` represents one client or entity,
 A problem with this approach is that _message delivery_ is not guaranteed.
 
 An actor processes only one message at a time.
+
+This programming model is used to scale an application across multiple nodes.
+
+The same message mechanism is used no matter if the actor is in the **same node** or **another node**
+
+Location transparency works better in the actor model than in RPC, because the actor model already assumes that messages may be lost, even within a single process
+
+A distributed actor framework essentially integrates a message broker and the actor programming model into a single framework.
+
+## Summary
+1. Many services need to support rolling upgrades, where a new version of a service is gradually deployed to a few nodes at at time. This will give you **no downtime**
+
+2. Backward compatibility -> new code can read old data
+
+3. Forward compatibility -> old code can read new data
+
+4. Several encoding formats: XML, JSON, CSV
+
+5. Data flows
+  - Databases -> The same process writes and then reads in the future
+  - RPC & REST APIs -> where a client encodes a request, the server decodes it and encodes a response.
+  - Async message passing -> (message brokers or actors) where nodes communicate by sending each other messages that encoded by the sender and decoded by the recipient.
 

@@ -151,7 +151,7 @@ An additional complication is _concurrency control_ this is typically done via `
 1. Instead of using WAL, some dbs creates a new page and then swap it
 2. Abbreviate keys, which means packing more keys into a page (Higher branching factor and fewer levels)
 3. Pages ordered in a sequential order.
-4. Use of _fractal trees
+4. Use of _fractal trees_
 5. Additional pointers
 
 ## Comparing B-trees and LSM-Trees
