@@ -6,5 +6,6 @@ Data-intensive apps: Data is its primary challenge - quantity of data, the compl
 2. [Data models & Query languages](chapter2.md)
 3. [Storage and retrieval](chapter3.md)
 4. [Encoding and evolution](chapter4.md)
+4. [Replication](chapter5.md)
 
 ## Notes & Concepts
