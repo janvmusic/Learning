@@ -10,3 +10,7 @@
 ### Behavioral
 - [Thought on promises](thoughts-on-promises.md)
 - [How to Ruin Your Career in 8 Easy Steps](how-to-ruin-your-career.md)
+
+### React
+- [Class components vs Functional Components](class-component-vs-functional-components.md)
+- [A quick guide to understanding React Hooks](quick-guide-react-hooks.md)
