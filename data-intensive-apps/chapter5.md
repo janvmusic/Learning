@@ -208,3 +208,73 @@ The same data may be concurrently modified in two different datacenters, and tho
 
 The consistency between autoincrementing keys, triggers and integrity constraints can be problematic. 
 
+#### Clients with offline operation
+Another situation that requires multi-leader replication is where you need your app to continue to work even when offline.
+
+An example of this would be your calendar. It needs to keep a track of your meetings even offline. In this case every device acts as a leader and they act as their own leader(accepts writes) & updates other devices(replication).
+
+The replication lag might be hours or days depends on your network. Basically, each device is a "datacenter" 
+
+#### Collaborative editing
+When one user edits a document, the changes are instantly applied to their local replica(the state of the document in their web browser or client application) and asynchronously replicated to the server and any other users who are editing the same document
+
+
+If you want to guarantee no conflicts while editing, then you will need to lock the section of the document before it can edit it.
+
+It would look like this _single leader replication with transactions on the leader_
+> ask for edit -> lock -> commit the text -> other user can edit 
+
+### Handling Write Conflicts
+The most complex problem with multi-leader replication is that write conflicts can occur, which means that conflict resolution is required. 
+
+**Wiki example: Two users change the title of a page**
+> First user changes the title from  { Title: a -> b }
+> Second user changes the title from { Title: a -> c }
+> There's a conflict!
+
+#### Synchronous vs asynchronous conflict detection
+In a _single-leader database_, the second writer will either block and wait for the first write to complete, or abort the second write transaction.
+
+Meanwhile, on a _multi-leader setup_ both writes are successful, and the conflict is detected asynchronously in the future.
+
+If you want synchronous conflict detection, then use _single-leader_ don't lose the main advantage of the _multi-leader_ replication setup
+
+#### Conflict avoidance
+The simplest strategy for dealing with conflicts is to avoid them. If the application can ensure that all writes for a particular record go through the same leader, then conflicts cannot occur!
+
+#### Converging toward a consistent state
+A single-leader database applies writes in a sequential order. In a multi-leader configuration there's no way to determine which write will be the final result.
+
+If each replica simply applied writes in the order that it saw the writes, the final result between them would be inconsistent. Every replication system must ensure that the data is eventually the same in all replicas.
+
+The database must resolve the conflict in a _convergent_ way
+
+> Convergent => All replicas must arrive at the same final value when all changes have been applied.
+
+**How?** There are options for this issue:
+1. Give each write a unique ID (i.e. a timestamp, a long random number, UUID, or a has of the key and value)If a unique ID is provided remember that _Last write wins_. This approach is prone to data loss
+2. Give each replica a unique ID, and let writes that originated at a higher-number always take precedence. This is also prone to data loss
+3. Somehow merge the values together
+4. Save the conflict in a data structure and perhaps ask the user for input.
+
+#### Custom conflict resolution logic
+Most multi-leader apps let you write code that will help the system handle the conflict. This could be _on read_ or _on write_
+
+### Multi-leader replication topologies
+> Replication topology => describes the communication path along which writes are propagated from one node to another
+
+The most common topology is _All-to-All_ which every leader sends its writes to every other leader.
+
+The _star topology_ means that one node is in charge to _forward_ writes to other nodes
+
+The _circular topology_ in each node receives writes from one node and forwards those writes.
+
+<img tag="chapter 5 replication topology" src="img/ch5-topology.png" width="300px">
+
+In star / circular topologies to prevent infinite replication loop, each node is given a unique identifier, and in the replication log each write is _tagged_ with the identifiers that has gone through
+
+If it was already processed, then ignore it. However, if a node fails can interrupt the replication flow.
+
+**Important** The fault tolerance of a more densely connected topology is better because allows messages to travel along different paths, avoiding a single point of failure.
+
+However, _all-to-all_ replication might have problems too, such an write depends on another write that hasn't arrived yet. This could be due to slower network between replicas.
