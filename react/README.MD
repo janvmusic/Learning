@@ -1,6 +1,6 @@
-## Swagger IO 
+## React
 
-Condensed knowledge for Swagger
+Condensed knowledge for React
 
 ## Table of Contents
 ### Main Concepts

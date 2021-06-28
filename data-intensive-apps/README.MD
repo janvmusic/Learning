@@ -1,4 +1,4 @@
-## Swagger IO 
+## Data Intensive Applications
 Data-intensive apps: Data is its primary challenge - quantity of data, the complexity of the data, or the speed at which it is changing. 
 
 ## Table of Contents

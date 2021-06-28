@@ -269,15 +269,12 @@ A distributed actor framework essentially integrates a message broker and the ac
 
 ## Summary
 1. Many services need to support rolling upgrades, where a new version of a service is gradually deployed to a few nodes at at time. This will give you **no downtime**
-
 2. Backward compatibility -> new code can read old data
-
 3. Forward compatibility -> old code can read new data
-
 4. Several encoding formats: XML, JSON, CSV
 
 5. Data flows
-  - Databases -> The same process writes and then reads in the future
-  - RPC & REST APIs -> where a client encodes a request, the server decodes it and encodes a response.
-  - Async message passing -> (message brokers or actors) where nodes communicate by sending each other messages that encoded by the sender and decoded by the recipient.
+    - Databases -> The same process writes and then reads in the future
+    - RPC & REST APIs -> where a client encodes a request, the server decodes it and encodes a response.
+    - Async message passing -> (message brokers or actors) where nodes communicate by sending each other messages that encoded by the sender and decoded by the recipient.
 
