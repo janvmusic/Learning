@@ -278,3 +278,214 @@ If it was already processed, then ignore it. However, if a node fails can interr
 **Important** The fault tolerance of a more densely connected topology is better because allows messages to travel along different paths, avoiding a single point of failure.
 
 However, _all-to-all_ replication might have problems too, such an write depends on another write that hasn't arrived yet. This could be due to slower network between replicas.
+
+## Leaderless Replication
+Some data storages systems take a different approach, abandoning the concept of a leader and allowing any replica to directly accept writes from clients.
+
+In this type of implementation, the client directly sends its writes to several replicas. In some other implementations, a coordinator node does this on behalf of the client.
+
+The coordinator does not enforce a particular order in writes.
+
+#### Writing to the database when a node is down
+**failover** configuration does not exists in a leaderless configuration. 
+
+In this type of replication system/architecture, the client sends the write to (i/e) 3 nodes, then 2 nodes respond as `success` but one node is down. 
+
+As consensus, the write is accepted. However if a client reads from the node that just got back it will read a _stale_ version of the code
+
+> stale => outdated
+
+To solve this problem _read requests are also sent to several nodes in parallel_ and evaluate the response based on `Version Numbers`
+
+#### Read repair and anti-entropy
+The replication system ensure that eventually all the data is copied to every replica. In dynamo-style datastores there are 2 ways to ensure this:
+
+**Read repair*** => When a client finds a _stale_ response, it will update the _stale_ replica with latest version. This approach is good for `frequently read` systems
+
+**Anti-entropy process** => background process that constantly looks for differences in the data between replicas
+
+In systems without `anti-entropy` values that are rarely reads, they don't get updated so often. This reduces durability.
+
+#### Quorums for reading and writing
+What happens if only one of the replicas accepted the write? How far can we push this?
+
+**Formula**: 
+```
+r => read nodes
+w => writes confirmed
+n => number of replicas
+
+w + r > n
+# As long as this condition above is accomplish we expect to get an up-to-date value when reading
+
+w +r => the minimum number of votes required for a read or write to be valid. This is called quorum
+```
+
+The quorum condition `w + r > n` allows the system to tolerate unavailable nodes as follows
+
+- if `w < n` then we can still process writes if a node is unavailable
+- if `r < n` thus we can still process reads if a node is unavailable
+- Reads and writes are always sent to all `n` replicas in parallel. The parameters `w` and `r` determine how many nodes we wait for.
+
+**TL;DR** If `w + r > n` at least one of the `r` replicas you read from must have seen the most recent successful write.
+
+If fewer than required _w_ or _r_ nodes are available, writes or reads return an error.
+
+On this situations the only value or matter expected is if the **node returned a successful response** and don't need to distinguish between different kinds of faults
+
+**Remember** even with `w + r > n` there are edge cases where stale values are returned.
+
+**Why this could happen?**
+- Sloppy quorums => The `w` writes may end up on different nodes than the `r`
+- If two writes occur concurrently and it is not clear which one happened first.
+- If a write happens concurrently with a read, the write may be reflected on only some of the replicas.
+- If a write succeeded on some replicas but failed on others, and overall succeeded on fewer than `w` replicas, it is not rolled back on replicas where it succeeded 
+- If a node carrying a new value fails, and its data is restored from a replica carrying an old value.
+
+Dynamo-style databases are generally optimized for use cases that can tolerate eventual consistency. 
+
+Stronger guarantees generally require transactions or consensus.
+
+#### Monitoring staleness
+Even if your application can tolerate stale reads, you need to be aware of the health of your replication. If it falls behind significantly, it should alert you so that you can investigate the cause
+
+For leader-base replication systems, some dbs already expose _replication lag_
+
+For leaderless replication system, writes don't have a particular order, which makes monitoring difficult
+
+Eventual consistency is a deliberately vague guarantee, but for operability its important to be able to quantify "eventual"
+
+#### Sloppy Quorums and hinted handoff
+Databases with appropriately configured quorums can tolerate the failure of individual nodes without the need for failover.
+
+They can also tolerate individual nodes going slow, because requests don't have to wait for all `n` nodes to response. They can return when `w` or `r` nodes have responded.
+
+leaderless replication is quite appealing for _high availability_, _low latency_ & can tolerate occasional stale reads.
+
+**quorums** (as described so far) are not fault-tolerant as they could be.
+
+In large clusters, it's likely that clients can connect to some... database nodes during a network interruption, just not the nodes that needs to assemble a quorum. Then database designers face a trade-off
+- Is it better to return errors when no quorum?
+- Or we should accept writes anyway? This would mean to write on reachable nodes that could potentially mean the value could reside in another node. This is know as Sloppy quorum
+
+> Sloppy quorum => writes and reads still require w & r successful responses, but those may includes nodes that are not among the designated n "home" nodes for a value
+
+> Hinted handoff => Once the network interruption is fixed, writes that one node temporarily accepted on behalf of another node are sent to the appropriate "home" node.
+
+Sloppy quorums are particularly useful for increasing write availability, as long as _any w_ node is available, the db can accept writes.
+
+A sloppy quorum is only an assurance of durability, namely that the data is stored on `w` nodes somewhere.
+
+#### Multi-datacenter operation
+leaderless replication is also suitable for multi-datacenter operation, since it is designed to tolerate conflicting concurrent writes, network interruptions & latency spikes
+
+### Detecting concurrent writes
+Dynamo-style dbs allow several clients to concurrently write to the same key, that would mean _Conflicts will occur even if strict quorums are used_
+
+The problem is that in this type of architecture, events may arrive in a different order at different nodes, due to variable network delays and partial failures
+
+In order to become eventually consistent, the replicas should converge toward the same value. How do they do that?
+
+#### Last write wins (discarding concurrent writes)
+One approach for achieving eventual convergence is to declare that each replica need only store the most "recent" value and allow "older" values to be discarded.
+
+This will work if we have a way to determine which value is the most "recent", eventually all replicas will converge.
+
+"Recent" is ambiguous how we determine which write occurred first? We say the writes are concurrent, so their order is undefined
+
+> LWW => last write wins
+
+We can attach a **timestamp** to writes and accept that **LWW** will be the conflict resolution. 
+
+LWW achieves the goal of eventual convergence, but at the cost of **durability**
+
+**Remember** LWW is only a good choice if loosing data is acceptable.
+
+The only safe way of using a db with LWW is to ensure that a key is only written once and thereafter treated as immutable, thus avoiding any concurrent updates to the same key.
+
+#### The happens-before" relationship and concurrency
+How do we decide whether two operations are concurrent or not?
+_An operation "A" that happens before another operation "B" knows about "A", or depends on "A", or builds upon "A" in someway_
+
+Whether one operation happens before another operation is the key to defining what **concurrency** means
+
+> Concurrent operations => If neither happens before the other (neither knows about the other). Operations that are unaware of each other
+
+If one operation happened before another, the later operation should overwrite the earlier operation, but if the operations are concurrent, we have a conflict that needs to be resolved.
+
+#### Capturing the happens-before relationship
+A server can determine whether two operations are concurrent by looking at the version numbers, it does not need to interpret the value itself.
+
+1. The server maintains a version number for every key, increments the version number every time that key is written, and stores the new version number along with the value written
+
+2. When a client reads a key, the server returns all the values that have not been overwritten, as well as the latest version number. A client must read a key before writing
+
+3. When a client writes a key, it must include the version number from the prior read, and it must merge together all the values that it received in the prior read.
+
+4. When the server receives a write with a particular version number, it can overwrite all values with that version number or below but it must keep all the values with a higher version number (concurrent with incoming write)
+
+
+#### Merge concurrently written values
+This algorithm ensures that no data is silently dropped, but unfortunately requires that the clients do some extra work: _If several operations happen concurrently, clients have to clean up afterward by merging the concurrently written values_
+
+A reasonable approach to merge siblings is to just take the **union** of the elements (only for adds, for deletes this could lead to problems)
+
+For deletion, use tombstones
+
+> tombstone => Leave a mark on the item, so system knows that it was removed.
+
+This process is prune to errors and bugs.
+
+#### Version vectors
+With leaderless replication, we need _version number per replica_
+
+Each replica increments its own version number when processing a write, and also keeps track of the version numbers it has seen from each of the other replicas.
+
+This information indicates which values to overwrite and which values to keep as siblings
+
+> version vector => collection of the version numbers from all the replicas
+
+Version vectors are sent from the db replicas to clients when values are read, and need to be sent back to the db when a value is subsequently written.
+
+**Important** The version vector allows the db to distinguish from overwrites and concurrent writes. The version vector structure ensures that it is safe to read from one replica and subsequently write back to another replica.
+
+## Summary
+> High availability => Keep the system running, even when one machine (or several) goes down
+
+> Disconnected operation => Allowing an application to continue working when there's a network interruption
+
+> Latency => Placing data geographically close to the users, so that users can interact with it faster
+
+> Scalability => Being able to handle a higher volume of reads that a single machine could handle, by performing reads on replicas
+
+> Replication goal => Keeping a copy of the same data on several machines
+
+Replication is a complex problem, at minimum we need to deal with unavailable nodes and network interruptions
+
+> Single-leader => Client sends all the writes to a single node(leader). which sends a stream of data change events to the other replicas(followers). Reads can be from any replica but reads from followers might be stale
+
+> Multi-leader => Clients send each write to one of several leader nodes, any of which can accept writes. The leaders sends streams of data change events to each other and to any follower nodes.
+
+> Leaderless => Client sends each write to several nodes, and read from several nodes in parallel in order to detect and correct nodes with stale data.
+
+Each type of replication has trade-offs
+1. Single-Leader:
+    - Easy & popular
+    - No conflict resolution
+
+2. Multi-leader & leaderless
+    - Robust in the presence of faulty nodes, network interruptions & latency spikes
+    - Harder to reason about
+    - Very weak consistency guarantees
+
+Replication can be **Synchronous** or **Asynchronous**
+
+> Asynchronous => Fast when system is running smoothly. But think through when replication lag increases and servers fail. If leader fails promote a follower. Recently committed data might be lost
+
+Consistency models against replication lag
+
+> Read after write consistency => Users should always see data they submitted themselves
+
+> Monotonic reads => After a users have seen data at one point in time, they shouldn't see the data from some earlier point in time
+
+> Consistent prefix reads => Users should see data that makes causal sense. (Order of causality)
