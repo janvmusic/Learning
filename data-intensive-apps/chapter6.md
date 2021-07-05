@@ -28,7 +28,7 @@ This helps with fault tolerance.
 
 **Important** A node may store more than one partition
 
-<img tag="Replication + Partitioning" src="img/repl-part.png" width="300px">
+<img tag="Replication + Partitioning" src="img/ch6-repl-part.png" width="300px">
 
 ## Partitioning of Key-Value Data
 How do you decide which records to store on which nodes?
@@ -104,7 +104,7 @@ For partitioning, secondary indexes represent **an extra complexity**. The probl
 ### Partitioning Secondary Indexes by Document
 If you have declared a secondary index, and you want to insert an element to the DB you can perform the indexing automatically. (Red car example)
 
-<img tag="Document indexing" src="img/document-index.png" width="300px">
+<img tag="Document indexing" src="img/ch6-document-index.png" width="300px">
 
 In this indexing approach each partition will have **it's own secondary indexes**.
 
@@ -170,7 +170,7 @@ If a node is added to the cluster, new node can steal a few partitions from ever
 
 If the node is removed, then the process is inverted.
 
-<img tag="Partition Balancing" src="img/balancing.png" width="300px">
+<img tag="Partition Balancing" src="img/ch6-balancing.png" width="300px">
 
 **Important** Only entire partitions are moved between nodes. The number of partitions does not change, nor does the assignment of the keys to partitions.
 
@@ -201,3 +201,72 @@ As a caveat is that an empty db starts with a **single partition** so then it cr
 With dynamic partitioning, the number of partitions is proportional to the size of the dataset (min-max)
 
 With a fixed number of partitions the size of each partition is proportional to the size of the dataset.
+
+A third option is to make the number of partitions proportional to the number of nodes, in other words, to have a fixed number of partitions _per node_
+
+In this case the size of the partition grows proportionally to the dataset size while the number of nodes remains unchanged, but when you increase the number of nodes, the partitions become smaller again.
+
+### Operations: Automatic or Manual Rebalancing
+Does the rebalancing happens manually or automatically?
+
+There's a gradient between full automatic rebalancing to manual rebalancing
+
+Fully automated rebalancing can be convenient, because there's less operational work to do for normal maintenance.
+
+However, it can be unpredictable.
+
+> Rebalancing => Expensive operation, requires rerouting requests and moving a large amount of data from one node to another.
+
+If rebalancing is not done carefully, it can overload the network or the nodes and harm the performance. It's good to have a human in the loop to prevent operational surprises
+
+## Request Routing
+When a client wants to make a request, how does it know which node to connect to?
+
+As partitions are rebalanced, the assignment of partitions to nodes changes. To solve this problem you can use _service-discovery_ approach
+
+1. Allow clients to contact any node (e.g via round-robin load balancer). If the node can handle the request, it will take it, otherwise it will forward it, then will forward the answer to the client.
+
+2. Partition-aware balancer, acts as a router but does not process the request by itself
+
+3. Clients aware to the node they want to access.
+
+<img tag="chapter 6 map" src="img/ch6-disco.png" width="300px">
+
+How does the component making the routing decision learn about the changes in the assignment of partitions to nodes?
+
+There a third actor (such as ZooKeeper) which maintains the authoritative mapping of partitions to nodes. 
+- Each node registers to ZooKeeper.
+- Each client subscribes to ZooKeeper.
+
+Zookeeper notifies of any change in the routing.
+
+> Gossip Protocol => Requests can be sent to any node, and that node forwards them to appropriate node for the request partition.
+
+Another option is **_gossip protocol_** among the nodes to disseminate any changes in the cluster state
+
+### Parallel query execution
+> MPP => Massive parallel processing
+
+MPP is often used by analytics and are more sophisticated in the types of queries they support
+
+The MPP query optimizer breaks complexity of filtering, grouping, and aggregation operations into a number of execution stages and partitions, many of them can be executed in parallel within the nodes.
+
+## Summary
+
+### Partitioning
+- **Partitioning** => Dive large data sets into smaller subsets
+- Partitioning is necessary when you so much data that storing and processing on a single machine is no longer feasible
+- The goal of partitioning is to spread the data and query load evenly across multiple machines
+- Also avoid hot spots!
+- **Hot Spot** => Nodes with disproportionately high load
+
+### Keys
+- **Key range partitioning** => where keys are sorted and partitions owns a _range_ of the keys. In this approach we could have _hot spots_, good _range queries_ & requires _dynamical rebalancing_
+- **Hash partitioning** => Where the hash is applied to the key, and each partition owns a range of hashes. You loose _range queries_ but distributed more evenly. Its common to use _fixed number of partitions in advance. Dynamic partitioning can be used as well
+- **Compound key** => Using one part of the key to identify the partition and another part for the sort order.
+
+### Secondary Indexes
+- **Document-partitioned indexes(local indexes)** => Where the secondary indexes are stored in the same partition. Only the affected partition needs to be updated when a write happens, and for reads we would need a join (scatter/gather)
+- **Term-partitioned indexes(global indexes)** => Where secondary indexes are partitioned separately, using the indexed values. When a write happens the global index needs to be updated along with replicas but you can read from one point.
+
+By design, every partition operates mostly independently, that's what allows a partitioned db to scale to multiple machines.

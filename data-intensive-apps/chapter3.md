@@ -104,7 +104,7 @@ For this situation, DBs uses a `Bloom Filter` to know if an element exists or no
 
 > [More info](https://www.youtube.com/watch?v=gBygn3cVP80)
 
-> <img tag="bloom filter" src="img/bloom_filter.png" width="300px">
+> <img tag="bloom filter" src="img/ch3-bloom_filter.png" width="300px">
 
 Strategies to determine the order and timing of how SSTables are compacted and merged:
   1. Size-tiered => Newer and smaller SSTables are merged into the older and larger tables
