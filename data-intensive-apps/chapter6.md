@@ -1,4 +1,4 @@
-# Chapter 5: Partitioning
+# Chapter 6: Partitioning
 <img tag="chapter 6 map" src="img/ch6.png" width="300px">
 
 _Clearly, we must break away from the sequential and not limit computers. We must state definitions and provide for priorities and descriptions of the data._
