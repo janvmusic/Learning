@@ -132,7 +132,7 @@ Add key? Find the range, add the new element. If page is full, then split & upda
 Update key? Find it & update it
 
 Example:
-<img tag="b-tree example" src="img/b-tree.png" width="300px">
+<img tag="b-tree example" src="img/ch3-b-tree.png" width="300px">
 
 **Important** The algorithm must ensure that the tree remains balanced.
 

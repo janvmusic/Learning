@@ -194,7 +194,7 @@ With a leader in each datacenter, the replication happens like:
 3. Updates other leaders
 4. Resolve conflicts
 
-<img tag="Multi leader architecture" src="img/multi-leader.png" width="300px">
+<img tag="Multi leader architecture" src="img/ch-5-multi-leader.png" width="300px">
 
 #### Advantages
 Performance => Removes latency because the "local" datacenter processes the write and then proceeds the replication
