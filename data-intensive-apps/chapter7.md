@@ -367,6 +367,88 @@ Instead, the app must submit the entire transaction code to the db ahead of time
 - Pro: Today, most of DBs have abandoned PL/SQL
 - Pro: With `in-memory` data and stored procedures, you don't need for I/O 
 
+Now it's possible to execute the same stored procedure on each replica but the final result must be _deterministic_.
+
+> Deterministic => An operation must return the same result even when executed in a different node or environment.
+
+#### Partitioning
+Executing all transactions serially makes concurrency control much simpler, but limits the transaction throughput of the database to the speed of a single CPU core on a single machine
+
+Read-only transaction can be executed elsewhere, using snapshot isolation. For apps with high write throughput, the single transaction processor can become a serious bottleneck
+
+An alternative to this, is to partition data, so read/write only goes to one partition, and you scale to:
+- One partition -> One CPU
+
+A downside of this, is that any transaction that needs to write/read from more than one partition, the db must coordinate. 
+
+This means that the stored procedure need to be performed in lockstep across all partitions & across the whole system
+
+In conclusion, to implement `Serial Execution` + `Partitioning` it will depend on how distributable your data can be.
+
+#### Summary of serial execution
+Serial Execution has become a viable way of achieving serializable isolation within certain constraints
+- Each transaction must be small and fast.
+- It's limited to datasets that can fit `in-memory`
+- Write throughput must be low, in order to be handled by a **single cpu**
+- Cross-partition transactions are possible, but there's a hard limit to which they can be used.
+
+### Two-Phase locking (2PL)
+**Locks** are often used to prevent dirty writes. **2PL** is similar to locks, but requirements are stronger.
+
+Several transactions are allowed to read the same object, as long as nobody is writing to it. As soon as anyone wants to write an object, exclusive access is required
+- If `T(A)` has read an object, thus `T(B)` must wait until `T(A)` commits or aborts.
+- If `T(A)` has written an object, thus `T(B)` must wait even for read.
+
+In 2PL, writers don't just block other writes, they also block readers and vice versa.
+
+2PL protects against all the race conditions discussed earlier, including lost updates and write skew.
+
+#### Implementing 2PL
+The blocking of readers and writers is implemented by having a lock on each object in the db. There are 2 types of locks:
+- Shared mode
+- Exclusive mode
+
+1. To **read** an object, it must first acquire the lock in shared mode. Several transactions are allowed to hold the lock in shared mode simultaneously. If another transaction has a **exclusive lock** then these transactions must wait.
+
+2. To **write** an object, it must first acquire a **exclusive lock** No other transaction may hold a lock in the same object, at the same time. Any other transaction must wait.
+
+3. Shared mode **can be upgraded** to exclusive lock
+
+4. After a transaction has acquired the lock , it must continue to hold the lock until the end of the transaction.
+
+> deadlock => Since so many locks are in use, it can happen quite easily that `T(A)` waits for `T(B)` & `T(B)` waits for `T(A)`. 
+
+DBs automatically detects a _deadlock_ and aborts one of the transactions stuck.
+
+#### Performance of 2PL
+The big downside of two-phase locking is **performance**. This is partially due to the overhead of acquiring and releasing all those locks, but more importantly due to reduced concurrency.
+
+Traditional relational dbs don't limit the duration of a transaction, because they are designed for interactive applications that wait for human input.
+
+2PL can have quite unstable latencies, and they can be very slow at high percentiles.
+
+Also, if deadlocks are frequent, this can mean significant wasted effort (on retry transactions)
+
+#### Predicate deadlocks
+A **db with serializable isolation must prevent phantoms**.
+
+> Predicate lock => Works similarly to shared/exclusive lock, but rather than belonging to an particular object, it belongs to all objects that match some search condition
+
+If `T(A)` wants to read objects matching some condition, like in `SELECT`, it must acquire shared-mode lock on the conditions of the query.
+
+If `T(A)` wants to write any object, then must check for whether either the old or the new value matches any existing predicate lock.
+
+The key idea here is that a predicate lock applies even to object that do not yet exists in the DB, but which might be added in the future (phantoms)
+
+#### Index-range locks
+**Predicate locks** do not perform well if there are many locks by active transactions.
+
+**Index-range** works on acquiring a lock on a range of objects. It's an approximation and its not precise as predicate locks would be.
+
+#### Pessimistic vs Optimistic concurrency control
+2PL is considered `pessimistic`
+
+
 ## Concepts
 **append-only B-tree** -> _Key / Value_ Pair in documents of specific type. Sorted by hash or strings.
 
@@ -417,3 +499,5 @@ Thus we can infer that the discrepancy between T1 and T3 is a phantom phenomenon
 **write skew** -> it is neither a dirty write nor a lost update, because 2 transactions are updating two different objects. On Call doctor's example
 
 **Snapshot isolation** -> The idea is that each transaction reads from a consistent snapshot of the db. The transaction sees only the old data from that particular point in time.
+
+**Snapshot isolation mantra** -> _readers never block writers, and writers never block readers_
