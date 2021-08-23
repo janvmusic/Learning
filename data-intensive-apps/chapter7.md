@@ -445,8 +445,42 @@ The key idea here is that a predicate lock applies even to object that do not ye
 
 **Index-range** works on acquiring a lock on a range of objects. It's an approximation and its not precise as predicate locks would be.
 
+### Serializable Snapshot Isolation
 #### Pessimistic vs Optimistic concurrency control
-2PL is considered `pessimistic`
+`2PL` is considered `pessimistic` control mechanism: It's based on the assumption that if anything goes wrong, we must wait until the situation is safe before doing anything.
+
+`Serial execution` is, in a sense, `pessimistic` to the extreme. It is essentially equivalent to each transaction having an exclusive lock on the entire db for the transaction duration. 
+
+`Serial execution` compensate this _massive_ lock by making each transaction very fast to execute.
+
+By contrast `Serializable Snapshot Isolation` is an _optimistic_ concurrency control technique. If something bad happens, transactions continue and hope that everything will turn out right.
+
+In `Serializable Snapshot Isolation`, if a transaction wants to commit, the db checks whether anything bad happened. If so, then the transaction needs to be retried.
+
+Only transactions that executed serializability are allowed to commit. **Basically, its a gate keeper.**
+
+> high contention => many transactions trying to access the same object
+
+Optimistic approach performs badly if there's a high contention. It leads to a high proportion of transactions needing to abort.
+
+However, if there is enough spare capacity, and if contention is not too high, `optimistic concurrency control techniques` tend to perform better than pessimistic ones.
+
+`SSI` states that all reads within a transaction are made from a consistent snapshot of the db.
+
+#### Decisions based on an outdated premise
+**Write skews** follow a recurring pattern: _A transaction reads from the db, examines the result, and decided to take some action based on the result it saw_
+
+In other words, _a transaction takes action based on the premise_. 
+
+In other words, there may be a **causal dependency between** the **queries** and the **writes** in the transaction
+
+Serializable isolation must detect situations in which a transaction may have acted on an outdated premise and abort the transaction in that case
+
+How does the db detect these types of situations?
+- Detecting reads of a stale **MVCC**
+- Detecting writes that affect prior reads
+
+#### Detecting stale MVCC reads
 
 
 ## Concepts
@@ -501,3 +535,7 @@ Thus we can infer that the discrepancy between T1 and T3 is a phantom phenomenon
 **Snapshot isolation** -> The idea is that each transaction reads from a consistent snapshot of the db. The transaction sees only the old data from that particular point in time.
 
 **Snapshot isolation mantra** -> _readers never block writers, and writers never block readers_
+
+**High-Contention** -> many transactions trying to access the same object
+
+**Multi-version concurrency control(MVCC)** -> The db must keep several different committed versions of an object, because various in-progress transactions may need to see the state of the db at different points in time
