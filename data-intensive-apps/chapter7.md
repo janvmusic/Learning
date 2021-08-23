@@ -481,7 +481,27 @@ How does the db detect these types of situations?
 - Detecting writes that affect prior reads
 
 #### Detecting stale MVCC reads
+**Remember** Snapshot isolation is usually implemented on `MVCC`. When a transaction reads from a consistent snapshot in an MVCC ignores writes that hadn't yet committed
 
+On SSI when a transaction wants to commit, the db checks if there's an update on the snapshot(ignored writes that now might have been committed)
+
+SSI preserves snapshot isolation's support on long-running reads from a consistent snapshot by avoid aborting unnecessary transactions.
+
+#### Detecting writes that affect prior reads
+When a transaction writes to the db, it must look in the indexes for any other transaction that have recently read the affected data. Then leaves a _mark_ to notify future transactions that the data has changed.
+
+#### Performance on Serializable Snapshot Isolation
+One trade off is `Granularity`. If it's strict it can track of each transactions need to abort, but the bookkeeping overhead can become significant.
+
+Less strict on `Granularity` will lead to transactions aborted that were not required. Its always a trade off
+
+Compared to **2PL**, the big advantage is that one transaction doesn't need to block waiting for locks held by another transaction. Like `Snapshot isolation` _writers don't block readers, and vice versa
+
+**Important** This design principle makes query latency much more predictable and less variable.
+
+Compared with **Serial Execution**, serializable snapshot isolation is not limited to 1 CPU core. Easier to scale
+
+Something to take in account is the rate of aborts, which significantly affects the overall performance of SSI.
 
 ## Concepts
 **append-only B-tree** -> _Key / Value_ Pair in documents of specific type. Sorted by hash or strings.
