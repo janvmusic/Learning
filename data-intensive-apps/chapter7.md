@@ -503,6 +503,27 @@ Compared with **Serial Execution**, serializable snapshot isolation is not limit
 
 Something to take in account is the rate of aborts, which significantly affects the overall performance of SSI.
 
+## Summary
+1. Transactions are an **abstraction** layer that allows apps to pretend that certain concurrency problems and certain hardware/software problems do not exist.
+
+2. Several errors can be reduced to _transaction abort_ & _retry_
+
+3. Transactions wont resolve all your problems, and transactions are not always required.
+
+4. Without transactions, due to several issues could make our data **inconsistent**
+
+5. Guarantees by Isolation level
+
+|               | Read Committed | Snapshot Isolation | Serializable | 
+|:---           | :---:          | :---:              | :---:        |
+| Dirty Reads   |   -            |   -                |   -          |
+| Dirty Writes  |   -            |   -                |   -          |
+| Read Skew     |   -            |   -                |   -          |
+| Lost Updates  |   -            |   -                |   -          |
+| Write Skew    |   -            |   -                |   -          |
+| Phantom Reads |   -            |   -                |   -          |
+
+
 ## Concepts
 **append-only B-tree** -> _Key / Value_ Pair in documents of specific type. Sorted by hash or strings.
 
