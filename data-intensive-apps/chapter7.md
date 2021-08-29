@@ -516,12 +516,28 @@ Something to take in account is the rate of aborts, which significantly affects 
 
 |               | Read Committed | Snapshot Isolation | Serializable | 
 |:---           | :---:          | :---:              | :---:        |
-| Dirty Reads   |   -            |   -                |   -          |
-| Dirty Writes  |   -            |   -                |   -          |
-| Read Skew     |   -            |   -                |   -          |
-| Lost Updates  |   -            |   -                |   -          |
-| Write Skew    |   -            |   -                |   -          |
-| Phantom Reads |   -            |   -                |   -          |
+| Dirty Reads   |   x            |   x                |   x          |
+| Dirty Writes  |   x            |   x                |   x          |
+| Read Skew     |   -            |   x                |   x          |
+| Lost Updates  |   -            |   x                |   x          |
+| Write Skew    |   -            |   -                |   x          |
+| Phantom Reads |   -            |   -                |   x          |
+
+- **Dirty Reads**  => One client reads another client's writes before they have been committed
+- **Dirty Writes** => One client overrides that another client has written but not yet committed
+- **Read Skew**    => A client sees different parts of the db at  different points in time. You read something that  is not ready or does not exists. Also known as _nonrepeatable reads_. It's implemented on snapshot isolation using MVCC (Multi Version Concurrency Control).
+- **Lost Updates** => Two clients perform a _read-modify-write_ cycle. One overrides the other and does not incorporate the other's changes. So the update is lost. 
+- **Write Skew**   => A transaction reads something, then takes a decision, later writes its decision to the db. When this happens the _premise_ of the read no longer is valid
+- **Phantom Read** => A transaction reads a _premise_. Another client makes a write that makes the previous _premise_ no longer valid
+
+**Weak Isolation levels** moves the _complexity_ to the application.
+
+Only **Serializable** protects you from all previously mentioned issues.
+
+There are different ways to implement `serializable`
+1. `Executing transactions in serial order` => This is valid if the transaction throughput is low  and a single core can handle all the writes
+2. `Two-Phase locking` => Most common approach to implement serializable. The problem is that the performance suffers
+3. `Serializable Snapshot Isolation` => Uses an optimistic approach. When a transaction wants to commit, the transaction gets checked, and its aborted if was not serializable.
 
 
 ## Concepts
