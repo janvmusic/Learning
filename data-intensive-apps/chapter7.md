@@ -299,7 +299,7 @@ _dirty writes_ and _lost updates_ are two types of race conditions.
 
 ### Phantoms causing write skew
 On some cases, `write skews` follow this pattern:
-1. Select query that checks something(existig name, balance, if the room is free)
+1. Select query that checks something(existing name, balance, if the room is free)
 2. Depending on the result of the first query, then app code decides what to do.
 3. Then apply the operation (update, delete, insert)
 4. The result of the previous operation, will totally change the result of step 2.
@@ -335,9 +335,9 @@ Since _materializing conflicts_ can be hard and error-prone. Use this as last re
 
 ## Serializability
 **Serializable isolation** is usually regarded as the strongest isolation level. 
-- It guarantees that even though transactions may execute in parallel, the end result is the ame as they had executed one at a time.
+- It guarantees that even though transactions may execute in parallel, the end result is the time as they had executed one at a time.
 - Transactions executed _serially_ without any concurrency.
-- Encures that if transactions behave correctly when run individually, the continue to be correct when run concurrently
+- Ensures that if transactions behave correctly when run individually, the continue to be correct when run concurrently
 - It prevents _all_ possible race conditions.
 
 **So, if it's so magical, why aren't all dbs using it?** They can implement serializability in 3 ways
