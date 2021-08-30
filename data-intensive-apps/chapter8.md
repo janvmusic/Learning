@@ -98,9 +98,36 @@ Why are we using **Shared-nothing Systems**?
 - It can make use of commoditized cloud computing services
 - It can achieve high reliability through redundancy across multiple geographically distributed datacenters
 
+### Timeouts and Unbounded Delays
+A long timeout means a long wait until declare a node dead.
+
+A short timeout detects faults faster, but carries a higher risk of incorrectly declaring a node dead.
+
+When a node is declared dead prematurely, it can become a problem, because another node needs to take over the dead node. Even can re-process the same task.
+
+If the system is already struggling with high load, declaring nodes dead prematurely can make the problem worse.
+
+A reasonable amount of time would be `timeout = 2d + r`
+> d => Maximum delay for packets, delivery never takes longer than d
+
+> r => time for a node to deliver a response
+
+Unfortunately this is not 100% trustworthy. Because asynchronous systems might have network _unbounded delays_
+
+If your timeout is low, it only takes a transient spike in round-trip times to throw the system off-balance.
+
+#### Network congestion and queueing
+**Network Congestion** is that if several different nodes simultaneously try to send packets to the same destination, the network switch must queue them up, then feed them into the destination, **one by one**. 
+
+On a busy network, a request might have to wait until a node is clear. 
+
+If the network queue is full, some packages might even get drop.
+
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
 **Geographically distributed deployment** => Keeping data geographically close to your users to reduce access latency.
 
 **Shared-nothing System** => The network is the only thing that communicate them. 
+
+**Unbounded delay** => System tries to deliver packets as quickly as possible, but there's no upper limit on the time it may take for a packet to arrive
