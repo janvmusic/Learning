@@ -1,5 +1,5 @@
 # Chapter 7: Transactions
-<img tag="chapter 6 map" src="img/ch7.png" width="300px">
+<img tag="chapter 7 map" src="img/ch7.png" width="300px">
 
 _Some authors have claimed that general two-phase commit is too expensive to support, because of the performance or availability problems that brings. We believe it is better to have application programmers deal with performance problems due to overuse of transactions as bottlenecks arise, rather than always coding around the lack of transactions_ 
 

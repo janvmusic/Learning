@@ -11,3 +11,4 @@ Data-intensive apps: Data is its primary challenge - quantity of data, the compl
 7. [Transactions](chapter7.md)
 
 ## Notes & Concepts
+- [Transaction Concepts](chapter7.md#concepts)
