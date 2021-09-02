@@ -123,6 +123,37 @@ On a busy network, a request might have to wait until a node is clear.
 
 If the network queue is full, some packages might even get drop.
 
+Another issue might that the destination machine's CPU might be full, meaning that the request will be queued. Depending on the load on the machine, this may take an arbitrary length of time.
+
+And last but not least, on virtualized environments, are often paused while other machine uses de CPU core.
+
+> TCP Flow control / Backpressure => Limit the rate of request sending on a node, to avoid overloading the network.
+
+TCP considers a packet to be lost if its now acknowledge within some timeout. Lost packets are retransmitted automatically
+
+Although, the app does not _see_ the `packet loss and retransmit`, it suffers the resulting delay. 
+
+Queueing delays have an specially wide range when a system is close to its maximum capacity: _A system with a plenty of spare capacity can easily drain queues, whereas in a busy system, long queues can build up VERY QUICKLY_
+
+On cloud computing environments, you can only choose timeouts **experimentally**; Measure the distribution of network round-trip times over an extended period, and over many machines to determine the expected variability of delays.
+
+### Synchronous vs Asynchronous Networks
+Distributed systems would be a lot simpler if we could rely on the network to deliver packets with some fixed maximum delay, and not drop packets.
+
+> Synchronous => even as data passes through several routers, it does not suffer from queueing. On synchronous calls, a circuit is reserved from the beginning, from end to end. Nobody else can use this channel.
+
+> Bounded delay => When the maximum end-to-end latency of the network is fixed
+
+On TCP, the packets transmitted use the network bandwidth opportunistically. While TPC is idle, does not use any bandwidth.
+
+Ethernet and IP are packet-switched protocols, this means that suffer from queueing and thus varying delays in the network. These protocols does not have a concept of a circuit
+
+**Important** On audio or video calls, we have a expected rate of bytes to transmit. So we can create a circuit. While on TCP, its optimized for bursty traffic. This means that requesting a web, sending an email, or transferring a file does not have any particular bandwidth requirement.
+
+**Important** On TCP, we just to complete the request as quickly as possible
+
+The internet shares network bandwidth _dynamically_, this approach has the downside of queueing but the advantage is that it maximizes utilization of the wire.
+
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
@@ -131,3 +162,5 @@ If the network queue is full, some packages might even get drop.
 **Shared-nothing System** => The network is the only thing that communicate them. 
 
 **Unbounded delay** => System tries to deliver packets as quickly as possible, but there's no upper limit on the time it may take for a packet to arrive
+
+**Synchronous** => even as data passes through several routers, it does not suffer from queueing. On synchronous calls, a circuit is reserved from the beginning, from end to end.
