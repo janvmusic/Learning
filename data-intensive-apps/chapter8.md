@@ -154,6 +154,38 @@ Ethernet and IP are packet-switched protocols, this means that suffer from queue
 
 The internet shares network bandwidth _dynamically_, this approach has the downside of queueing but the advantage is that it maximizes utilization of the wire.
 
+## Unreliable Clocks
+Clocks and time are important. Apps depend on clocks in various ways to answer questions like:
+- Has the request timed out yet?
+- What's the  99th percentile response time of this service?
+- How many queries per second did  this  service handle on average?
+- How long did the user spend on our site?
+- When was this article published?
+- When does this cache entry expire?
+
+In distributed system, time is a tricky business, because communication is not instantaneous.
+- It takes time for a message to travel to the destiny
+- We do not know how much delay exists between sender and receiver
+
+**Important** This is why is difficult to determine the  order in which things happened when multiple machines are involved
+
+In distributed systems, each machine has its own clock. It is possible (to certain degree) to synchronize different clocks via NTP.
+
+Nowadays computers have 2 types of clocks:
+- Time of the day clock
+- Monotonic clock
+
+### Time of the day clock
+It returns date and time accordingly to some calendar
+
+Usually synchronized with NTP
+
+## Monotonic clock
+Suitable for measuring a duration, such as timeouts.
+
+They have two values something likes `start/end`
+
+
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
