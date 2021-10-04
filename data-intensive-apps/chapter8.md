@@ -198,6 +198,7 @@ Using monotonic clocks in a distributed system is usually good. Mostly, because 
 
 ### Clock Synchronization and accuracy
 
+
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
