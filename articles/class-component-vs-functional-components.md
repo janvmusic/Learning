@@ -56,6 +56,6 @@ const Welcome = (props) => {
 Functional components are easier to `test` and `to read`
 
 
-#### SOURCE Link
+#### **Source**
 [Class vs Functional components](https://twitter.com/brenditech/status/1403753559733293060)
 

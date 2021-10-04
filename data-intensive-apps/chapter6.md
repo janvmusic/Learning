@@ -149,7 +149,7 @@ Rebalancing minimum requirements:
 - No more data than necessary should be moved between nodes, to make rebalancing fast and minimize the network and I/O load.
 
 ### Strategies for Rebalancing
-#### How not to do it: hash mod N
+#### **How not to do it: hash mod N**
 With hashing we need to do something like:
 ```
   if 0 <= hash(key) < b0
@@ -163,10 +163,10 @@ The problem with `mod N` is that if the number of N changes, most of the keys wi
 
 This is not a suitable solution and we need a solution that doesn't move data around more than necessary.
 
-#### Fixed number of partitions
+#### **Fixed number of partitions**
 There's a fairly simple solution for this. Create many more partitions than there are nodes. Each node will contain several partitions assigned.
 
-If a node is added to the cluster, new node can steal a few partitions from every existing node until partitions are fairly distributed. 
+If a node is added to the cluster, new node can steal a few partitions from every existing node until partitions are* fairly distributed. 
 
 If the node is removed, then the process is inverted.
 
@@ -186,7 +186,7 @@ If partitions are too small, they incur too much overhead!
 
 Just right number of nodes, neither too big nor too small.
 
-#### Dynamic Partitioning
+#### **Dynamic Partitioning**
 When a partition grows to exceed a configured size, it is split into two partitions so that approximately half of the data ends up on each side of the split.
 
 Conversely, if lots of data is deleted and a partition shrinks below some threshold, it can be merged with an adjacent partition.
@@ -197,7 +197,7 @@ As an advantage of **dynamic partitioning** is that the number of partitions ada
 
 As a caveat is that an empty db starts with a **single partition** so then it creates a bottleneck. This can be solved with _pre-splitting_
 
-#### Partitioning proportionally to nodes
+#### **Partitioning proportionally to nodes**
 With dynamic partitioning, the number of partitions is proportional to the size of the dataset (min-max)
 
 With a fixed number of partitions the size of each partition is proportional to the size of the dataset.

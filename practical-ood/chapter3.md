@@ -10,7 +10,7 @@
 ### 3.1 Understanding dependencies
 - An **object depends** on another object if, when one object changes, the other might be **forced to change in turn.**
 
-#### 3.1.1 Recognizing dependencies
+#### **3.1.1 Recognizing dependencies**
 - An object has dependencies when it knows:
   - The name of another class
   - The name of a message that its intended for another object
@@ -20,10 +20,10 @@
 - Each of these dependencies makes changes difficult
 - The challenge as _Designers_ is to create classes with the minimum possible dependencies
 
-#### 3.1.2 Coupling between objects
+#### **3.1.2 Coupling between objects**
 - The **more** a object knows about another, the more **tightly coupled** they are
 
-#### 3.1.3 Other dependencies
+#### **3.1.3 Other dependencies**
 - **Message chaining** creates a dependency between the original object and every object that receives the message
 - **Test depending code**
 
@@ -31,10 +31,10 @@
 - Recognize which dependencies are required and which are not
 - An objects becomes less useful when it knows too much about other objects; If it knew less, it could do more
 
-#### 3.2.1 Injecting dependencies
+#### **3.2.1 Injecting dependencies**
 - Recognize that the responsibility for knowing the name of a message and the name of a class may belong in different objects.
 
-#### 3.2.2 Isolate dependencies
+#### **3.2.2 Isolate dependencies**
 - Switch you gears from _Achieve perfection_ to _improve the overall situation_
 - Therefore, if you cannot remove unnecessary dependencies, then **isolate them**
   - Isolate instance creation; Reduce it's reach to your class
@@ -90,7 +90,7 @@ end
 - **Remember** Any time you change something, you stand the chance of breaking it
 - **Isolating a reference** provides some insurance against being affected by change.
 
-#### 3.2.3 Remove argument-order dependency
+#### **3.2.3 Remove argument-order dependency**
 - Knowing the required arguments to send a message it's something unavoidable
 - Then this creates an specific dependency: **Know the order of the arguments**
 - If language allows, use **Keyword Arguments**
@@ -128,10 +128,10 @@ def
 - Avoid external dependencies to dictate your code. Remember to use wrappers
 
 ### 3.3 Managing Dependency Direction
-#### 3.3.1 Reversing Dependencies
+#### **3.3.1 Reversing Dependencies**
 - A dependency is a collaboration and can be reversed
 
-#### 3.3.2 Choosing Dependency Direction
+#### **3.3.2 Choosing Dependency Direction**
 - _Depend on things that change less often than you do_
 - This fact lies in 3 ideas:
   - Some classes change more than others
@@ -142,7 +142,7 @@ def
 - **Abstractions** are more stable than a concrete class. They act like contracts
 - **Beware** of concrete classes that have many dependents. They are dangerous
 
-#### 3.4 Summary
+#### **3.4 Summary**
 - Injecting dependencies creates loosely coupled objects (Composition)
 - Isolating dependencies allows objects to quickly adapt to unexpected changes
 - Depending on abstractions decreases the likelihood of facing these changes

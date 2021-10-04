@@ -12,7 +12,7 @@
 ### What problem solves?
 - API documentation
 - Readable for humans and machines
-- Fast code generatiopn
+- Fast code generation
 
 ### What is an OpenAPI
 - API description format for REST APIs. 
@@ -20,18 +20,18 @@
   - Available endpoints
   - Operations on each endpoint
   - Authentication methods
-  - Contact info & licences... etc
+  - Contact info & licenses... etc
 - Can be written using __JSON__ or __YAML__
 - Pending to read [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
 
-#### What is Swagger?
+#### **What is Swagger?**
 - It's a set of open-source tools that help you to design, build, document & consume REST APIs
 - Available tools:
   - Editor
   - UI
   - Codegen (I believe this is used in current project)
 
-#### Why use OpenAPI?
+#### **Why use OpenAPI?**
 - Ability to APIs to describe their own structure (This is awesome)
 - Design-first users
 - Code generator for client libraries

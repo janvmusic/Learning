@@ -12,7 +12,7 @@
 - Keep a weekly log of your work. Notes would be fine
 - Keep a tracking on your 1-on-1 talks
 - Remember your intentions
-- Just like you did with Miho, as for what YOU want
+- Just like you did with Miho, ask for what YOU want
 
 ### 3. All or nothing outlook
 - "But a career is not a zero-sum game. Just because other people will advance faster than you at a certain times in your/their life, doesn't mean you can't advance at all."
@@ -52,6 +52,6 @@
 - Challenge yourself to get to the next level
 - Evaluate your position every 2 or 3 years
 
-#### SOURCE Link
+#### **Source**
 [How to Ruin Your Career in 8 Easy Steps](https://dev.to/rinaarts/how-to-ruin-your-career-in-8-easy-steps-71)
 

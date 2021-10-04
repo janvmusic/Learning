@@ -29,13 +29,13 @@
   div.style.left            = 1000;
   div.style.backgroundColor = "white";
 ```
-- In _CSS_ dash (-) is a legal property name character. But Javascript interpretes it as **minus** sign
+- In _CSS_ dash (-) is a legal property name character. But Javascript interprets it as **minus** sign
 - Multi-word property names are changed to **camel case** format. In example: `border-style` for `borderStyle`
 - To add our new element to the DOM, you will need to call `element.appendChild(object);`. In example could be: `document.body.appendChild(div);`
 - You can also call `document.getElementById("id").appendChild(div)`
 - Or you can add it using `document.querySelector( selector ).appendChild(div)`
 
-#### 16.0.4 Create objects using functions constructors
+#### **16.0.4 Create objects using functions constructors**
 ```javascript
   function Season(name) {
     this.name = name;

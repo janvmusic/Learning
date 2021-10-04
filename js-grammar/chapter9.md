@@ -48,7 +48,7 @@
   let a = ...[1,2,3] // causes an error
 ```
 
-#### Destructuring assignment
+#### **Destructuring assignment**
 - `Destructuring assign` can be used to extract elements from `[arrays & objects]` and assign it to variables 
 ```javascript
   [a, b] = [10, 20] // this expression is the same as var a = 10;

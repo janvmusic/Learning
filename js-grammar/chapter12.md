@@ -6,11 +6,11 @@
   [1,2,3].forEach();
 ```
 
-#### 12.0.1 Array.prototype.sort()
+#### **12.0.1 Array.prototype.sort()**
 - Previous `ES-10` V8 used an unstable version of quick sort algorithm
 - A stable algorithm is when 2 objects with equal keys appear in the same order in the sorted output as in the unsorted input.
 
-#### 12.0.2 Array.forEach
+#### **12.0.2 Array.forEach**
 - This method will execute a function for every item in the array
 - Before ES6.
 ```javascript
@@ -34,17 +34,17 @@
 ```
 - As long as you have only one statement, you can remove brackets.
 
-#### 12.0.3 Array.every
+#### **12.0.3 Array.every**
 - This method evaluates for something that all items in the array has it
 - Uses `short circuit` logic, so breaks when we get first _false_
 - `Array.every` will not modify the original array. Uses a **copy** not a reference
 
-#### 12.0.4 Array.some
+#### **12.0.4 Array.some**
 - This method evaluates for _true_ if one element accomplishes the condition
 - Uses **short circuit** logic.
 - Note: this is not the opposite of `Array.every`
 
-#### 12.0.5 Array.filter
+#### **12.0.5 Array.filter**
 - Return a new set of elements after applying a condition
 ```javascript
   let numbers = [0,10,2,3,4,5,6,7];
@@ -55,7 +55,7 @@
   console.log(numbers); // array unchanged
 ```
 
-#### 12.0.6 Array.reduce
+#### **12.0.6 Array.reduce**
 - Returns an accumulator
 - The `accumulator` value must be returned
 - There are different types of accumulators.
@@ -73,7 +73,7 @@
   - To perform side effects, like call APIs and routing transitions
   - To call non-pure functions, like **Date.now()** or **Math.random()**
 
-#### 12.0.10 Array.flat
+#### **12.0.10 Array.flat**
 - Flattering multi-dimensional array
 ```javascript
   let multi = [1,2,3,[4,5,6,[7,8,9,[10,11,12]]]];
@@ -83,7 +83,7 @@
   multi.flat(Infinity); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 ```
 
-#### 12.0.11 Array.flatMap
+#### **12.0.11 Array.flatMap**
 ```javascript
   let array = [1,2,3,4,5];
   array.map(x => [x, x * 2]);
@@ -100,9 +100,9 @@
   // [1, 2, 2, 4, 3, 6, 4, 8, 5, 10]
 ```
 
-#### 12.0.12 String.prototype.matchAll()
+#### **12.0.12 String.prototype.matchAll()**
 - Match multiple patterns in a string it's a common problem
-- Capturing groups in regrex is sumply extracting a pattern from parenthesis
+- Capturing groups in regex is simply extracting a pattern from parenthesis
 - You can capture groups using _/regex/.exec(string)_ and with _string.match_
 - `(pattern)` -> This means **capture group**
 - `(?<name>pattern)` -> means capture group property on resulting object
@@ -121,7 +121,7 @@
     console.log(match.groups.bird);
   }
 ```
-- If you remove `/g` from the regex, thsi will cause a infinite loop
+- If you remove `/g` from the regex, this will cause a infinite loop
 - Good reasons to use `.matchAll()`
   1. Elegant when using capture groups
   2. Returns iterator instead of array
@@ -151,7 +151,7 @@
 ```
 - Do use `string.matchAll` instead of `regex.exec` and use `string.match` with `/g` flag.
 
-#### 12.0.14 Comparing 2 Objects
+#### **12.0.14 Comparing 2 Objects**
 - `==` and `===` compares by reference, so it's no good for _objects_ because we need to compare them by value
 ```javascript
   [] === []; // return false by value
@@ -190,7 +190,7 @@ export default function objectEquals(a, b) {
            typeof valye.length == 'number';
   }
 ```
-- We will also need arrcmp!
+- We will also need `arrcmp`!
 ```javascript
   let a = [1,2];
   let b = [1,2];

@@ -209,7 +209,7 @@ parameters:
     description: minimum limit for users
 ```
 
-#### Default Common mistakes
+#### **Default Common mistakes**
 - `default` + `required` is a non valid combination
 - `default` is not a sample value, use `example` instead
 
@@ -311,7 +311,7 @@ GET /foo?metadata
 ```
 
 ### Common parameters
-#### Common parameters for all methods of a path
+#### **Common parameters for all methods of a path**
 - **Common parameters** required by all operations of a path can be defined on the path level instead
 - **Path-level** parameters are inherited by all operations of that path
 - A typical use case are the _GET/PUT/PATCH/DELETE_ operations that manipulate a resource via a path parameter
@@ -400,7 +400,7 @@ paths:
         url: http://api.example.com/docs/user-operations/
 ```
 
-#### Common Parameters for various paths
+#### **Common Parameters for various paths**
 - You can have **Common parameters** they are defined under `components`
 - As other `components` you can reference them as `$ref`
 ```

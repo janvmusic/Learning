@@ -15,7 +15,7 @@
 - The class exists to fulfill a single responsibility but implements many methods
 - Remember how we define Kitchen example
 
-#### 4.2.1 Public Interfaces
+#### **4.2.1 Public Interfaces**
 - `Public methods`: They are the **face** of your class **to the world**.
   - Reveal it's final **responsibility**
   - Are expected to be **invoked** by other classes
@@ -23,7 +23,7 @@
   - Safe to **depend on**
   - Documented in tests
 
-#### 4.2.2 Private interfaces
+#### **4.2.2 Private interfaces**
 - All other methods are part of the private interface
   - Handle implementation **details**
   - Are **not** expected **to be used** by other objects
@@ -31,7 +31,7 @@
   - Not dependable
   - Not references in tests
 
-#### 4.2.3 Responsibilities, dependencies & interfaces
+#### **4.2.3 Responsibilities, dependencies & interfaces**
 - **Public** methods should be read as the _description of class' responsibilities_
 - The **public interface** is a **contract** that articulates the **responsibilities** of your class
 - Remember: `public => stable` while `private => changeable`
@@ -43,13 +43,13 @@
 - The design goal is to retain maximum future flexibility while writing only enough code to meet today's requirements
 - **Good** public interfaces reduce the cost of change; **Bad** public interfaces raise the cost of change.
 
-#### 4.3.2 Constructing an intention
+#### **4.3.2 Constructing an intention**
 -  _Domain Objects_ are the nouns in the application, they represent data & behavior. They are easy to find
 - _Design experts_ notice this domain knowledge, however, they concentrate on the **message** these classes want to pass
 - These **messages** allows you to **discover less obvious objects** that the application might require
 - You should form an **intention** about the **objects and the messages** needed to satisfy this use case
 
-#### 4.3.3 Using sequence diagram
+#### **4.3.3 Using sequence diagram**
 - `UML`: Unified Modeling Language
 - UML provides a visual example of how objects might communicate between them in a use case
 - UML helps you to understand _intention & interaction_
@@ -57,18 +57,18 @@
 - It changes the question, from: "I know I need this class, what should it do?" to **"I need to send this message, who should respond it?"**
 - _You don't send message because you have objects, you have objects because you send messages_
 
-#### 4.3.4 Asking for "What" instead of "How"
+#### **4.3.4 Asking for "What" instead of "How"**
 - Understand the difference between, a message which ask "what" and "how" is subtle 
 - A side effect on switch from "how" to "what" this will reduce the public interface.
 - Small public interface means that other objects depends on **stable** methods
 
-#### 4.3.5 Seeking context independence
+#### **4.3.5 Seeking context independence**
 - What an object knows about other object, makes it's **context**
 - **The context** that an object expects has a direct effect on how **difficult is to reuse**
 - The best possible design is an object that can honor its responsibility without knowing others (**Context independent**)
 - A way to do this is via **dependency inversion** & focus on what the object **wants**
 
-#### 4.3.6 Trusting other objects
+#### **4.3.6 Trusting other objects**
 - Blind trust is a keystone if OOD, it allows objects to collaborate without binding themselves to context
 - Switches from:
   - Step one: "I know what I want, and I know how you do it"
@@ -80,7 +80,7 @@
 - It is more important that a well-defined interface exists than it be perfect
 - _Think_ about interfaces, create them intentionally
 
-#### 4.4.1 Create explicit interfaces
+#### **4.4.1 Create explicit interfaces**
 - Thumb rules for this:
   - Be explicit on which methods are public
   - Be more about `what` than `how`
@@ -88,16 +88,16 @@
   - Prefer keyword arguments
 - Remember to communicate other devs which methods are **stable(public)** and which are not
 
-#### 4.4.2 Honor the public interfaces of others
+#### **4.4.2 Honor the public interfaces of others**
 - If your design forces a `private` method to be `public`, re-think your design. Give it a second change on what would you do.
 - If required, remember to `isolate` dependency
 
-#### 4.4.4 Minimize context
+#### **4.4.4 Minimize context**
 - Construct public interfaces with an eye toward minimizing the context they require from others.
 - Keep the "what" vs "how" in mind
 
 ### 4.5 Law of Demeter
-#### 4.5.1 Defining Demeter
+#### **4.5.1 Defining Demeter**
 - "Only talk to your immediate neighbors"
 - "Use only one dot"
 Example:  
@@ -105,11 +105,11 @@ Example:
 customer.bicycle.wheel.tire # this is wrong
 ```
 
-#### 4.5.2 Avoiding violation
+#### **4.5.2 Avoiding violation**
 - One way to avoid `chain calls` is to use a _delegate_
 - _delegate_ is send a message to another object, often via **wrapper**
 - Using delegation does not solve this.
 
-#### 4.5.4 Listening to Demeter
+#### **4.5.4 Listening to Demeter**
 - Within the _chain calls_ we can find a problem: "There's some behavior way over there that I need right here, an I know to get it"
 - These types of call only tells you what is missing in the public interface

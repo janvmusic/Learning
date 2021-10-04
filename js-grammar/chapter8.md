@@ -7,7 +7,7 @@
   - `+=` concatenation
   - `+` addition
 
-#### 8.0.4 Comparison
+#### **8.0.4 Comparison**
 - `==` means equality
 - `===` means equality of value and type
 ```javascript
@@ -22,11 +22,11 @@
 ```
 - `>, <, <=, >=` works as Java
 
-#### 8.0.5 Logical
+#### **8.0.5 Logical**
 - `&&, ||, !` same as Java
 - _Bitwise_ operators... 
 
-#### 8.0.7 typeof
+#### **8.0.7 typeof**
 - This operator `typeof` is used to check the type of a value. The return value of this is a string
 ```javascript
   typeof 125 // returns number
@@ -34,13 +34,13 @@
 ```
 - `NaN` evaluates to number. `NaN` lives in _Number.NaN_
 
-#### 8.0.8 Ternary
+#### **8.0.8 Ternary**
 - Same as Java
 ```javascript
   1===1 ? doSomething() : doOtherThing();
 ```
 
-#### 8.0.9 Delete
+#### **8.0.9 Delete**
 - To remove a property from an object use the operator: `delete`
 ```javascript
   let bird = {
@@ -54,7 +54,7 @@
 ```
 - You cannot remove _stand alone_ variables
 
-#### 8.0.9 in
+#### **8.0.9 in**
 - Looks for a property name inside an object
 ```javascript
 'c' in { 'a': 1, 'b': 2, 'c': 3} // returns true

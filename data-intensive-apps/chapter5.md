@@ -187,7 +187,7 @@ The natural answer for this is a `master-master` also known as `multi-leader` re
 ### Use cases for Multi-leader replication
 **Important**: It rarely makes sense to use multi-leader replication with a single data center. Because the benefits rarely outweigh the added complexity.
 
-#### Multi-datacenter operation
+#### **Multi-datacenter operation**
 With a leader in each datacenter, the replication happens like:
 1. Gets writes
 2. Propagates to followers
@@ -196,26 +196,26 @@ With a leader in each datacenter, the replication happens like:
 
 <img tag="Multi leader architecture" src="img/ch-5-multi-leader.png" width="300px">
 
-#### Advantages
+#### **Advantages**
 Performance => Removes latency because the "local" datacenter processes the write and then proceeds the replication
 
 Tolerance of datacenter outages => If a datacenter fails, then app can work as normally because each datacenter has its own leader. Avoids a _failover_ procedure
 
 Tolerance of network problems => A temporary network interruption does not prevent writes being processed
 
-#### Disadvantages
+#### **Disadvantages**
 The same data may be concurrently modified in two different datacenters, and those write conflicts must be resolved.
 
-The consistency between autoincrementing keys, triggers and integrity constraints can be problematic. 
+The consistency between auto-incrementing keys, triggers and integrity constraints can be problematic. 
 
-#### Clients with offline operation
+#### **Clients with offline operation**
 Another situation that requires multi-leader replication is where you need your app to continue to work even when offline.
 
 An example of this would be your calendar. It needs to keep a track of your meetings even offline. In this case every device acts as a leader and they act as their own leader(accepts writes) & updates other devices(replication).
 
 The replication lag might be hours or days depends on your network. Basically, each device is a "datacenter" 
 
-#### Collaborative editing
+#### **Collaborative editing**
 When one user edits a document, the changes are instantly applied to their local replica(the state of the document in their web browser or client application) and asynchronously replicated to the server and any other users who are editing the same document
 
 
@@ -232,17 +232,17 @@ The most complex problem with multi-leader replication is that write conflicts c
 > Second user changes the title from { Title: a -> c }
 > There's a conflict!
 
-#### Synchronous vs asynchronous conflict detection
+#### **Synchronous vs asynchronous conflict detection**
 In a _single-leader database_, the second writer will either block and wait for the first write to complete, or abort the second write transaction.
 
 Meanwhile, on a _multi-leader setup_ both writes are successful, and the conflict is detected asynchronously in the future.
 
 If you want synchronous conflict detection, then use _single-leader_ don't lose the main advantage of the _multi-leader_ replication setup
 
-#### Conflict avoidance
+#### **Conflict avoidance**
 The simplest strategy for dealing with conflicts is to avoid them. If the application can ensure that all writes for a particular record go through the same leader, then conflicts cannot occur!
 
-#### Converging toward a consistent state
+#### **Converging toward a consistent state**
 A single-leader database applies writes in a sequential order. In a multi-leader configuration there's no way to determine which write will be the final result.
 
 If each replica simply applied writes in the order that it saw the writes, the final result between them would be inconsistent. Every replication system must ensure that the data is eventually the same in all replicas.
@@ -257,7 +257,7 @@ The database must resolve the conflict in a _convergent_ way
 3. Somehow merge the values together
 4. Save the conflict in a data structure and perhaps ask the user for input.
 
-#### Custom conflict resolution logic
+#### **Custom conflict resolution logic**
 Most multi-leader apps let you write code that will help the system handle the conflict. This could be _on read_ or _on write_
 
 ### Multi-leader replication topologies
@@ -286,7 +286,7 @@ In this type of implementation, the client directly sends its writes to several 
 
 The coordinator does not enforce a particular order in writes.
 
-#### Writing to the database when a node is down
+#### **Writing to the database when a node is down**
 **failover** configuration does not exists in a leaderless configuration. 
 
 In this type of replication system/architecture, the client sends the write to (i/e) 3 nodes, then 2 nodes respond as `success` but one node is down. 
@@ -297,7 +297,7 @@ As consensus, the write is accepted. However if a client reads from the node tha
 
 To solve this problem _read requests are also sent to several nodes in parallel_ and evaluate the response based on `Version Numbers`
 
-#### Read repair and anti-entropy
+#### **Read repair and anti-entropy**
 The replication system ensure that eventually all the data is copied to every replica. In dynamo-style datastores there are 2 ways to ensure this:
 
 **Read repair*** => When a client finds a _stale_ response, it will update the _stale_ replica with latest version. This approach is good for `frequently read` systems
@@ -306,7 +306,7 @@ The replication system ensure that eventually all the data is copied to every re
 
 In systems without `anti-entropy` values that are rarely reads, they don't get updated so often. This reduces durability.
 
-#### Quorums for reading and writing
+#### **Quorums for reading and writing**
 What happens if only one of the replicas accepted the write? How far can we push this?
 
 **Formula**: 
@@ -346,7 +346,7 @@ Dynamo-style databases are generally optimized for use cases that can tolerate e
 
 Stronger guarantees generally require transactions or consensus.
 
-#### Monitoring staleness
+#### **Monitoring staleness**
 Even if your application can tolerate stale reads, you need to be aware of the health of your replication. If it falls behind significantly, it should alert you so that you can investigate the cause
 
 For leader-base replication systems, some dbs already expose _replication lag_
@@ -355,7 +355,7 @@ For leaderless replication system, writes don't have a particular order, which m
 
 Eventual consistency is a deliberately vague guarantee, but for operability its important to be able to quantify "eventual"
 
-#### Sloppy Quorums and hinted handoff
+#### **Sloppy Quorums and hinted handoff**
 Databases with appropriately configured quorums can tolerate the failure of individual nodes without the need for failover.
 
 They can also tolerate individual nodes going slow, because requests don't have to wait for all `n` nodes to response. They can return when `w` or `r` nodes have responded.
@@ -376,7 +376,7 @@ Sloppy quorums are particularly useful for increasing write availability, as lon
 
 A sloppy quorum is only an assurance of durability, namely that the data is stored on `w` nodes somewhere.
 
-#### Multi-datacenter operation
+#### **Multi-datacenter operation**
 leaderless replication is also suitable for multi-datacenter operation, since it is designed to tolerate conflicting concurrent writes, network interruptions & latency spikes
 
 ### Detecting concurrent writes
@@ -386,7 +386,7 @@ The problem is that in this type of architecture, events may arrive in a differe
 
 In order to become eventually consistent, the replicas should converge toward the same value. How do they do that?
 
-#### Last write wins (discarding concurrent writes)
+#### **Last write wins (discarding concurrent writes)**
 One approach for achieving eventual convergence is to declare that each replica need only store the most "recent" value and allow "older" values to be discarded.
 
 This will work if we have a way to determine which value is the most "recent", eventually all replicas will converge.
@@ -403,7 +403,7 @@ LWW achieves the goal of eventual convergence, but at the cost of **durability**
 
 The only safe way of using a db with LWW is to ensure that a key is only written once and thereafter treated as immutable, thus avoiding any concurrent updates to the same key.
 
-#### The happens-before" relationship and concurrency
+#### **The happens-before" relationship and concurrency**
 How do we decide whether two operations are concurrent or not?
 _An operation "A" that happens before another operation "B" knows about "A", or depends on "A", or builds upon "A" in someway_
 
@@ -413,7 +413,7 @@ Whether one operation happens before another operation is the key to defining wh
 
 If one operation happened before another, the later operation should overwrite the earlier operation, but if the operations are concurrent, we have a conflict that needs to be resolved.
 
-#### Capturing the happens-before relationship
+#### **Capturing the happens-before relationship**
 A server can determine whether two operations are concurrent by looking at the version numbers, it does not need to interpret the value itself.
 
 1. The server maintains a version number for every key, increments the version number every time that key is written, and stores the new version number along with the value written
@@ -425,7 +425,7 @@ A server can determine whether two operations are concurrent by looking at the v
 4. When the server receives a write with a particular version number, it can overwrite all values with that version number or below but it must keep all the values with a higher version number (concurrent with incoming write)
 
 
-#### Merge concurrently written values
+#### **Merge concurrently written values**
 This algorithm ensures that no data is silently dropped, but unfortunately requires that the clients do some extra work: _If several operations happen concurrently, clients have to clean up afterward by merging the concurrently written values_
 
 A reasonable approach to merge siblings is to just take the **union** of the elements (only for adds, for deletes this could lead to problems)
@@ -436,7 +436,7 @@ For deletion, use tombstones
 
 This process is prune to errors and bugs.
 
-#### Version vectors
+#### **Version vectors**
 With leaderless replication, we need _version number per replica_
 
 Each replica increments its own version number when processing a write, and also keeps track of the version numbers it has seen from each of the other replicas.

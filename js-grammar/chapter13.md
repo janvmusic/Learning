@@ -12,7 +12,7 @@
 - `Arrow functions` binds `this` to outer scope value
 - `Arrow functions` do not have array-like arguments
 
-#### 13.1.1 Function Anatomy
+#### **13.1.1 Function Anatomy**
 - `function` keyword + `{functionName}` + `parameters`
 - `function update (a, b, c, d = "Hello")` in this definition we can see that `d` has a default value
 - `return` keyword is optional.
@@ -28,7 +28,7 @@
   }
 ```
 
-#### 13.1.2 Anonymous functions
+#### **13.1.2 Anonymous functions**
 - They work as regular functions
 - They are defined without name
 - Used for callbacks (usually)
@@ -46,7 +46,7 @@
   });
 ```
 
-#### 13.1.2 Assigning functions to variables
+#### **13.1.2 Assigning functions to variables**
 - Anon functions can be assigned to variables
 - This is called `named` functions
 - Doing this you separate function definition from its use
@@ -58,7 +58,7 @@
 ```
 - Call anon functions using `()` for example `print();`
 
-#### 13.1.2 Function parameters
+#### **13.1.2 Function parameters**
 - **Parameters** are optionals
 - You can pass other `functions`
 ```javascript
@@ -78,7 +78,7 @@
   Fun("Text", 125, [1,2,3], {count: 1}, volleyball, volleyball()); // passed as name and execute function volleyball
 ```
 
-#### 13.1.3 Checking for types
+#### **13.1.3 Checking for types**
 - Javascript is a dynamically-typed language. The type of a variable is determined by its value.
 - Variable definition simply assumes the type
 - This can cause subtle bugs...
@@ -101,7 +101,7 @@
   }
 ```
 
-#### 13.2 Origin of `this` keyword
+#### **13.2 Origin of `this` keyword**
 - `this` keyword was borrowed from C++
 - `this` keyword is used to link a reference to execution context
 

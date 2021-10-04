@@ -20,14 +20,14 @@ let refToSend = sendEmail('Professor Farnsworth', 'Re: subject;', 'Good news eve
 - When a function containing another function is called, then a new execution context is created.
 - **Note**: _new Function()_ does not create a new closure. Objects created with the keyword **new**
 
-#### 10.0.1 Arity
+#### **10.0.1 Arity**
 - **Arity** is the number of arguments that a function takes
 ```javascript
 function f(a,b,c) {} // 3 parameters
 let arity = f.length;
 console.log(arity) // 3 as result
 ```
-#### 10.0.2 Currying
+#### **10.0.2 Currying**
 - In Javascript functions are expressions. This also means a function can return another function.
 - A **curried** function can be constructed by chaining closures by defining and immediately returning all inner functions at the same time
 

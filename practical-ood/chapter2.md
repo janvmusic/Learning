@@ -5,13 +5,13 @@
 - Your goal is create a class that solves _right now_ problem and _be flexible_ to change later
 
 ### 2.1 Deciding what belongs to a class
-#### 2.1.1 Grouping methods into classes
+#### **2.1.1 Grouping methods into classes**
 - The **classes** you create **will affect** how you think about **your application forever**
 - You will never know less than you know right now.
 - **Design** is more the art of pre
 serving changeability than it is the act of achieving perfection.
 
-#### 2.1.2 Organizing code to allow for easy changes
+#### **2.1.2 Organizing code to allow for easy changes**
 - Definition of **easy to change**
   1. Changes have **no side effects**
   2. **Small changes** correspond to **small changes in code**
@@ -28,13 +28,13 @@ serving changeability than it is the act of achieving perfection.
 - _Nouns_ represents the simplest candidates to be classes
 - A candidate of a class required to have both _data & behavior_
 
-#### 2.2.2 Why Single Responsibility Matters
+#### **2.2.2 Why Single Responsibility Matters**
 - Reusable classes are **pluggable units** of well-defined behavior that have few entanglements
 - They are like lego blocks.
 - If responsibilities are so **coupled**, you cannot reuse the code you need, it means you might end up **duplicating code**
 - With coupled code, any change could lead to a potential bug.
 
-#### 2.2.3 Determining if a class has a Single Responsibility
+#### **2.2.3 Determining if a class has a Single Responsibility**
 - Ask **what methods do**: "Hey gear, what's your ration?", "Hello mr gear, what are your gear inches"?
 - Try to describe a class within **one sentence**
   - If you find in the answer `and` that means the class has more than one responsibility
@@ -42,7 +42,7 @@ serving changeability than it is the act of achieving perfection.
 - **Highly cohesive**: When everything in a class is said to be related to its central purpose
 - **Single Responsibility** means that everything the class does is highly related to its purpose
 
-#### 2.2.4 Determining when to make design decisions
+#### **2.2.4 Determining when to make design decisions**
 - Ask yourself: _"Whats the future cost of not doing today?"_
 - When the future cost of doing nothing is the same as the current cost, postpone the decision.
 - Remember: _The patterns that you establish today will be replicated forever_
@@ -51,7 +51,7 @@ serving changeability than it is the act of achieving perfection.
 ### 2.3 Writing code that embraces change
 - Change is inevitable, coding in a changeable style has a big future payoffs.
 
-#### 2.3.1 Depend on behavior, not data
+#### **2.3.1 Depend on behavior, not data**
 - **Behavior** is captured in methods and invoked by sending messages.
 - **DRY** tolerates change because any change in behavior can be made by changing code in just one place.
 - Remember always **wrap** instance variables in **accessor methods**. This mean: _only one place to change_
@@ -102,7 +102,7 @@ class RevealingReferences
 end
 ```
 
-#### 2.3.2 Enforce Single Responsibility
+#### **2.3.2 Enforce Single Responsibility**
 - Extract extra responsibilities from methods
 - Separating iteration from the action is a common case of _multiple responsibility_
 - Example: _diameters_ calculates diameters for all wheels

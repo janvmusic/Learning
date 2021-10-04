@@ -31,25 +31,25 @@ paths:
 - **IMPORTANT** Remember all keywords are case-sensitive
 - You need to start your file specifying the `swagger version`. In previous example: `openapi: 3.0.0`
 
-#### Metadata
+#### **Metadata**
 - `info` section contains basic information of our new API
   - `title` => API name 
   - `description` supports CommonMark dialect and it's multiline
   - `version` => your API version
 
-#### Servers
+#### **Servers**
 - `servers` specifies API server and base URL. You can define several URLs such as PROD or QA/Sandbox
   - All `paths` are relatives to this URL.
   - Previous example: http://api.example.com/v1/users
 
-#### Paths
+#### **Paths**
 - `paths` section defines all available individual endpoints
   - You could add elements such as:
     - request body
     - possible response status codes
     - response contents
 
-#### Parameters
+#### **Parameters**
 - You can have operations that use following types of parameters
   - URL paths: `/users/{userId}`
   - Query Strings: `/users?role=admin`
@@ -75,7 +75,7 @@ paths:
           description: OK
 ```
 
-#### Request Body
+#### **Request Body**
 ```yaml
 paths:
   /users:
@@ -95,7 +95,7 @@ paths:
           description: OK
 ```
 
-#### Responses
+#### **Responses**
 - For each **operation** you can define status and schema for the response `schema`
 - Schemas can be defined inline or via `$ref`
 ```yaml
@@ -136,7 +136,7 @@ paths:
 ```
 - note that status codes needs to be enclosed with quotes, in 2.0 this is not required
 
-#### Input and Output models
+#### **Input and Output models**
 - The global `components/schemas` section let's you define common data structures used in your API (DRY)
 - These `component/schemas` can be referenced using `$ref`.
 - `$ref` can be used in 
@@ -208,7 +208,7 @@ paths:
           description: Unexpected error
 ```
 
-#### Authentication
+#### **Authentication**
 - `securitySchemes` and `security` are used to describe authentication methods for your API
 - Supported authentication methods are:
   - HTTP: Basic, bearer and so...

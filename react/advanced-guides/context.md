@@ -127,7 +127,7 @@ function Page(props) {
 - However if you need _same data_ through different components and nesting levels, **Context** let's you _broadcast_ such data.
 
 ### API
-#### React.createContext
+#### **React.createContext**
 ```javascript
 const MyContext = React.createContext(defaultValue);
 ```
@@ -135,7 +135,7 @@ const MyContext = React.createContext(defaultValue);
 - The `defaultValue` is our `fallback`; It's only going to be used if we cannot find context in the tree
 - Passing `undefined` does not mean that it will use `defaultValue` be careful
 
-#### Context.provider
+#### **Context.provider**
 - Every *Context* react creates comes with a *Provider*
 - *Provider* allows components to _consume_ _Context_
 ```javascript
@@ -148,7 +148,7 @@ const MyContext = React.createContext(defaultValue);
 - The propagation from a Provider to its descendant consumers is not subject to the `shouldComponentUpdate` method
 - Changes are determined by comparing the new and old values using the same algorithm as `Object.is`
 
-#### Class.contextType
+#### **Class.contextType**
 ```javascript
 class MyClass extends React.Component {
   componentDidMount() {
@@ -184,7 +184,7 @@ class MyClass extends React.Component {
 }
 ```
 
-#### Context.Consumer
+#### **Context.Consumer**
 ```javascript
   <MyContext.Consumer>
     {value => /* do something */}
@@ -195,7 +195,7 @@ class MyClass extends React.Component {
 - The `value` argument passed will be matched against it's closest context prop
 - `value` could be equal to `defaultValue`
 
-#### Context.displayName
+#### **Context.displayName**
 - Context objects accepts a `displayName` string property
 - React `DevTools` uses this string to determine what to display for the context
 ```javascript
@@ -207,7 +207,7 @@ MyContext.displayName = 'MyDisplayName';
 ```
 
 ### Examples
-#### Dynamic Context
+#### **Dynamic Context**
 - Create the context
 ```javascript
 export const themes = {
@@ -301,7 +301,7 @@ export const ThemeContext = React.createContext({
 });
 ```
 
-- theme-toggler-button.js
+- `theme-toggler-button.js`
 ```javascript
 import {ThemeContext} from './theme-context';
 

@@ -38,7 +38,7 @@ cleanHouse();
 - Errors displays the `stack trace` of the call stack history
 
 
-#### 20.1 Execution context
+#### **20.1 Execution context**
 - The call stack is a stack of **execution contexts**
 - `this` keyword is often linked to the current **execution context**
 - **Root execution context**
@@ -49,16 +49,16 @@ cleanHouse();
   - `this` keyword is pointed to `window` context
   - The **execution context** is carried over from one scope to another (It's like a tree with several branches)
 
-#### 20.2 Execution context in code
+#### **20.2 Execution context in code**
 - The closest a dev gets to the execution context is through keyword `this`
 - The execution context is held by `this` keyword in each scope
 
-#### 20.2.1 Window / Global scope
+#### **20.2.1 Window / Global scope**
 - When `window` object is created we get a new **lexical environment**
 - **lexical environment** holds all our variables, it's an actual space in memory
 - `this` keyword points to **global scope**
 
-#### 20.2.2 The call stack
+#### **20.2.2 The call stack**
 - The **call stack** keeps a track of function calls.
 - If you call a function from **global** scope, a new entry will placed on top
 - The newly created stack will inherit execution context from previous environment
@@ -67,10 +67,10 @@ cleanHouse();
 - After a function is completed the **execution context** is removed from the stack
 - The _stacking of contexts_ only occurs when you call a function inside another function
 
-#### 20.2.3 call, bind, apply
+#### **20.2.3 call, bind, apply**
 `.call()`, `.bind()`, `.apply()` can use a different context, overriding default value for the `execution context`
 
-#### 20.2.4 Stack overflow
+#### **20.2.4 Stack overflow**
 - Just remember, memory is not infinite.
 - Thanks for reading!!!
 

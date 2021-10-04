@@ -88,6 +88,6 @@ return <div ref={ref}> ... </div>
 ref => a mutable object with one property `current`, pointing to a dome node or piece of data
 ```
 
-#### SOURCE Link
+#### **Source**
 [A Quick Guide to Understanding React Hooks](https://dev.to/ash_bergs/a-quick-guide-to-understanding-react-hooks-4o1)
 

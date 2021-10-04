@@ -13,7 +13,7 @@
   - `__proto_+`; In fact this is a getter!
   - Object.getPrototypeOf(instance); This is the preferred way
 
-#### 17.0.2 Prototype on Object Literal
+#### **17.0.2 Prototype on Object Literal**
 - A **JavaScript object literal** is a comma-separated list of name-value pairs wrapped in curly braces.
 - Lets begin with an example:
 ```javascript
@@ -25,7 +25,7 @@
 - Internally is linked into prototype as an object type
 - When **literal** was created it was linked to `literal._proto_` which points to `Object.prototype`
 
-#### 17.0.3 Prototype Link
+#### **17.0.3 Prototype Link**
 - When **new** keyword is used to create an object, the **constructor** function executes to build the instance
 ```
   let instance = new Object();
@@ -34,34 +34,34 @@
 ```
 - In this case `_proto_` points to `Object.prototype`; which is a separate object
 - We do not exactly control how the object was created, because points to a **built in** object
-- `_proto_` is in the object. It's a threeway relationship
+- `_proto_` is in the object. It's a three-way relationship
 
-#### 17.0.5 Method look-up
+#### **17.0.5 Method look-up**
 - Think of an `Array` what happens when you call `.toString()?`
   1. first looks up in its `Array.prototype`
   2. Since it's not there, goes to it's parent: `Object.prototype`
   3. Finds it, uses it!
 
-#### 17.0.6 Array methods
+#### **17.0.6 Array methods**
 - Native methods for `Array` should exists in `Array.prototype`
 - If you want to extend functionality of arrays then attach your method to `Array.prototype`
 
-#### 17.1 Parenting
+#### **17.1 Parenting**
 - How does Array know where to look for a method? `Prototype chain!`
 
-#### 17.1.1 Exenting your own objects
+#### **17.1.1 Exenting your own objects**
 - What if we want to have something like _Java Inheritance_?
   - You could directly mess with prototype... Bad idea
   - Maybe you could create a new prototype and replace original? ... hacky
   - In EC6 you should use `class` and `extends` that way you do not worry about prototype links
 
-#### 17.1.2 constructor property
+#### **17.1.2 constructor property**
 - `Object` constructor points to `function`
 - `Function` constructor points to `function`... wait what?
 - This is called **circular dependency**
 - `Function` is the constructor of all object types
 
-#### 17.2.1 Object Literal
+#### **17.2.1 Object Literal**
 - In some ways, under the hood Javascript wires up all the prototype linking
 ```javascript
   let cat = {};
@@ -135,7 +135,7 @@ function Cat(name, hunger, energy, state) {
   luna.eat(1);
 ```
 
-#### 17.2.3 Prototype
+#### **17.2.3 Prototype**
 - The problem with previous approach is that each instance `Luna` & `Felix` each one has a copy of methods like: `sleep`, `eat`, `wander` & `wakeup`
 - These objects are not shared but each individual has it's own
 - That means...double memory use!
@@ -159,7 +159,7 @@ function Cat(name, hunger, energy, state) {
 ```
 - Now `Luna` & `Felix` share methods via `prototype`
 
-#### 17.2.4 Creating objects using Object.create
+#### **17.2.4 Creating objects using Object.create**
 - You can as well use `Object.create` function like this:
 ```javascript
 const cat = {
@@ -202,7 +202,7 @@ console.log(kitten.hunger); // returns 1... actual wtf?
 ```
 - Using this way, we declare a **shared** prototype object and this way we do not have an extra space of memory
 
-#### 17.2.6 Function constructor
+#### **17.2.6 Function constructor**
 - Let's recall that each object has is own `ghost prototye` reference
 - When we do the following, we are ensuring that prototype object has correct references:
 ```javascript
@@ -225,7 +225,7 @@ console.log(kitten.hunger); // returns 1... actual wtf?
 - Therefore the main purpose of `prototype` is to server as a special lookup object, which will be shared across all instances of object instantiated.
 - This action will preserve memory!
 
-#### 17.2.7 Along came new operator
+#### **17.2.7 Along came new operator**
 - So forget about all that crap... and lets use `new` operator...WHY!!!!!
 - It automatically does previously mentioned (prototype linking)
 ```javascript
@@ -248,7 +248,7 @@ console.log(kitten.hunger); // returns 1... actual wtf?
   felix.wakeup();
 ```
 
-#### 17.2.8 ES6 The class keyword
+#### **17.2.8 ES6 The class keyword**
 - All resumes here, with ES6 and `class` keyword
 - It's a bad practice to have to touch `prototype` object in Javascript
 ```javascript

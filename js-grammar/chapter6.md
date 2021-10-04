@@ -22,7 +22,7 @@
 - _undefined_ => value is not assigned
 - Avoid using **undefined** as initial value, prefer **null**
 
-#### 6.0.1 Examples of type coercion
+#### **6.0.1 Examples of type coercion**
 - Javascript will try to come up with best value available if you supply meaningless combinations of types to some of its operators
 - Usually this wont happen in prod code, however is good to know this
 

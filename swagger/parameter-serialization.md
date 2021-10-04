@@ -16,7 +16,7 @@
 - Query params supports following methods:
   - form: It's the default way to work on. Uses `&` to concatenate values. Corresponds to `{?param1&param2}`
   - spaceDelimited: Has only effect for **non-exploded** arrays. Corresponds to `array=a b c`
-  - pipeDelimted: Has only effect for **non-exploded** arrays. Corresponds to `array=a|b|c`
+  - `pipeDelimited`: Has only effect for **non-exploded** arrays. Corresponds to `array=a|b|c`
   - deepObject: Applies to object only. It's a simple way to render nested objects using parameters
 - **default**: `style: form` and `explode: true`
 
@@ -34,6 +34,6 @@
 ### Other serialization methods
 - Use `content` keyword
 
-#### Additional Sources
+#### **Additional Sources**
 [Serialization Examples](https://swagger.io/docs/specification/serialization/)
 

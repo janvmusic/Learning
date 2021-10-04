@@ -122,7 +122,7 @@ class PeopleController < ActionController::Base
 end
 ```
 
-#### 4.5.1 Permit scalar values
+#### **4.5.1 Permit scalar values**
 Allows the appearance of an element in the `params`
 For example:
 ```ruby
@@ -151,7 +151,7 @@ params.permit(:id)
 
 There's an option to accept all of them `permit!`
 
-#### 4.5.2 Nested Parameters
+#### **4.5.2 Nested Parameters**
 As well it's possible to permit nested parameters
 ```ruby
 params.permit(:name, { emails [] },

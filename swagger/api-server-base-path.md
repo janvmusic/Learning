@@ -22,7 +22,7 @@ servers:
     description: Testing server
 ```
 
-#### Server URL Format
+#### **Server URL Format**
 - Usually follow this structure: `scheme://host[:port][/path]
 ```
 https://api.example.com
@@ -43,7 +43,7 @@ https://api.example.com/v1?route=
 ```
 - If `servers` array is not provided, then defaults to `/`
 
-#### Sever templating
+#### **Sever templating**
 - Any part of servers URL - scheme or its part, port subpath - can be parameterized using variables
 - Variables are indicated via `{}` in the server url
 ```
@@ -113,7 +113,7 @@ servers:
           - southeastasia
 ```
 
-#### Overriding Servers
+#### **Overriding Servers**
 - Global `servers` can be overridden on the path level or operation level
 - It's useful for:
   - Different base URLs for file upload or download operations
@@ -135,7 +135,7 @@ paths:
         '200':
 ```
 
-#### Relative URLs
+#### **Relative URLs**
 - The URLs in `servers` can be relative.
 - This URLs will be accomplished using the `server` paths
 ```

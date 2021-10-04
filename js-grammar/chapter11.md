@@ -6,7 +6,7 @@
 - Some **Array** methods are considered to be iterators: `.values`, `.keys`, `.map`, `.every`, `.some`, `.filter` & `.reduce`,
 
 
-#### Reduce
+#### **Reduce**
 ```javascript
   let miles = [5, 12, 75, 2, 5];
 
@@ -24,7 +24,7 @@
   console.log(result); // returns 99
 ```
 
-#### 11.1 Loops
+#### **11.1 Loops**
 - Contains 3 basic elements;
 - **initialize**: `i = 0`;
 - **test condition**: `i < 5`;
@@ -85,8 +85,8 @@ block: {
   console.log("after");
 }
 ```
-#### 11.2 for...of Loop
-#### 11.2.1 for...of Loop + Generators
+#### **11.2 for...of Loop**
+#### **11.2.1 for...of Loop + Generators**
 - **Generators** are function declared with a `*`. They can `yield` and can execute several likes by parts, not following all the lines
 ```javascript
 function* generator() {
@@ -107,7 +107,7 @@ console.log(generator.next().value); // prints two
 ```
 - **Generators** are one-time use functions. you should not attempt to reuse a generator function more than once. They are not a regular functions!!
 
-#### 11.2.1 for...of Loop
+#### **11.2.1 for...of Loop**
 - `Strings` are **iterables**, you can walk each character using a `for...of` statement
 ```javascript
   let heroName = 'Jotaro Joestar';
@@ -117,7 +117,7 @@ console.log(generator.next().value); // prints two
   }
 ```
 
-#### 11.2.3 for ... of and Arrays
+#### **11.2.3 for ... of and Arrays**
 - `for...of` it the equivalent to `for each` in Java
 ```javascript
   let array = [0,1,2];
@@ -126,7 +126,7 @@ console.log(generator.next().value); // prints two
   }
 ```
 
-#### 11.2.3 for ... of and Objects
+#### **11.2.3 for ... of and Objects**
 - `Objects` in Javascript are not iterables
 - `Objects` has enumerable properties
 - As remedy for this, we can use `Objects.keys`, `Objects.values` or `Objects.entries`
@@ -153,9 +153,9 @@ console.log(generator.next().value); // prints two
 ```
 - This can be also achieved using `for...in` loop, this will help to avoid use any of the Object conversion method
 
-#### 11.3 for ... in
-- `for ...of` loops only uses iterables. Remember Objects are _enumerables_
-- `for ...in` loops work with _enumerables_ object properties
+#### **11.3 for ... in**
+- `for ...of` loops only uses iterables. Remember Objects are _enumerable_
+- `for ...in` loops work with _enumerable_ object properties
 ```javascript
   let object = {
     a: 1,
@@ -177,7 +177,7 @@ console.log(generator.next().value); // prints two
 - `for...in` will skip all non `enumerable` properties
 - `constructor` and `prototype` are not enumerable
 
-#### 11.4 While loops
+#### **11.4 While loops**
 - **While** loops will iterate until the condition becomes false
 - You can use secondary conditions to break **while** earlier if needed
 ```javascript
@@ -187,7 +187,7 @@ console.log(generator.next().value); // prints two
   }
 ```
 
-#### 11.4.1 While and continue
+#### **11.4.1 While and continue**
 - **Continue** keyword can be used to skip steps.
 - However if you need earlier termination, use break
 

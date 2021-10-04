@@ -1,6 +1,6 @@
 ## Chapter 1 - Basics
 ### 1.1 CSS Properties and values
-#### 1.1.1 External Placement
+#### **1.1.1 External Placement**
 - CSS properties can be stored in a different file. Usually `styles.css`
 - They can be included in your file using:
 ```html
@@ -10,7 +10,7 @@
   >
 ```
 
-#### 1.1.2 Internal Placement
+#### **1.1.2 Internal Placement**
 - You can also include CSS directly in your file... not recommended
 ```html
   <style type = "text/css">
@@ -20,7 +20,7 @@
   </style>
 ```
 
-#### 1.1.3 Inline Placement
+#### **1.1.3 Inline Placement**
 - You can add a CSS property to the element
 ```html
 <body style= "font-family: Arial;">
@@ -28,7 +28,7 @@
 </body>
 ```
 
-#### 1.1.4 CSS Grammar - Selector Syntax
+#### **1.1.4 CSS Grammar - Selector Syntax**
 - The most common selector is the HTML tag name itself
 ```css
 body {
@@ -120,7 +120,7 @@ div {
 }
 ```
 
-#### 1.1.5 Relationships between properties and values
+#### **1.1.5 Relationships between properties and values**
 - There are several value types. Other properties use unique values
 - Usually CSS offer alternative values for the value types
 ```css
@@ -136,10 +136,10 @@ img {
   transform: rotate(0.5turn)
 }
 ```
-#### 1.1.6 CSS comment
+#### **1.1.6 CSS comment**
 Use `/* */` for block comments. It's the only option anyway...
 
-#### 1.1.7 Assignment Patterns
+#### **1.1.7 Assignment Patterns**
 - **shorthands** to void redundant declarations. Usually separated by `space`
 ```css
 /* from this */
@@ -173,11 +173,11 @@ p {
 }
 ```
 
-#### 1.1.8 CSS Variables
+#### **1.1.8 CSS Variables**
 - CSS allows using variables
 - To declare a variable use _double dash_
 
-##### Local Variables
+##### **Local Variables**
 - You can define local variables for a container
 ```css
 .notifications { --notification-color: blue; }
@@ -188,7 +188,7 @@ p {
 }
 ```
 
-#### 1.1.9 CSS Syntactically Awesome Stylesheets
+#### **1.1.9 CSS Syntactically Awesome Stylesheets**
 - **SASS** -> CSS Preprocessor
 - Filename is: `scss`
 - In `SASS` variables are declared with `$`
@@ -209,7 +209,7 @@ $b: #E16A2E;
 }
 ```
 
-#### 1.1.10 The idea behind CSS
+#### **1.1.10 The idea behind CSS**
 - It models the idea of a **waterfall**
 - _Children_ elements get their properties from the _parent_ element
 - The _selectors_ help us to **traverse through** elements
@@ -219,7 +219,7 @@ $b: #E16A2E;
 footer span { color: green; }
 ```
 
-#### 1.1.11 CSS Selectors
+#### **1.1.11 CSS Selectors**
 ```css
 /* Look for elements which have id as "id" */
 #id {}
@@ -231,5 +231,5 @@ footer span { color: green; }
 #parent .class1 {}
 ```
 
-#### 1.1.12 Forgiving Nature
+#### **1.1.12 Forgiving Nature**
 - If CSS cannot be applied/downloading fallbacks to _fail gracefully_

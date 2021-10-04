@@ -50,7 +50,7 @@ function ListItem({ item }) {
 ```
 
 ### Accessible Forms
-#### Labeling
+#### **Labeling**
 - Every HTML form control needs to be labeled
   - `<inputs>`
   - `<textarea>`
@@ -68,11 +68,11 @@ function ListItem({ item }) {
 - **Keyboard focus**: refers to the current element in DOM that is selected and accepts input from keyboard
 - Do not remove **Keyboard focus** outline
 
-#### Mechanisms to skip to desired content
+#### **Mechanisms to skip to desired content**
 - `Skiplinks` or `Skip navigation links` are hidden navigation links that only becomes visible when page interacts with it
 - Use landmark elements an roles, such as `<main>` and `<aside>` this to demarcate page regions
 
-#### Programmatically managing focus
+#### **Programmatically managing focus**
 - While actively updating DOM, keyboard input references can be lost
 - This is a way to fix it
 ```javascript

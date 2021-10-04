@@ -51,7 +51,7 @@ class Clock extends React.Component {
 ### Use state correctly
 - 3 basic rules to follow:
 
-#### Do not set state directly
+#### **Do not set state directly**
 - The only place where you can assign a state is in the constructor
 ```javascript
 // wrong
@@ -63,7 +63,7 @@ this.setState({
 });
 ```
   
-#### State updates may be asynchronous
+#### **State updates may be asynchronous**
 - React may batch state updates for performance
 - `this.props` & `this.state` must not be relied to calculate next state
 ```javascript
@@ -79,7 +79,7 @@ this.setState((state, props) => ({
 }));
 ```
 
-#### State updates are merged
+#### **State updates are merged**
 - When you call `setState` it updates only what its requested. It's **shallow** updated
 - It replaces totally previous value.
 

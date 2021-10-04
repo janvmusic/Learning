@@ -29,7 +29,7 @@ console.log('finish');
 - We cannot interact directly with **Promises**, they are wrappers
 - Luckily promises come with a mechanism to interact with them... `then`
 - `then` methods takes 2 actions:
-  - onFullfiled
+  - `onFullfiled`
   - onRejected
 ```javascript
 var promisedNumber = new Promise(function asyncUnitOfWork(fulfill, reject){
@@ -180,6 +180,6 @@ flatMap :: (a -> AsyncMonad b) -> AsyncMonad b
 of :: (a) -> AsyncMonad a
 ```
 
-#### SOURCE Link
+#### **Source**
 [Thoughts on promises](https://medium.com/weekly-webtips/thoughts-on-promises-and-async-functions-javascript-37b40d0538fa)
 

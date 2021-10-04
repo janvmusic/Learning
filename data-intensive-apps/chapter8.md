@@ -68,7 +68,7 @@ The sender can't even differentiate between, an error, failure or if the respons
 
 The usual way to handle this is via a _timeout_ and assume that the response is not going to arrive.
 
-#### Network faults in practice
+#### **Network faults in practice**
 No body is immune to network problems!
 
 > Network partition => When one part of the network is cut off from the rest due to a network fault.
@@ -81,7 +81,7 @@ Handling network faults does not necessarily mean _tolerate them_
 
 **Important** You do need to know how your software reacts to network problems and ensure that the system can recover from them
 
-#### Detecting faults
+#### **Detecting faults**
 Many systems need to automatically detect faulty nodes. Example: a load balancer needs to redirect the traffic
 
 There are some clues on how to track if a node is down:
@@ -116,7 +116,7 @@ Unfortunately this is not 100% trustworthy. Because asynchronous systems might h
 
 If your timeout is low, it only takes a transient spike in round-trip times to throw the system off-balance.
 
-#### Network congestion and queueing
+#### **Network congestion and queueing**
 **Network Congestion** is that if several different nodes simultaneously try to send packets to the same destination, the network switch must queue them up, then feed them into the destination, **one by one**. 
 
 On a busy network, a request might have to wait until a node is clear. 
@@ -175,16 +175,28 @@ Nowadays computers have 2 types of clocks:
 - Time of the day clock
 - Monotonic clock
 
-### Time of the day clock
+### Monotonic vs Time-of-day clocks
+#### ****Time of the day clock**
 It returns date and time accordingly to some calendar
 
 Usually synchronized with NTP
 
-## Monotonic clock
-Suitable for measuring a duration, such as timeouts.
+#### ****Monotonic clock**
+Suitable for **measuring a duration**, such as timeouts or service response
 
 They have two values something likes `start/end`
 
+The difference between `start & end` tells you how much time have elapsed between the two checks.
+
+**Important** The absolute value of the clock is meaningless. It makes no sense to compare monotonic clock values from 2 different computers. Basically, they don't mean the same thing.
+
+> Slewing the clock => NTP may adjust the frequency at which the monotonic clock moves forward. If it detects that the computer's local quarts is moving faster or slower than the NTP server.
+
+On most systems monotonic clocks can measure time intervals in microseconds or less.
+
+Using monotonic clocks in a distributed system is usually good. Mostly, because it does not assume any synchronization between different node's clocks and its not sensitive to slight inaccuracies of measurement
+
+### Clock Synchronization and accuracy
 
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.

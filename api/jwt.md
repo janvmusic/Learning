@@ -55,7 +55,7 @@ There are 3 types of **Claims**
 - Public
 - Private
 
-#### 5.2.1 Registered
+#### **5.2.1 Registered**
 Predefined claims that can increase the security. Recommended are:
 - **iss** => User who sends the claim
 - **sub** => The subject of the JWT
@@ -65,12 +65,12 @@ Predefined claims that can increase the security. Recommended are:
 - **iat** => Issued at time
 - **jti** => Unique identifier for the JWT. Case sensitive string. Unique the "jti" prevents for any replication
 
-#### 5.2.2 Public claims
+#### **5.2.2 Public claims**
 These type of claims can be defined by a group of people using the JWT.
 
 Claims needs to be registered in the IANA (JWT Registry) or it should contain a collision resistant name to avoid collisions
 
-#### 5.2.3 Private claims
+#### **5.2.3 Private claims**
 Custom claims defined and created by 2 parties to exchange information between them.
 ```json
 {

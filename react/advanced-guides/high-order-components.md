@@ -134,7 +134,7 @@ function getDisplayName(WrappedComponent) {
 ```
 
 ### Caveats
-#### Do not use HOCs inside the render method
+#### **Do not use HOCs inside the render method**
 - React diffing algorithm uses component identity to determine wether it should update the existing subtree or throw it away and mount a new one (called **Reconciliation**)
 - Using HOC creates a new component each time, so that would mean extra renders 
 ```javascript
@@ -150,7 +150,7 @@ render() {
 - Remounting a component causes the state of that component and all of its children to be lost
 - The ideal would be apply HOC outside the component definition
 
-#### Static methods must be copied over
+#### **Static methods must be copied over**
 - Static methods are not carried over when using HOCs
 ```javascript
 // Define a static method

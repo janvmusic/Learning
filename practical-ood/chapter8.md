@@ -14,7 +14,7 @@
 - A _factory_ helps to concentrate the logic/knowledge about how to create a **valid** object
 
 ### 8.4 The composed object
-#### Aggregation: A special kind of composition
+#### **Aggregation: A special kind of composition**
 - **Delegation:** An object receives a message and forwards it to another
 - _Delegation_ creates **dependencies** because must recognize the message **and** know where to send it
 - **Composition** often involves delegation. A _composed_ object is made up of parts with which it expects to interact via well-defined interfaces.
@@ -28,8 +28,8 @@
 - **Composition** allows objects to have structural independence, but at the cost of explicit message delegation
 - **Rule**: If you cannot defend inheritance as a better solution, then use composition
 
-#### 8.5.1 Accepting the consequences of inheritance
-##### Benefits of inheritance
+#### **8.5.1 Accepting the consequences of inheritance**
+##### **Benefits of inheritance**
 - Transparent, Reasonable, usable and exemplary
 - Usually excels in last **3**
 - Let's get deeper in this:
@@ -37,7 +37,7 @@
   - **Usable**: You can easily create new subclasses to accommodate new variants
   - **Exemplary**: By nature, these hierarchies provide guidance for writing the code to extend them
 
-##### Costs of inheritance
+##### **Costs of inheritance**
 - 2 types of problems: 
   1. you choose inheritance to solve _the wrong kind of problem_
   2. Use of your code for ways that are not correct or expected
@@ -48,20 +48,20 @@
 - Always try to answer _What will happen when I'm wrong_ before creating an inheritance hierarchy
 - Avoid writing frameworks that require users of your code to subclass your objects in order to gain behavior
 
-#### 8.5.2 Accepting the consequences of composition
-##### Benefits of composition
+#### **8.5.2 Accepting the consequences of composition**
+##### **Benefits of composition**
 - You will have several small objects, with their own responsibilities
 - These objects are _transparent_; You know that they do and it's easy to foreseen changes
 - _Pluggable_
 - Easy to add new parts which is _reasonable_
 - They are _usable_ in different contexts
 
-##### Cost of composition
+##### **Cost of composition**
 - While every individual part may be _transparent_ the whole object may not
 - Individual Objects must know whom should answer a message
 - There's no way to arrange code to share identical parts
 
-#### 8.5.3 Choosing relationships
+#### **8.5.3 Choosing relationships**
 - Inheritance is specialization
 - Inheritance is good when you need to add small code to old code
 - Using composition when the behavior is more than the sum of its parts

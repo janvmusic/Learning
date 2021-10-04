@@ -21,20 +21,20 @@ React.createElement(
 - **Capitalize** elements refers to react _components_
 - If you use `<Foo />` the variable `Foo` must exists
 
-#### React must be in scope
+#### **React must be in scope**
 - `React.createElement` compiles to JSX
 - That's why we need to `import React from 'react';`
 
-#### Using Dot Notation for JSX Type
+#### **Using Dot Notation for JSX Type**
 - You can refer to components using `dot notation`
 - Example: `<MyComponent.DatePicker color="blue">`
 - This is used when there's more than one export in your package
 
-#### User-defined components must be capitalized
+#### **User-defined components must be capitalized**
 - Components `built-in` uses lower case, such as: `<div />` or `<span />`
 - In case of components build via `React.createElement` then uses capital letters, such as: `<Foo />`
 
-#### Choosing the type at runtime
+#### **Choosing the type at runtime**
 - You cannot use a general expression as the React element type
 ```javascript
 import React from 'react';
@@ -70,7 +70,7 @@ function Story(props) {
 ```
 
 ### Props in JSX
-#### Javascript expressions as Props
+#### **Javascript expressions as Props**
 - You can pass an expression to JSX but surround it with `{}`
 - The component which receives the expression, evaluates it and then uses the final value
 ```javascript
@@ -78,7 +78,7 @@ function Story(props) {
 ```
 - **Remember** `if` & `for` statements are not expressions, you cannot pass them as props
 
-#### String literals
+#### **String literals**
 - You can use `""` or `{''}`
 - Values are **HTML-unescaped**. Following expressions are equal
 ```javascript
@@ -86,14 +86,14 @@ function Story(props) {
   <MyComponent message={'<3'} />
 ```
 
-#### Props defaults to true
+#### **Props defaults to true**
 - If you pass no value for a prop, it defaults to `true`
 ```javascript
   <MyTextBox autocomplete />
   <MyTextBox autocomplete={true} />
 ```
 
-#### Spread attributes
+#### **Spread attributes**
 - If you have `props` as an Object and you want to pass this to a component you can use `spread`
 ```javascript
   function App1() {
@@ -118,7 +118,7 @@ function Story(props) {
   }
 ```
 
-#### Children in JSX
+#### **Children in JSX**
 - In JSX you can pass other components such as `<div>` or `<MyComponent>` as `props.children` 
 - You can also use `string literals` inside a component
 - You can mix different types of children
@@ -140,7 +140,7 @@ render() {
 }
 ```
 
-#### Javascript expression as a children
+#### **Javascript expression as a children**
 - You can pass Javascript expressions as a children using `{}`
 ```jsx
 function Item(props) {
@@ -157,7 +157,7 @@ function TodoList() {
 }
 ```
 
-#### Function as children
+#### **Function as children**
 - Normally, `Javascript` expressions are evaluated to `string`, React element or a list of those things.
 - You can use `props.children` to evaluate expressions/functions
 - Children passed to a component could be anything, as long as it ends as **react component**
@@ -180,7 +180,7 @@ function ListOfTenThings() {
 }
 ```
 
-#### Booleans, Null, and Undefined are ignored
+#### **Booleans, Null, and Undefined are ignored**
 - `false`, `null`, `undefined` & `true` are valid children they just simply don't render
 - However you can use that for **conditional rendering**
 ```jsx

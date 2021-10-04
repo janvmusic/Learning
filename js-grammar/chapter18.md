@@ -5,7 +5,7 @@
   - polymorphism
 - **Object composition** is when you combine two or more objects together to achieve polymorphism, instead of using inheritance
 
-#### 18.1 Ingredients
+#### **18.1 Ingredients**
 ```javascript
 export default class Ingredient {
   constructor (name, type, calories) {

@@ -7,7 +7,7 @@
 - Examples: `Array.map`, `Array.reduce`, `setTimeout` and `addEventListener` are some good examples of **high-order** functions
 - Think about solving problem theoretically without think about implementation details
 
-#### 14.0.4 Iterators
+#### **14.0.4 Iterators**
 - `Array.map` is one of the most common higher-order functions
 - It takes a **function** on every item in the array
 - Then returns a copy of the modified array

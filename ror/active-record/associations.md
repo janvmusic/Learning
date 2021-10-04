@@ -338,7 +338,7 @@ irb> a.first_name == b.writer.first_name
 ### 4.1 belong_to association reference
 - In DB language this creates a column which makes reference to another table
 - `1-to-1` or `1-to-Many`
-#### 4.1.1 Methods added by belongs_to
+#### **4.1.1 Methods added by belongs_to**
 By declaring an association of this kind, your model wins 6 methods
 ```
   - association
@@ -364,12 +364,12 @@ reload_author # return uncached version
 ```
 - If no associated object is found, then `book.author` will return `nil`
 
-##### 4.1.2.1 :autosave
+##### **4.1.2.1 :autosave**
 - if `true`  => then save any loaded association and destroy them whenever you **save the parent**
 - if `false` => ...
 - if `none`  => new association will be saved, but updated associations wont
 
-##### 4.1.2.2 :class_name
+##### **4.1.2.2 :class_name**
 - Used to supply the model name
 ```ruby
 class Book < ApplicationRecord
@@ -378,7 +378,7 @@ end
 
 ```
 
-##### 4.1.2.3 :counter_cache
+##### **4.1.2.3 :counter_cache**
 - Caches the `COUNT(*)` from the DB
 ```ruby
 class Book < ApplicationRecord
@@ -387,17 +387,17 @@ end
 ```
 - Counter cache columns are added as `attr_readonly`
 
-##### 4.1.2.4 :dependent
+##### **4.1.2.4 :dependent**
 - `:destroy` will be called on it's associated objects
 - `:delete` delete directly from the database without calling `destroy method`
 - If you add this to a `has_many` relationship will lead to orphan records
 
-##### 4.1.2.5 :foreign_key
+##### **4.1.2.5 :foreign_key**
 - By convention rails assumes that `{association}_id` will be used
 - Using this option you can specify the column to use
 - **Important:** Rails wont create the foreign key, you need to do it
 
-##### 4.1.2.6 :primary_key
+##### **4.1.2.6 :primary_key**
 - By default rails uses `id` as primary key
 - Specifying this in the relationship will lead to have another column specified
 ```ruby
@@ -410,22 +410,22 @@ class Todo < ApplicationRecord
 end
 ```
 
-##### 4.1.2.7 :inverse_of
+##### **4.1.2.7 :inverse_of**
 specifies the name of the `has_many` or `has_one` association that is the inverse of this association.
 
-##### 4.1.2.8 :polymorphic
+##### **4.1.2.8 :polymorphic**
 Passing `true` just enabled polymorphic associations
 
-##### 4.1.2.9 :touch
+##### **4.1.2.9 :touch**
 If set to `true` then associated objects will get updates on `updated_at` or `updated_on` whenever this object is saved or destroyed
 
-##### 4.1.2.10 :validate
+##### **4.1.2.10 :validate**
 If set to `true` then associated objects will be validated before save this object. By default is false
 
-##### 4.1.2.11 :optional
+##### **4.1.2.11 :optional**
 The presence of the associated object wont be validated. By default `false` 
 
-#### 4.1.3 Scopes for belongs_to
+#### **4.1.3 Scopes for belongs_to**
 - Used to add customization to the query used by active record
 - These customization are added by `scope blocks`
 ```ruby
@@ -439,7 +439,7 @@ end
   - readonly => Read only when loaded
   - select   => Ability to override select method
 
-#### 4.1.4 Do any associated objects exists?
+#### **4.1.4 Do any associated objects exists?**
 You can check this with: `association.nil?`
 ```ruby
 if @book.author.nil?
@@ -452,7 +452,7 @@ end
 - Just as `belongs_to` adds 6 methods to your model
 - This could be consider the counter part for `belongs_to`
 
-#### 4.2.2 Options for has_one
+#### **4.2.2 Options for has_one**
 These options behave the same as in `belongs_to`
 - :autosave
 - :class_name
@@ -462,10 +462,10 @@ These options behave the same as in `belongs_to`
 - :touch
 - :validate
 
-##### 4.2.2.1 :as
+##### **4.2.2.1 :as**
 This option will set the association as **polymorphic**
 
-##### 4.2.2.4 :dependent
+##### **4.2.2.4 :dependent**
 Controls what happens when the associated owner object is destroyed
 - `:destroy` => cascade effect
 - `:delete`  => DB delete without callbacks
@@ -473,10 +473,10 @@ Controls what happens when the associated owner object is destroyed
 - `:restrict_with_exception` => Raises an exception `DeleteRestrictionError` if there's an associated record
 - `:restrict_with_error`     => Causes an error if there's an associated record
 
-##### 4.2.2.8 :source
+##### **4.2.2.8 :source**
 This option specifies the source association name for `has_one :through`
 
-##### 4.2.2.9 :source_type
+##### **4.2.2.9 :source_type**
 Specifies the source type for `has_one :through` association that proceeds through a polymorphic association
 ```ruby
 class Author < ApplicationRecord
@@ -499,10 +499,10 @@ class DustJacket < ApplicationRecord; end
 
 ```
 
-##### 4.2.2.10 :through
+##### **4.2.2.10 :through**
 Specifies the join model through which to perform the query
 
-#### 4.2.5 When are objects saved?
+#### **4.2.5 When are objects saved?**
 - Objects are automatically saved in order to update its foreign key
 - Any object being replaced will be saved because its FK is being replaced
 - If it fails to save then returns false and the assignment itself is cancelled
@@ -517,45 +517,45 @@ belongs_to => child
 - It will create a `1-to-many` association
 - In DB terms the other class with have a foreign key that refers to instances of this class
 
-#### 4.3.1 Methods added by has_many
+#### **4.3.1 Methods added by has_many**
 You gain 17 methods adding this association to your model
 
-##### 4.3.1.1 Collection
+##### **4.3.1.1 Collection**
 Returns a relation of all the objects associated.
 
 ```ruby
 @books = @author.books 
 ```
 
-##### 4.3.1.2 collection<<(object, ...)
+##### **4.3.1.2 collection<<(object, ...)**
 Adds one or more objects to the relation
 ```ruby
 @author.books << @new_book
 ```
 
-##### 4.3.1.3 delete(object, ...)
+##### **4.3.1.3 delete(object, ...)**
 Removes one or more objects from the collection by setting foreign keys to `NULL`. This will also be affected by `:dependent` option
 ```ruby
 @author.books.delete(@book1)
 ```
 
-##### 4.3.1.4 collection.destroy(object, ...)
+##### **4.3.1.4 collection.destroy(object, ...)**
 Removes one or more objects from the collection by running `destroy` on each object
 
 ```ruby
 @author.books.destroy(@book1)
 ```
 
-##### 4.3.1.5 collection=(objects)
+##### **4.3.1.5 collection=(objects)**
 Assignment of objects to a relationship (add & delete)
 
-##### 4.3.1.6 collection_singular_ids
+##### **4.3.1.6 collection_singular_ids**
 Returns the `ids` of the associated collection
 
-##### 4.3.1.7 collection_singular_ids=(objects)
+##### **4.3.1.7 collection_singular_ids=(objects)**
 Sets the new primary keys for the object collection.
 
-##### 4.3.1.8 clear
+##### **4.3.1.8 clear**
 Removes the objects from the collection according to the strategy defined by the `dependent` option.
 
 - Default options
@@ -564,26 +564,26 @@ has_many :through => `delete_all`
 has_many          => FK to NULL
 ```
 
-##### 4.3.1.9 collection.empty?
+##### **4.3.1.9 collection.empty?**
 Well self explanatory
 
-##### 4.3.1.10 collection.size
+##### **4.3.1.10 collection.size**
 Returns the size of the collection
 
-##### 4.3.1.11 collection.find
+##### **4.3.1.11 collection.find**
 Finds an element based on the position
 
-##### 4.3.1.12 collection.where
+##### **4.3.1.12 collection.where**
 Finds objects on the collection based on the conditions supplied. Objects are **lazy loaded**
 ```ruby
 @available_books = @author.books.where(available: true) # No query yet
 @available_book = @available_books.first # Now the database will be queried
 ```
 
-##### 4.3.1.13 collection.exists?(...)
+##### **4.3.1.13 collection.exists?(...)**
 Well self explanatory
 
-##### 4.3.1.14 collection.build(attributes = {})
+##### **4.3.1.14 collection.build(attributes = {})**
 It will create a new collection of the associated object based on an object or a block or objects.
 
 **NOTE**: The objects are not saved!
@@ -596,16 +596,16 @@ It will create a new collection of the associated object based on an object or a
   { published_at: Time.now, book_number: "A12347" }
 ])
 ```
-##### 4.3.1.15 collection.create(attributes = {})
+##### **4.3.1.15 collection.create(attributes = {})**
 Same as previous method but this time it will be created
 
-##### 4.3.1.16 collection.create!(attributes = {})
+##### **4.3.1.16 collection.create!(attributes = {})**
 Same as previous methods but it will raise an exception when the association can't be saved
 
-##### 4.3.1.17 collection.reload
+##### **4.3.1.17 collection.reload**
 Will get the latests version of the association and will update cache
 
-#### 4.3.2 Options for has_many
+#### **4.3.2 Options for has_many**
 Following options are the same as before
 - :as          => Indicates polymorphic
 - :autosave
@@ -618,10 +618,10 @@ Following options are the same as before
 - :through
 - :validate
 
-##### 4.3.2.4 :counter_cache
+##### **4.3.2.4 :counter_cache**
 You will need this option if you configured this to `belongs_to`
 
-##### 4.3.2.5 :dependent
+##### **4.3.2.5 :dependent**
 Controls what happens when the associated owner object is destroyed
 - `:destroy`    => cascade effect
 - `:delete_all` => DB delete without callbacks
@@ -629,7 +629,7 @@ Controls what happens when the associated owner object is destroyed
 - `:restrict_with_exception` => Raises an exception `DeleteRestrictionError` if there's an associated record
 - `:restrict_with_error`     => Causes an error if there's an associated record
 
-#### 4.3.3 Scopes for has_many
+#### **4.3.3 Scopes for has_many**
 You can use the following querying methods in the scope block for `has_many`
 - where    => `WHERE` clause
 - group    => `GROUP BY` clause
@@ -646,7 +646,7 @@ THEN A -> C
 - select   => Let's you override the `SELECT` statement
 - distinct => Removes duplicates from collection.
 
-#### 4.3.4 When are objects saved?
+#### **4.3.4 When are objects saved?**
 When you assign an object to `has_many` association, that object is automatically saved. 
 
 If it's a new object you need to explicitly call `save` to saver the association

@@ -40,7 +40,7 @@ Databases that don't accomplish **ACID** usually perform in a `BASE` state.
 
 `ACID` differs from one DB to another. Specially in `Isolation`, today's ACID compliant is ambiguous.
 
-#### Atomicity
+#### **Atomicity**
 In general, **_Atomic_** refers to something that cannot be broken down in smaller parts.
 
 In **multi-thread programming** means that one thread cannot see an unfinished or half-finished product from another thread. 
@@ -51,7 +51,7 @@ In **ACID context** describes what happens if a client wants to make several wri
 
 **Important**: Atomicity simplifies this problem: If a transaction was aborted, the app can be sure that it didn't change anything, so it can be safely be retried.
 
-#### Consistency
+#### **Consistency**
 This word is overused in computer science and system designs. For example
 - _Replica consistency & Eventual Consistency_ => Asynchronously replicated systems
 - _Consistent hashing_ is an approach to solve partition rebalancing
@@ -68,7 +68,7 @@ However, in **ACID** context means a database being in a "good state"
 
 `Atomicity`, `Isolation`, `Durability` are properties of the DB, `Consistency` is a property of the application.
 
-#### Isolation
+#### **Isolation**
 Most DBs are accessed by several clients at the same time
 
 If clients are reading or writing different parts of the db, then there's no concurrency problem. 
@@ -85,7 +85,7 @@ _They cannot step on each other's toes_
 
 In practice, serializable isolation is rarely used, because it carries a performance penalty.
 
-#### Durability
+#### **Durability**
 In `ACID` context **Durability** means that you will have a safe place to store your data without feat of losing it.
 
 **Durability** is the promise that once a transaction has committed `successfully`, any data it has written will not be forgotten, even if there's a hardware fault or the db crashes.
@@ -107,9 +107,9 @@ To recap:
 
 `Multi-object transactions` require some way of determining which read and write operations belong to the same transaction:
 - Typically done by using client's TCP connection, remember `[BEGIN -> TRANSACTION -> COMMIT]` is considered a transaction
-- Many nonrelational DBs don't have such a way of grouping operations together.
+- Many non-relational DBs don't have such a way of grouping operations together.
 
-#### Single-Object Writes
+#### **Single-Object Writes**
 `Atomicity` & `Isolation` also apply when a single object is being changed. 
 
 Most db storages aim to provide atomicity and isolation on the level of a single object on one node.
@@ -126,7 +126,7 @@ Most db storages aim to provide atomicity and isolation on the level of a single
 
 A `transaction` is usually understood as a mechanism for grouping multiple operations on multiple objects into one unit of execution
 
-#### Handling errors and aborts
+#### **Handling errors and aborts**
 A key feature of a transaction is that it can be aborted and safely retried if an error occurred.
 
 **Important** If the DB is in danger of violating its guarantee of `atomicity`, `isolation`, or `durability`, it would rather abandon the transaction entirely than allow it to remain half finished.
@@ -159,21 +159,21 @@ Most basic level of transaction and guarantees 2 things:
 1. No _dirty read_. What you read has been committed.
 2. No _dirty writes_. When writing to the db, you will only override what has been committed.
 
-#### No dirty reads
+#### **No dirty reads**
 Transactions running at the read committed isolation level must prevent _dirty reads_. But how?
 
 **Why is it useful?**
 - Prevent transactions to read _partial updates_
 - Prevent transactions to read _data that will be rollback later_
 
-#### No dirty writes
+#### **No dirty writes**
 Transactions running at the _read committed isolation level_ must prevent dirty writes, usually by delaying the second write until the first write's transaction has been committed or aborted
 
 **Why is it useful?**
 - Prevent bad outcomes for multi-object writes (Car + Invoice example)
 - Read committed does not prevent the race condition between 2 counter increments.
 
-#### Implementing read committed
+#### **Implementing read committed**
 DB prevent dirty writes by using **row level locks**
 
 > row level lock => When a transaction wants to modify a particular object (row or document), it must first acquire a lock on that object. It must hold the lock until committed or aborted.
@@ -192,7 +192,7 @@ reads get the old value while a transaction is _on-going_
 Once the transaction is committed, then the db returns the new value.
 
 ### Snapshot isolation and Repeatable read 
-> read skew => reading from an unfinished transaction. Its an example of a _nonrepeatable read_
+> read skew => reading from an unfinished transaction. Its an example of a _non-repeatable read_
 
 **Read skew** is considered **acceptable** under read-committed isolation
 
@@ -204,7 +204,7 @@ Which situations cannot tolerate such temporary inconsistency?
 
 When a transaction can see a consistent snapshot, frozen at a particular point in time, it is much easier to understand
 
-#### Implementing snapshot isolation
+#### **Implementing snapshot isolation**
 Typically uses _write locks_ to prevent dirty writes.
 
 Reads do not require any locks. Basically, _readers never block writers, and writers never block readers_
@@ -213,7 +213,7 @@ Reads do not require any locks. Basically, _readers never block writers, and wri
 
 MVCC allows db to read transactions from multiple snapshots. The example of the account and `delete_by`
 
-#### Visibility rules for observing a consistent snapshot
+#### **Visibility rules for observing a consistent snapshot**
 When a transaction reads from the db, transaction IDs are used to decide which objects it can see and which are invisible.
 
 An Object is visible if both of the following conditions are true:
@@ -222,7 +222,7 @@ An Object is visible if both of the following conditions are true:
 
 By never updating values in place but instead creating a new version every time a value is changed, the db can provide a consistent snapshot while incurring only a small overhead
 
-#### Indexes and Snapshot isolation
+#### **Indexes and Snapshot isolation**
 **How does indexes work in a multi-version database?**
 
 1. One option is to have the **index simply pointing to all versions of an object** and require an index query to **filter out** any object **versions that are not visible to the current transaction**. When garbage collector removes old object versions that are no longer visible to any transaction, the corresponding index entries can also be removed
@@ -234,7 +234,7 @@ Basically, when using B-trees writes do not filter out by transaction IDs but cr
 
 More details on this [Video - Isolation Levels in DBMS](https://www.youtube.com/watch?v=-gxyut1VLcs)
 
-#### Repeatable read and naming confusion
+#### **Repeatable read and naming confusion**
 Snapshot isolation is a useful isolation level, specially for read-only transactions
 - Oracle names it as _serializable_
 - Postgres & MySQL names it as _repeatable read_
@@ -255,7 +255,7 @@ This problem can occur in the following scenarios:
 - Making a local change to a complex value (i.e. adding an element to JSON)
 - Two users editing a wiki page at the same time.
 
-#### Atomic write operations
+#### **Atomic write operations**
 Most common solution, removes the need to implement _read-modify-write_ cycles
 
 This solution depends on your code expressed in terms of these operations. Usually the best solution
@@ -264,14 +264,14 @@ This solution depends on your code expressed in terms of these operations. Usual
 
 Due to the nature of ORMs, it is easy to write code that performs unsafe _read-write-modify_ instead of atomic operations.
 
-#### Explicit Locking
+#### **Explicit Locking**
 Basically, the app explicitly locks the objects that is going to use, then the app performs the _read-write-modify_ 
 
 If any concurrent transaction wants to use any of the objects, then it is forced to wait until the first _read-write-modify_ has completed.
 
 This solution works, however you need to **think carefully where locks** are required, otherwise you'll be introducing race conditions
 
-#### Automatically detecting lost updates
+#### **Automatically detecting lost updates**
 **Atomic operations** and **locks** are ways of preventing lost updates by forcing _read-write-modify_ cycles to happen sequentially
 
 An alternative is to allow the concurrent transactions to run in parallel and, if the transaction manager detects a lost update, abort the transaction and force it to retry its _read-write-modify_ cycle
@@ -280,12 +280,12 @@ An advantage is that dbs can perform this check efficiently in conjunction with 
 
 Lost update detection is a great feature, because it does not require application code to use any special db feature.
 
-#### Compare-and-set
+#### **Compare-and-set**
 The purpose of this operation is **to avoid lost updates** by allowing an **update to happen ONLY if the value hasn't change** since your last read.
 
 If previous value and new one, does not match, then you will need to retry the _read-write-modify_ cycle.
 
-#### Conflict resolution and replication
+#### **Conflict resolution and replication**
 For distributed dbs, there are additional steps required to prevent lost updates. For example **Locks** and **Compare-and-set** assume that there is a single _up-to-date_ copy of the data.
 
 A common approach  in such replicated dbs is to allow concurrent writes to create several conflicting versions of a value and use app code or special data structure to resolve and merge these versions after the fact
@@ -306,7 +306,7 @@ On some cases, `write skews` follow this pattern:
 
 > Phantom => Where a write in one transaction changes the result of a search query in another transaction.
 
-#### Characterizing a write skew
+#### **Characterizing a write skew**
 > write skew => it is neither a dirty write nor a lost update, because 2 transactions are updating two different objects. On Call doctor's example
 
 <img tag="write skew" src="img/ch7-write-skew.png" width="300px">
@@ -355,7 +355,7 @@ This is actually achievable due 2 things:
 
 A system designed for single-threaded execution can sometimes perform better than a system that supports concurrency, because it can avoid the coordination overhead of locking. However the throughput is limited to that of a single CPU core.
 
-#### Encapsulating transactions in stored procedures
+#### **Encapsulating transactions in stored procedures**
 Systems with a single-threaded serial transaction processing don't allow interactive multi-statement transactions (booking example where user needs to input data)
 
 Instead, the app must submit the entire transaction code to the db ahead of time, as a stored procedure. 
@@ -371,7 +371,7 @@ Now it's possible to execute the same stored procedure on each replica but the f
 
 > Deterministic => An operation must return the same result even when executed in a different node or environment.
 
-#### Partitioning
+#### **Partitioning**
 Executing all transactions serially makes concurrency control much simpler, but limits the transaction throughput of the database to the speed of a single CPU core on a single machine
 
 Read-only transaction can be executed elsewhere, using snapshot isolation. For apps with high write throughput, the single transaction processor can become a serious bottleneck
@@ -385,7 +385,7 @@ This means that the stored procedure need to be performed in lockstep across all
 
 In conclusion, to implement `Serial Execution` + `Partitioning` it will depend on how distributable your data can be.
 
-#### Summary of serial execution
+#### **Summary of serial execution**
 Serial Execution has become a viable way of achieving serializable isolation within certain constraints
 - Each transaction must be small and fast.
 - It's limited to datasets that can fit `in-memory`
@@ -403,7 +403,7 @@ In 2PL, writers don't just block other writes, they also block readers and vice 
 
 2PL protects against all the race conditions discussed earlier, including lost updates and write skew.
 
-#### Implementing 2PL
+#### **Implementing 2PL**
 The blocking of readers and writers is implemented by having a lock on each object in the db. There are 2 types of locks:
 - Shared mode
 - Exclusive mode
@@ -420,7 +420,7 @@ The blocking of readers and writers is implemented by having a lock on each obje
 
 DBs automatically detects a _deadlock_ and aborts one of the transactions stuck.
 
-#### Performance of 2PL
+#### **Performance of 2PL**
 The big downside of two-phase locking is **performance**. This is partially due to the overhead of acquiring and releasing all those locks, but more importantly due to reduced concurrency.
 
 Traditional relational dbs don't limit the duration of a transaction, because they are designed for interactive applications that wait for human input.
@@ -429,7 +429,7 @@ Traditional relational dbs don't limit the duration of a transaction, because th
 
 Also, if deadlocks are frequent, this can mean significant wasted effort (on retry transactions)
 
-#### Predicate deadlocks
+#### **Predicate deadlocks**
 A **db with serializable isolation must prevent phantoms**.
 
 > Predicate lock => Works similarly to shared/exclusive lock, but rather than belonging to an particular object, it belongs to all objects that match some search condition
@@ -440,13 +440,13 @@ If `T(A)` wants to write any object, then must check for whether either the old 
 
 The key idea here is that a predicate lock applies even to object that do not yet exists in the DB, but which might be added in the future (phantoms)
 
-#### Index-range locks
+#### **Index-range locks**
 **Predicate locks** do not perform well if there are many locks by active transactions.
 
 **Index-range** works on acquiring a lock on a range of objects. It's an approximation and its not precise as predicate locks would be.
 
 ### Serializable Snapshot Isolation
-#### Pessimistic vs Optimistic concurrency control
+#### **Pessimistic vs Optimistic concurrency control**
 `2PL` is considered `pessimistic` control mechanism: It's based on the assumption that if anything goes wrong, we must wait until the situation is safe before doing anything.
 
 `Serial execution` is, in a sense, `pessimistic` to the extreme. It is essentially equivalent to each transaction having an exclusive lock on the entire db for the transaction duration. 
@@ -467,7 +467,7 @@ However, if there is enough spare capacity, and if contention is not too high, `
 
 `SSI` states that all reads within a transaction are made from a consistent snapshot of the db.
 
-#### Decisions based on an outdated premise
+#### **Decisions based on an outdated premise**
 **Write skews** follow a recurring pattern: _A transaction reads from the db, examines the result, and decided to take some action based on the result it saw_
 
 In other words, _a transaction takes action based on the premise_. 
@@ -480,17 +480,17 @@ How does the db detect these types of situations?
 - Detecting reads of a stale **MVCC**
 - Detecting writes that affect prior reads
 
-#### Detecting stale MVCC reads
+#### **Detecting stale MVCC reads**
 **Remember** Snapshot isolation is usually implemented on `MVCC`. When a transaction reads from a consistent snapshot in an MVCC ignores writes that hadn't yet committed
 
 On SSI when a transaction wants to commit, the db checks if there's an update on the snapshot(ignored writes that now might have been committed)
 
 SSI preserves snapshot isolation's support on long-running reads from a consistent snapshot by avoid aborting unnecessary transactions.
 
-#### Detecting writes that affect prior reads
+#### **Detecting writes that affect prior reads**
 When a transaction writes to the db, it must look in the indexes for any other transaction that have recently read the affected data. Then leaves a _mark_ to notify future transactions that the data has changed.
 
-#### Performance on Serializable Snapshot Isolation
+#### **Performance on Serializable Snapshot Isolation**
 One trade off is `Granularity`. If it's strict it can track of each transactions need to abort, but the bookkeeping overhead can become significant.
 
 Less strict on `Granularity` will lead to transactions aborted that were not required. Its always a trade off
@@ -525,7 +525,7 @@ Something to take in account is the rate of aborts, which significantly affects 
 
 - **Dirty Reads**  => One client reads another client's writes before they have been committed
 - **Dirty Writes** => One client overrides that another client has written but not yet committed
-- **Read Skew**    => A client sees different parts of the db at  different points in time. You read something that  is not ready or does not exists. Also known as _nonrepeatable reads_. It's implemented on snapshot isolation using MVCC (Multi Version Concurrency Control).
+- **Read Skew**    => A client sees different parts of the db at  different points in time. You read something that  is not ready or does not exists. Also known as _non-repeatable reads_. It's implemented on snapshot isolation using MVCC (Multi Version Concurrency Control).
 - **Lost Updates** => Two clients perform a _read-modify-write_ cycle. One overrides the other and does not incorporate the other's changes. So the update is lost. 
 - **Write Skew**   => A transaction reads something, then takes a decision, later writes its decision to the db. When this happens the _premise_ of the read no longer is valid
 - **Phantom Read** => A transaction reads a _premise_. Another client makes a write that makes the previous _premise_ no longer valid
@@ -564,7 +564,7 @@ T2 = {
 
 **Dirty Writes** -> Prevent writes until previous transaction finishes
 
-**Nonrepeatable reads** -> Inconsistent reads between transactions
+**Non-repeatable reads** -> Inconsistent reads between transactions
 ```
 T1 reads R(A) = 10
 T2 writes W(A) as 20
@@ -585,7 +585,7 @@ Thus we can infer that the discrepancy between T1 and T3 is a phantom phenomenon
 
 **Compare-and-set operation** -> allows a write to happen only if the value has not been concurrently changed by someone else
 
-**read skew** -> reading from an unfinished transaction. Its an example of a _nonrepeatable read_
+**read skew** -> reading from an unfinished transaction. Its an example of a _non-repeatable read_
 
 **write skew** -> it is neither a dirty write nor a lost update, because 2 transactions are updating two different objects. On Call doctor's example
 

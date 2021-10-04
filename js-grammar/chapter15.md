@@ -1,6 +1,6 @@
 ### Chapter 15 - Arrow Functions
 - New feature introduced in ES6
-- **Arrow Functions** providesce a slim syntax for create functions expressions in Javascript
+- **Arrow Functions** providence a slim syntax for create functions expressions in Javascript
 ```javascript
   () => {}; // example of arrow function
 
@@ -19,7 +19,7 @@
 - Remember that Javascript functions are **expressions**
 - An **expression** is a anything that returns a single value. Similar to a math equation that returns one value
  
-#### 15.0.1 Arrow function anatomy
+#### **15.0.1 Arrow function anatomy**
 - Arrow functions do not have array-like **arguments**
 - They cannot be used as constructors
 - `this` keyword points to the same value `this` points in the scope outside of the arrow function

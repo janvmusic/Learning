@@ -8,7 +8,7 @@
 - `Numbers` has an special value `NaN` (not a number)
 - Using constructors return object
 
-#### 5.0.6 Numbers
+#### **5.0.6 Numbers**
 ```javascript
   typeof -1 // => number
   let number = new Number(7)
@@ -34,13 +34,13 @@
  +1000n // Uncaught type error
 ```
 
-#### 5.0.7 Numbers
+#### **5.0.7 Numbers**
 - `typeof "string"` returns string 
 - You can use String constructor
 - however for `typeof` you need to use `string.valueOf` to determine object type
 
-#### 5.0.8 String templates
-- To create a template string you need to use backtick quotes
+#### **5.0.8 String templates**
+- To create a template string you need to use back-tick quotes
 ```javascript
   let apples = 10;
   console.log(`There are ${apples} apples in the basket`);
@@ -49,7 +49,7 @@
 - Back-tick cannot be used to define an object-literal property name
 - Ternary operator uses `?` and `:` to discern between one option or the other
 
-#### 5.0.9 Symbols
+#### **5.0.9 Symbols**
 - Symbol used to create a unique key
 - Does not have a constructor
 ```javascript
@@ -68,13 +68,13 @@
 - You could use symbols for constants due it's unique ID
 - To override the value of a symbol use: `Symbol.for('sym')` or `Symbol.keyFor('sym')`
 
-#### 5.0.9.1 Constructors and instances
+#### **5.0.9.1 Constructors and instances**
 - `Constructor` who knows how to build the object
 - `Instance` the actual object built by the _constructor_
 - _Function_ is the constructor to create JavaScript Functions
-- _Object_ has the constructor function that could be overriden by other objects
+- _Object_ has the constructor function that could be overridden by other objects
 
-#### 5.0.10 Executing methods on primitive types
+#### **5.0.10 Executing methods on primitive types**
 - _Parenthesis_ let you know which statement should evaluate
 - When you execute a method over a primitive type, Javascript converts it to _object_
 ```javascript
