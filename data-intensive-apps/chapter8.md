@@ -176,7 +176,9 @@ Nowadays computers have 2 types of clocks:
 - Monotonic clock
 
 ### Monotonic vs Time-of-day clocks
-#### ****Time of the day clock**
+Most of modern computers have 2 types of clocks: `time-of-day` & `monotonic`
+
+#### ****Time of day clock**
 It returns date and time accordingly to some calendar
 
 Usually synchronized with NTP
@@ -197,8 +199,34 @@ On most systems monotonic clocks can measure time intervals in microseconds or l
 Using monotonic clocks in a distributed system is usually good. Mostly, because it does not assume any synchronization between different node's clocks and its not sensitive to slight inaccuracies of measurement
 
 ### Clock Synchronization and accuracy
+- Monotonic -> Does not need synchronization
+- Time-of-day -> requires sync with NTP
 
+**Important** computer clocks are not reliable because..
+- Quarts can _drift_ (run faster or slower)
+- If a clock differs too much, NTP refuses to sync
+- By misconfiguration, you can block NTP synchronization
+- Network delays
+- NTP might be wrong or misconfigured!
+- Leap seconds result in an inaccurate minute (59s or 61s)
+- Virtual machines virtualize the hardware clock. Pauses to use the CPU between virtual machines
+- Devices that have manually changed their time
 
+If you need accuracy (for example financial markets) you can use `PTP` **Precision Time Protocol** which depends on GPS receivers. However, it requires expertise and significant effort
+
+### Relying on Synchronized clocks
+The main problem on clocks is that they look simple and reliable. However, they have plenty of pitfalls.
+- A day might not have exactly 86,400s
+- time-of-day may move backward in time
+- Difference between clock nodes
+
+**Important** Although clocks work quite well most of the time, robust software needs to be prepared to deal with incorrect clocks.
+
+Part of the problem is that incorrect clocks easily go unnoticed. 
+
+**Important** If some piece of the software is relying on an accurately synchronized clock, the result is more likely to be silent and subtle data loss than a dramatic crash.
+
+If your software needs to trust in clocks, it's important to monitor the clock offsets. Any node that drift too much from others, then it should be declared as dead and removed from the cluster
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
@@ -209,3 +237,7 @@ Using monotonic clocks in a distributed system is usually good. Mostly, because 
 **Unbounded delay** => System tries to deliver packets as quickly as possible, but there's no upper limit on the time it may take for a packet to arrive
 
 **Synchronous** => even as data passes through several routers, it does not suffer from queueing. On synchronous calls, a circuit is reserved from the beginning, from end to end.
+
+**NTP** => Network Time Protocol
+
+**Smearing** => The best way of handling leap seconds may be to make NTP servers "lie", by performing the leap second adjustment gradually over the course of the day.
