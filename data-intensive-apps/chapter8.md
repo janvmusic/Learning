@@ -227,6 +227,65 @@ Part of the problem is that incorrect clocks easily go unnoticed.
 **Important** If some piece of the software is relying on an accurately synchronized clock, the result is more likely to be silent and subtle data loss than a dramatic crash.
 
 If your software needs to trust in clocks, it's important to monitor the clock offsets. Any node that drift too much from others, then it should be declared as dead and removed from the cluster
+
+#### **Timestamps for ordering events**
+The common solution for conflicts is: **Last Write Wins (LWW)** for leaderless and multi-leader
+- One big problem of this approach is that a lagging clock is unable to overwrite values previously written by a node with a fast clock until the clock skew between them has elapsed.
+- This scenario cannot distinguish between writes that occurred sequentially. 
+- Causality problems require version vectors
+- Situations where 2 nodes generate an update with the same 2 time stamps.
+
+Even, when the easiest way to solve conflicts is just depend **_on the most recent_** write, there's a subtle situation with the question... What's the most recent? It will depend on _time-of-day_ which might be incorrect.
+
+NTP's synchronization is limited by the network round-trip time, in addition to other sources of errors (such as quartz drift)
+
+But then, what other option do we have? **Logical Clocks**
+
+They (logical clocks) are based on incrementing counters rather than an oscillating quartz.
+
+**Logical clocks do not measure the time of the day or the number of seconds elapsed**, only the relative ordering of events.
+
+_time-of-day_ & _monotonic_ clocks are also known as **physical clocks**
+
+#### **Clock readings have a confidence interval**
+Think of reading a **physical clock** not as a _point of time_ due delays it would be more accurate to think of it as a _range of times_ within an **confidence interval**
+
+Example: A system may be 95% confident that the time now is between 10.3 & 10.5
+
+Unfortunately, its quite complicated to calculate that 5% of uncertainty and most of the clocks do not expose this value.
+
+#### **Synchronized clocks for global snapshots**
+The most common implementation of **snapshot isolation** requires a monotonically increasing transaction ID.
+
+**Remember** if a write happened later than the snapshot, that write is **invisible**
+
+For this situation, the transaction ID must reflect **causality** (What happened first! T(B) > T(A)). Otherwise the snapshot would not be **consistent**
+
+In a distributed system the creation of _transaction ids_ may become a bottleneck!
+
+### Process Pauses
+Process pauses are common nowadays. For example
+- Many programming languages have a garbage collector (GGC) that occasionally needs to stop all running threads. They are also known as _stop-the-world_ GC pauses and may last for several minutes
+- Virtual machines can be `suspended` & `resumed`. This pause can occur at any time in a process's execution and can last for an arbitrary length of time.
+- In laptops, a process may be suspended and resumed arbitrarily due to the **close of the lid**
+- A OS switches context, causing a pause
+- A thread might be paused waiting for a slow disk I/O operation to complete
+- if the operating system allows: _swapping to disk_ (_paging_)
+- Manually stopping the process using `SIGSTOP` in unix
+
+**Important** You cannot assume anything about timing, because arbitrary context switches and parallelism may occur
+
+A node in a distributed system must assume that its execution can be paused for a significant length of time at any point, even in the middle of a function.
+
+#### **Response time guarantees**
+**Hard real time systems** such as control aircraft, rockets, robots, cars and other physical objects that must respond quickly and predictable to their sensor input.
+
+In _hard real time systems_ there's a **deadline** by which the software must respond; if it doesn't that may cause a failure of the entire system.
+
+Providing real-time guarantees in a system requires support from all levels of the software stack: A real-time operating system or **RTOS**
+
+> Real time != High performance
+
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
