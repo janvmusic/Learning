@@ -286,6 +286,60 @@ Providing real-time guarantees in a system requires support from all levels of t
 
 > Real time != High performance
 
+For most server-side data processing systems, real-time guarantees are simply not economical or appropriate. That's why, these system must accept that there are pauses or clock instability.
+
+#### **Limiting the impact of garbage collection**
+Coding languages sometimes have some flexibility around when they schedule garbage collections.
+
+**Important** The idea behind it would be to **treat GC pauses as something planned**, so the systems knows ahead when a node is going to be out or not available. Then the system can **rebalance** using other nodes.
+
+Another approach is to use GC only for shot-lived objects and restart the process often, before they start to cumulate long-lived objects that require a full GC.
+
+## Knowledge, Truth and Lies
+So far we have talked about the differences from distributed systems and programs that run in a single computer.
+- There's no shared memory
+- Messages are passed through an unreliable network with delays
+- There are processing pauses
+- Unreliable clocks
+
+**Important** A Node in the network cannot know anything for sure; It can only make guesses based on the messages it receives (or doesn't receive) via network
+
+> In a distributed systems, we can state assumptions about the behavior (_System model_) and design the actual system in such a way that it meets those assumptions.
+
+### The truth is defined by the majority
+A distributed system cannot exclusively rely on a single node, because a node may fail at any time, potentially leaving the system stuck and unable to recover.
+
+Instead, many distributed systems rely on a **quorum** voting among the nodes
+
+#### **The leader and the lock**
+Even if a node believes that it is "the chosen one", that does not ensure that other nodes agree.
+
+Distributed systems need to be carefully design thinking about these problems.
+
+#### **Fencing Tokens**
+Via _fencing_ we can ensure that the lock/lease is still valid. However, we need to have a mechanism that validates that the _token_ is still valid.
+
+Clients are not trustworthy to validate their own _token_.
+
+**Important** It is **unwise** for a service to assume that its clients will always be well behaved. Thus, its a good idea for any service to protect itself from accidentally abusive clients.
+
+### Byzantine faults
+**Fencing tokens** can detect and block a node that is _inadvertently_ acting in error. But what happens when the node deliberately **wants to break the rules**
+
+Distributed systems problem become much harder if there is a risk that nodes may **lie**
+
+> Lie => send arbitrary faulty or corrupted responses
+
+These type of problems are known as _Byzantine faults_
+
+A system is **Byzantine fault tolerant** if it continues to operate correctly even if some of the nodes are malfunctioning and not obeying the protocol, or if malicious attackers are interfering with the network.
+
+Where do you need to be Byzantine fault tolerant?
+- In aerospace environments
+- In a system with multiple participating organizations.
+
+Web systems typically do not use Byzantine fault-tolerant protocols, but simply make the server the authority on deciding what client behavior is and isn't allowed.
+
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
@@ -300,3 +354,5 @@ Providing real-time guarantees in a system requires support from all levels of t
 **NTP** => Network Time Protocol
 
 **Smearing** => The best way of handling leap seconds may be to make NTP servers "lie", by performing the leap second adjustment gradually over the course of the day.
+
+**Fencing** => A technique that ensures that the lock or lease is still valid. It does through a special key that increments every time a lock/lease is granted.
