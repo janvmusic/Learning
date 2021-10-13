@@ -340,6 +340,94 @@ Where do you need to be Byzantine fault tolerant?
 
 Web systems typically do not use Byzantine fault-tolerant protocols, but simply make the server the authority on deciding what client behavior is and isn't allowed.
 
+If an attacker can compromise one node, they can probably compromise all of them, because they are probably running the same software. Thus traditional mechanisms continue to be the main protection against attackers.
+- Authentication
+- Access Control
+- Encryption
+- Firewalls
+- and so on
+
+#### Weak forms of lying
+Although, we assume that nodes are generally honest, it can be worth adding mechanisms to software that guard against weak forms of lying
+
+For example: _invalid messages due to hardware issues_, _software bugs_ & _misconfiguration_
+
+What can we do for these issues?
+- Checksums of network packages at TCP / UDP level. Also if possible add them at application level
+- Public apps must sanitize user inputs
+- Use multiple NTP servers
+
+### System Model and Reality
+For an algorithm (distributed apps) to be adequate, it needs to be written in a way that does not depend too heavily on the details of the hardware and software configuration on which they run.
+
+Thus, we somehow need to formalize the kind of faults that we expect to happen in the system.
+
+We do this definition via: **System Models**.
+
+#### **System Models Time Guarantees**
+**Synchronous Model** => Assumes bounded network delay, bounded process pauses and bounded clock error. It assumes a expected delay on clock, network and pauses, which might not be realistic
+
+**Partially Synchronous Model** => Behaves like a Synchronous model... most of the time! This is a realistic model for most of the systems.
+
+**Asynchronous model** => It is not allowed to make any timing assumption. In fact, it does not even have a clock
+
+#### **System Models Node Failure Guarantees**
+Three most common are:
+
+**Crash-stop faults** => Assumes that a node can fail only in one way... _CRASHING_ The node never comes back.
+
+**Crash-recovery faults** => Assumes that a node can crash at any moment, and perhaps start responding again after some _unknown_ time. Non volatile storage is safe but memory storage is lost
+
+**Byzantine(arbitrary) faults** => Nodes become the Joker and can do anything good or bad. Chaos reigns!
+
+#### **Correctness of an algorithm**
+To define what it means for an algorithm to be correct, we can describe its properties. 
+
+We can write down the properties we want of a distributed algorithm to define what it means to be correct
+
+An algorithm is correct in some system model if it always satisfies its properties in all situations that we assume may occur in that system model.
+
+#### Safety and liveness
+There's a small & informal classification for properties, **Liveness** and **Safety**
+
+**Liveness** refers to **eventuality** such as us, living in this earth may be temporary
+
+Meanwhile, **Safety** can be defined as _Nothing bad happens_
+
+**Safety** => If a safety property is violated, then we can point at a particular point in time at which it was broken. Once its violated, the damage is already done.
+
+**Liveness** => It may not hold at some point in time.
+
+Liveness and Safety help us to deal with difficult. Safety properties needs to be **ALWAYS** hold. With Liveness we are allowed to have some caveats 
+
+#### **Mapping System Model to real life**
+**Remember** A System model is just a simplified abstraction of reality.
+
+Proving an algorithm correct does not mean its implementation on a real system will be necessarily always behave correctly. But it's always a very good first step!
+
+## Summary
+In this chapter we have discussed a wide range of problems that might occur in distributed systems, including:
+- Network delays while sending a packet over the network
+- Node clock out of sync
+- The danger of processes pauses
+
+The fact that such partial failures can occur is the defining characteristic of distributed systems.
+
+**Important** We try to build tolerance of partial failures into software, so that the system as a whole may continue functioning even when some of its constituent parts are broken
+
+To tolerate faults, the first step is: _Detect Them_. Although, most of the systems don't have an accurate mechanism of detecting whether a node has failed.
+
+Most distributed algorithms rely on **Timeouts**.
+
+However, timeouts cannot distinguish between a failure or a delay in the network.
+
+Nodes depend on _quorum_ protocol to agree on something.
+
+**Important** If you can avoid opening Pandora's box and simply keep things on a single machine, it is generally worth doing so
+
+As discussed in this chapter, scalability is not the only reason for wanting to use a distributed system. Fault tolerance and low latency(Placing data close to customers) are other reasons too.
+
+
 ## Concepts
 **Partial Failure** => Some parts of the system are broken, even though other parts of the system are working fine.
 
@@ -356,3 +444,5 @@ Web systems typically do not use Byzantine fault-tolerant protocols, but simply 
 **Smearing** => The best way of handling leap seconds may be to make NTP servers "lie", by performing the leap second adjustment gradually over the course of the day.
 
 **Fencing** => A technique that ensures that the lock or lease is still valid. It does through a special key that increments every time a lock/lease is granted.
+
+**System model** => It's an abstraction that describes what things an algorithm may assume
