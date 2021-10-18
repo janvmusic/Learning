@@ -2,3 +2,4 @@ Dataflow
 Tripadvisor
 microservices
 Backpressure
+linearizability
