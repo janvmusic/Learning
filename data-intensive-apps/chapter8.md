@@ -178,12 +178,12 @@ Nowadays computers have 2 types of clocks:
 ### Monotonic vs Time-of-day clocks
 Most of modern computers have 2 types of clocks: `time-of-day` & `monotonic`
 
-#### ****Time of day clock**
+#### **Time of day clock**
 It returns date and time accordingly to some calendar
 
 Usually synchronized with NTP
 
-#### ****Monotonic clock**
+#### **Monotonic clock**
 Suitable for **measuring a duration**, such as timeouts or service response
 
 They have two values something likes `start/end`

@@ -56,7 +56,60 @@ In a linearizable system, as soon as one client successfully completes a write, 
 A query that returns a stale result is a violation of linearizability. 
 
 ### What makes a System linearizable?
+The basic idea behind linearizability is simple: to make a system appear as if there is only a single copy of the data.
 
+The requirement of linearizability is that the lines joining up the operation markers always move forward in time, never backward.
+
+Once a new value has been written or read, all subsequent reads see the value that was written, until is overwritten again.
+
+On this algorithm, clients take an actual role of update values if they see the most updated version.
+
+<img tag="Linearizability" src="img/ch9-linearizability.png" width="300px">
+
+> Serializability != Linearizability
+
+A DB must provide linearizability and serializability to guarantee: `Strict serializability` or `strong one-copy serializability` 
+
+[Additionally you can look at this video for more details](https://www.youtube.com/watch?v=noUNH3jDLC0)
+
+### Relying on Linearizability
+#### **Locking & leader election**
+One way of electing a leader (and avoid a _split brain_) is to use a lock: Every node that starts up tries to acquire and the one that succeeds becomes the leader.
+
+No matter how the lock is implemented, **it needs to be linearizable.** All nodes needs to agree which node owns the lock; Otherwise is useless.
+
+#### **Constraints and uniqueness guarantees**
+Through Linearizability, you can guarantee the uniqueness of a value, for example a `username`, `the balance of an account that never should go below 0` or `your store inventory`
+
+A hard uniqueness constraint, such as the one you typically find in relation dbs, requires linearizability.
+
+#### **Cross-channel timing dependencies** 
+Linearizability violation was noticed due to `user a` telling `user b` that there's a most updated version of the data. Meaning, that there's an additional communication channel in the system.
+
+<img tag="chapter 9 map" src="img/ch9-image-resizer.png" width="400px">
+
+This is a good example of multiple communication channels, which one of them is faster (message broker) & the other slower (image uploader). Creating a **race condition** on the image resizer, which might see an old version of the image.
+
+Linearizability is not the only option to avoid this race condition, however, it's the simplest to understand.
+
+### Implementing Linearizable Systems
+The simplest approach to have a Linearizable system would be: _have the data in just one node_
+
+However, this is not fault tolerant. If the node dies, then... **Game Over**
+
+The most common approach to making a system fault-tolerant is to use replication.
+
+- Single-leader replication => By design this could be `potentially linearizable`, however, if the db uses `snapshot isolation`, then it is not possible. Using leader for reads leads to a problem where **we need to know who is the leader**. We might have problem where 2 nodes think they are the leader or with synchronous replication, we could have lose committed writes.
+
+- Consensus Algorithms =>
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
+
+**Serializability** => isolation property of transactions, where every transaction may read and write multiple objects. It guarantees that transactions have been executed in some serial order.
+
+**Linearizability** => is a recency guarantee on reads and writes of a register (object). Does not prevent problems such as _write skews_
+
+**Split brain** =>  distributed system that acknowledge 2 nodes as leaders
+
+**Single-leader replication (Potentially Linearizable)** => The leader has the primary copy of the data that is used for writes, followers have backup data.
