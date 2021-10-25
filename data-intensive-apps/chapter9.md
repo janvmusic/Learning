@@ -99,17 +99,52 @@ However, this is not fault tolerant. If the node dies, then... **Game Over**
 
 The most common approach to making a system fault-tolerant is to use replication.
 
-- Single-leader replication => By design this could be `potentially linearizable`, however, if the db uses `snapshot isolation`, then it is not possible. Using leader for reads leads to a problem where **we need to know who is the leader**. We might have problem where 2 nodes think they are the leader or with synchronous replication, we could have lose committed writes.
+- **Single-leader replication** (potentially linearizable) => By design this could be `potentially linearizable`, however, if the db uses `snapshot isolation`, then it is not possible. Using leader for reads leads to a problem where **we need to know who is the leader**. We might have problem where 2 nodes think they are the leader or with synchronous replication, we could have lose committed writes.
 
-- Consensus Algorithms =>
+- **Consensus Algorithms** (linearizable) => Resembles to single-leader replication. However, this consensus contains protocols to **prevent split brain & stale replicas**
+
+- **Multi-leader replication** (no linearizable) => Systems with multiple leader replication are generally not linearizable. The reason: _They write concurrently on multiple nodes and asynchronously replicate them to other nodes_. This consensus requires **conflict resolution**
+
+- **Leaderless replication** (probably not linearizable) => There's a discussion that claims that it's possible but in reality, it may be a sloppy quorum.
+
+#### **Linearizability and Quorums**
+It is possible to have a race condition in `strict quorum`. This may be the case due to **network delays**
+
+Although, it's possible to _force_ linearizability in Dynamo-style quorums (w + r > n) it reduces the performance because it uses _Read repair & Anti-entropy_ processes.
+
+It is safest to assume that a leaderless system does not provide linearizability
+
+### The cost of linearizability
+In cases where we have multiple data-centers, if the application requires linearizable reads and writes, the network interruption causes the application to become unavailable in the data-center that cannot contact the leader.
+
+### The CAP Theorem
+Network interruption issues is not limited only to single-leader and multi-leader replication: _Any linearizable db has this problem, no matter how it is implemented_
+
+The issue isn't specific to multi-datacenter deployments, but can occur on any unreliable network. The trade-off is as follows:
+
+- If your application **requires** _linearizability_ and replicas are disconnected due to a network problem then they are unavailable.
+
+- If your application **does not requires** _linearizability_, and there's a network problem, then replicas will respond with some stale information. This behavior is not linearizable.
+
+In conclusion: _Applications that don't require linearizability can be more tolerant of network problems_
+
+The CAP Theorem is presented as: `Consistency`, `Availability`, `Partition Tolerance`. Pick 2 out of 3.
+
+However, since network faults are unavoidable, it's better to present it as: Either Consistent or Available when Partitioned
+
+By Consistent / Consistency we mean **Linearizability**
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
 
 **Serializability** => isolation property of transactions, where every transaction may read and write multiple objects. It guarantees that transactions have been executed in some serial order.
 
-**Linearizability** => is a recency guarantee on reads and writes of a register (object). Does not prevent problems such as _write skews_
+**Linearizability** => it's a recency guarantee on reads and writes of a register (object). Does not prevent problems such as _write skews_
 
 **Split brain** =>  distributed system that acknowledge 2 nodes as leaders
 
 **Single-leader replication (Potentially Linearizable)** => The leader has the primary copy of the data that is used for writes, followers have backup data.
+
+**Read repair*** => When a client finds a _stale_ response, it will update the _stale_ replica with latest version. This approach is good for `frequently read` systems
+
+**Anti-entropy process** => background process that constantly looks for differences in the data between replicas
