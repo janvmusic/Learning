@@ -130,9 +130,55 @@ In conclusion: _Applications that don't require linearizability can be more tole
 
 The CAP Theorem is presented as: `Consistency`, `Availability`, `Partition Tolerance`. Pick 2 out of 3.
 
-However, since network faults are unavoidable, it's better to present it as: Either Consistent or Available when Partitioned
+However, since network faults are unavoidable, it's better to present the CAP theorem as: **Either Consistent or Available when Partitioned**
 
 By Consistent / Consistency we mean **Linearizability**
+
+#### **Linearizability and Network delays**
+Although, Linearizability is a useful guarantee, surprisingly few systems are actually linearizable in practice.
+
+The reason for dropping linearizability is _performance_, not fault tolerance.
+
+Linearizability is slow, not only during a network fault.
+
+## Ordering guarantees
+> Linearizability => The system appears to have 1 source of truth and that operations appears to be atomic and placed in the right order.
+
+Ordering is a recurring theme, so let's recap where other places take this in consideration
+- **Order of writes** => The main purpose of the leader in a single-leader replication is to **determine the order of writes**. Otherwise, we can fall into write conflicts
+
+- **Serializability** => It's about ensuring that transactions behave as if they were executed in some **sequential order** (lock and abort operations)
+
+- The use of timestamps in distributed systems
+
+It turns out that there are deep connections between ordering, linearizability & consensus.
+
+The chains of causally dependent operations define the causal order in the system. Basically: _what happened before what?_
+
+If a system obeys the ordering imposed by causality, we say that it is **Causally Consistent**
+
+### Ordering and Causality
+Ordering preserve causality! But what are examples of causality
+- Causal dependency between _questions & answers_
+- During replication, which write happened first?
+- The happened before relationship between transactions
+- With snapshot isolation, we read from a _consistent snapshot_ which could be translated to _consistent with causality_
+- Write skews and Doctors on call!
+
+**Important** Causality imposes an ordering on events. Cause comes before effect.
+
+#### **The causal order is not a total order**
+A **total order** allows any 2 elements to be compared. However, mathematical sets are not totally ordered.
+
+I.E: `{A, B} compared to {B, C}` which one is greater? We say they are incomparable
+
+The difference between total order and a partial order is reflected in DB consistency models:
+- **Linearizability** => We have **Total order** of operations. We can say that one operation happened before another
+- **Causality** => We have **Partial Order** Some operations are ordered with respect each other, but some are incomparable.
+
+Based on this definition, we can conclude that there are no concurrent operations in a linearizable datastore. All operations must follow a single timeline.
+
+Concurrency would mean that the timeline branches and merges again, in this case branches are incomparable.
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
