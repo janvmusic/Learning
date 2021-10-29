@@ -180,6 +180,21 @@ Based on this definition, we can conclude that there are no concurrent operation
 
 Concurrency would mean that the timeline branches and merges again, in this case branches are incomparable.
 
+#### **Linearizability is stronger than causal consistency**
+What's the relationship between linearizability & causal order? Well, **linearizability implies 
+causality**
+
+**Important** Any system that is linearizable will preserve causality correctly.
+
+THis is why **linearizability** is so appealing, however, with network delays (for example if the system is geographically distributed) the performance & availability will suffer
+
+Causal consistency is the strongest guarantee possible, in fact this model does not slow down due network delays, and remains available in the face of network failures
+
+**Remember** WE might think that a system requires Linearizability, however, it may only need **causal consistency**
+
+#### **Capturing causal dependencies**
+To better understand the word: _causal_ let's define it as: Which Operation **happened before** which operation.
+
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
 
@@ -191,6 +206,6 @@ Concurrency would mean that the timeline branches and merges again, in this case
 
 **Single-leader replication (Potentially Linearizable)** => The leader has the primary copy of the data that is used for writes, followers have backup data.
 
-**Read repair*** => When a client finds a _stale_ response, it will update the _stale_ replica with latest version. This approach is good for `frequently read` systems
+**Read repair** => When a client finds a _stale_ response, it will update the _stale_ replica with latest version. This approach is good for `frequently read` systems
 
 **Anti-entropy process** => background process that constantly looks for differences in the data between replicas
