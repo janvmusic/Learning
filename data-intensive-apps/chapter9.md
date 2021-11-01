@@ -195,6 +195,36 @@ Causal consistency is the strongest guarantee possible, in fact this model does 
 #### **Capturing causal dependencies**
 To better understand the word: _causal_ let's define it as: Which Operation **happened before** which operation.
 
+This is called **_partial order_**
+
+Then when a replica processes an operation, it must ensure that all causally preceding operations have already been processed.
+
+In order to determine causal dependencies, we need some way of describing the "knowledge" of a node in the system.
+
+To keep the system with causal consistency, it needs to track causal dependencies across the entire db, not just for a single key. Version Vectors can be generalized to do this.
+
+The application needs to be aware of the "latest" version read by the application.
+
+### Sequence Number Ordering
+Although causality is an important theoretical concept, explicitly tracking all the data that has been read, would mean a large overhead.
+
+However, there's another option: _timestamps_ or _sequence numbers_.
+
+**Timestamps** needs to come from a _logical clock_, which is an algorithm to generate a sequence of numbers to identify operations, typically using counters that are incremented for every operation.
+
+These _timestamps_ are **compact** and provide a **total order**.
+
+Sequence numbers offers that if `operation A` happened before `operation B`, then `A` occurs before `B` in the total order. 
+
+In DBs with a **single-leader replication**, the replication log defines a total order of write operations, that is consistent with causality.
+
+#### Non causal sequence number generators
+_What happens if we don't have a single leader? Who generates the sequence numbers?_
+
+There are options available for this case!
+- Each node can generate its own independent set of sequence numbers. (Odds and Pairs numbers)
+- Sequence number + timestamp from clock of the day
+
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
 
@@ -209,3 +239,9 @@ To better understand the word: _causal_ let's define it as: Which Operation **ha
 **Read repair** => When a client finds a _stale_ response, it will update the _stale_ replica with latest version. This approach is good for `frequently read` systems
 
 **Anti-entropy process** => background process that constantly looks for differences in the data between replicas
+
+**Partial Order** => Concurrent operations may be processed in any order, but if one operation happened before another, they must be processed in that order on every replica.
+
+**Timestamps** => needs to come from a _logical clock_, which is an algorithm to generate a sequence of numbers to identify operations, typically using counters that are incremented for every operation.
+
+**Total order** => Every operation has a unique sequence number, and you can always compare two sequence number to determine which is greater
