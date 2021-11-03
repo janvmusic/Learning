@@ -223,7 +223,33 @@ _What happens if we don't have a single leader? Who generates the sequence numbe
 
 There are options available for this case!
 - Each node can generate its own independent set of sequence numbers. (Odds and Pairs numbers)
-- Sequence number + timestamp from clock of the day
+- timestamp from clock of the day
+- Preallocate blocks of sequence numbers to each node. `Node A -> [1-100]` & `Node B -> [101-200]`
+
+These 3 options all perform better and are more scalable than pushing all operations through a single leader that increments a counter.
+
+However, these 3 options **are not consistent with causality**
+
+#### **Lamport timestamps**
+Each node has a unique identifier, and each node keeps a counter of the number of operations it has processed.
+
+Lamport timestamp is then simply a pair of `[counter, nodeID]`
+
+_Rule_: If you have two timestamps, the one with a greater counter value is the greater timestamp; If the counter values are the same, the one with the greater node ID is the greater timestamp.
+
+More details [here](https://www.youtube.com/watch?v=q_UZ532Os14)
+
+<img tag="chapter 9 lamport" src="img/ch9-lamport.png" width="500px">
+
+Every node and every client keeps track of the maximum counter value it has seen so far and includes that maximum on every request.
+
+**Version vectors** can distinguish whether two operations are concurrent or whether one is causally dependent on the other, whereas **Lamport timestamps** always enforce a total ordering.
+
+#### **Timestamps ordering is not sufficient**
+The problem is that the _total order of operations_ only emerges after you have collected all of the operation
+
+### Total Order Broadcast
+Getting all nodes to agree on the same total ordering of operations is tricky.
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
