@@ -249,7 +249,44 @@ Every node and every client keeps track of the maximum counter value it has seen
 The problem is that the _total order of operations_ only emerges after you have collected all of the operation
 
 ### Total Order Broadcast
-Getting all nodes to agree on the same total ordering of operations is tricky.
+Getting all nodes to agree on the same total ordering of operations is tricky. Get to an agreement with just a single node processing all the transactions/operations is easy.
+
+However, in this case, the challenge is how to scale the system if the throughput is greater than a single leader can handle and how to handle failover if the leader fails
+
+> Total order broadcast => protocol for exchanging messages between nodes. Needs 2 safety properties Reliable Delivery & Total Ordered Delivery
+
+These 2 safety properties must be guaranteed even when a node fails or the network is faulty
+
+#### **Using total order broadcast**
+Consensus services such as: ZooKeeper & etcd implemented total order broadcast. There's a strong correlation between consensus & total order broadcast
+
+Total order broadcast is exactly what you need for db replication. Using _State Machine replication_ replicas can remain consistent
+
+An **important** aspect of total order broadcast is that the order is fixed at the time the messages are delivered.
+
+This means: _A node is not allowed to retroactively insert a message into an earlier position._
+
+Total broadcast bases its idea on logging. Delivering a message is like appending it to the log
+
+It also helps with Fencing Tokens.
+
+#### **Implementing linearizable storage using total order broadcast**
+Total order broadcast is asynchronous: messages are guaranteed to be delivered reliably in a fixed order, there there's no guarantee about when a message will be delivered
+
+While this procedure ensures linearizable writes, it doesn't guarantee linearizable reads. This procedure proves: _Sequential consistency also known as timeline consistency.
+
+Timeline consistency is slightly weaker guarantee than linearizability
+
+#### **Implementing total order broadcast using linearizable storage**
+The algorithm is simple: for every message you want to send through total order broadcast, you increment-and-get the linearizable integer, and then attach the value you got from the register as a sequence number to the message
+
+Unlike Lamport timestamps, the numbers you get from incrementing the linearizable register **form a sequence with no gaps**
+
+This means: If a node has delivered _message 4_ and receives a _message 6_ the node knows that it needs to wait for _message 5_.
+
+This is a key difference between total order broadcast and timestamp ordering
+
+## Distributed Transactions and consensus
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
@@ -271,3 +308,11 @@ Getting all nodes to agree on the same total ordering of operations is tricky.
 **Timestamps** => needs to come from a _logical clock_, which is an algorithm to generate a sequence of numbers to identify operations, typically using counters that are incremented for every operation.
 
 **Total order** => Every operation has a unique sequence number, and you can always compare two sequence number to determine which is greater
+
+**Total order broadcast** => protocol for exchanging messages between nodes. Needs 2 safety properties Reliable Delivery & Total Ordered Delivery
+
+**Reliable Delivery** => No messages are lost: If a message is delivered to one node, it is delivered to all nodes
+
+**Totally Ordered Delivery** => Messages are delivered to every node in the same order.
+
+**State machine replication** => If every message represents a write to the db, and every replica processes the same writes in the same order, the replicas will remain consistent with each other (Aside from any temporary replication lag)
