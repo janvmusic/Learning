@@ -287,6 +287,18 @@ This means: If a node has delivered _message 4_ and receives a _message 6_ the n
 This is a key difference between total order broadcast and timestamp ordering
 
 ## Distributed Transactions and consensus
+Consensus is one of the most important concepts in distributed systems
+
+Informally we can define it as: _Get several nodes to agree on something_
+
+There are several situations in which it is important for nodes to agree:
+- **Leader election** => In a db with single-leader replication, all nodes need to agree on which node is the leader. Otherwise we could have a split-brain (leading to data inconsistency or data loss)
+
+- **Atomic commit** => We might have the problem of a transaction that fails in some nodes but succeed on others. We have to get all the nodes to agree: _all abort/rollback_ or _all of them commit_
+
+We can't assume that the whole system will work under the consensus premise. FLP Result proves that consensus will fail in asynchronous if a node(s) fails
+
+[FLP Result](https://www.youtube.com/watch?v=rN6ma561tak) is an interesting topic
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
