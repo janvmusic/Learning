@@ -300,6 +300,59 @@ We can't assume that the whole system will work under the consensus premise. FLP
 
 [FLP Result](https://www.youtube.com/watch?v=rN6ma561tak) is an interesting topic
 
+### Atomic Commit and Two-phase commit (2PC)
+The main advantage of using transactions is to provide simple semantics in the case where something goes wrong in the middle of making several writes
+
+The only two outputs available are: _commit_ or _abort_.
+
+Atomicity prevents failed transactions from **littering** the db with half-finished results and half-updated state.
+
+Also, Atomicity helps secondary index to stay consistent with the primary data.
+
+#### **From single-node to distributed atomic commit**
+On a single node, transaction commitment crucially depends on the order, in which data is durably written to disk.
+
+> First the data => The commit record
+
+**What if multiple nodes are involved in a transaction?**
+
+Sending the commit to all nodes might not be enough, what if the commit succeeds in some nodes and fails on other nodes, this would violate the atomicity guarantee.
+
+**What could go wrong with only one commit?**
+
+- Some nodes may detect a constraint violation or conflict while others might succeed
+- Some commits might be lost in the network (timeouts)
+- Some nodes may crash before commit record is fully written
+
+**Important** A transaction commit must be irrevocable. There's no space to say: _some nodes have it, some others don't_
+
+Once a transaction has been committed on one node, it cannot be retracted again if it later turns out that it was aborted on another node.
+
+A node must only commit once it is certain that all other nodes in the transaction are also going to commit.
+
+**Important** Once data has been committed, it becomes visible to other transactions, and thus other clients may start relying on that data.
+
+#### **Introduction to 2PC**
+Two-phase commit is an algorithm for achieving atomic transaction commit across multiple nodes.
+
+<img tag="chapter 9 map" src="img/ch9-2pc.png" width="500px">
+
+> 2PL(Serializable isolation) !== 2PC (Atomic commit in distributed dbs)
+
+2PC uses a component that usually does not appear in single-node transactions: **A coordinator(also known as transaction manager)**
+
+For 2PC, the coordinator sends the _write message_ to all participants (nodes). Then, sends a **prepare** request of each participants:
+
+- If all participants say "we good" then commit
+- If any of the participants says "Nope" then abort
+
+#### **A system of promises**
+1. When the app starts a distributed transaction, it request a `transactionID` from the coordinator
+2. The app starts a single-node transaction on each of the participants, using the `transactionID`. The coordinator or any of the participants can abort at any time
+3. When the app is ready to commit, the coordinator sends a prepare request to all participants. If the request fails then abort!
+4. When the participant receives the prepare request it ensures that it can definitely commit. Crashes or power failures are not accepted to refuse a commit.
+5. When the coordinator receives all the responses, then it takes a final decision: `[commit | abort]`. 6. If its `commit` the coordinator must retry (infinitely) until it succeeds. Coordinator promised, then it delivers.
+
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
 
