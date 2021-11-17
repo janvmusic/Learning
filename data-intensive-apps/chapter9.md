@@ -351,7 +351,41 @@ For 2PC, the coordinator sends the _write message_ to all participants (nodes). 
 2. The app starts a single-node transaction on each of the participants, using the `transactionID`. The coordinator or any of the participants can abort at any time
 3. When the app is ready to commit, the coordinator sends a prepare request to all participants. If the request fails then abort!
 4. When the participant receives the prepare request it ensures that it can definitely commit. Crashes or power failures are not accepted to refuse a commit.
-5. When the coordinator receives all the responses, then it takes a final decision: `[commit | abort]`. 6. If its `commit` the coordinator must retry (infinitely) until it succeeds. Coordinator promised, then it delivers.
+5. When the coordinator receives all the responses, then it takes a final decision: `[commit | abort]`. 
+6. If its `commit` the coordinator must retry (infinitely) until it succeeds. Coordinator promised, then it delivers.
+
+There are 2 crucial moments in this protocol:
+- When a participant says: "Yes, I'll commit no matter what"
+- When the coordinator says: "Ok, I'll commit! no matter what"
+
+If the coordinator fails before sending the prepare requests, a participant can safely abort the transaction
+
+However, if a participant decided for `yes` then it cannot abort unilaterally. It needs to wait to hear back from the coordinator
+
+When a participant is in this state it's called: _in doubt_ or _uncertain_
+
+If the coordinator crashes in between the `prepare/write` phase, after it recover will read its own **transaction log** to determine the status of all _in-doubt_ transactions
+
+**Important** Thus, the commit point of 2PC comes down to a regular single-node atomic commit on the coordinator.
+
+#### **Three phase commit**
+Two phase commits are called **Blocking atomic commit protocol** (because it can get stuck while waiting for the coordinator to restore)
+
+3PC is an option to be _non-blocking_ however needs a perfect system: Bounded delay and nodes with bounded responses
+
+In general, non blocking atomic commit requires a **PERFECT FAILURE DETECTOR** 
+
+### Distributed Transactions in practice
+In practice many Cloud services choose not to implement distributed transactions due to the operation problems they engender:
+- Operational problems
+- Killing performance
+- Promising more than they can deliver
+
+Some implementations of distributed transactions carry a heavy performance penalty. (MySQL distributed transactions are 10 times slower than single-node transactions)
+
+But... what is a distributed transaction?
+- Database-internal distributed transactions
+- Heterogeneous distributed transaction
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
