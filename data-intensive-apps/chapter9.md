@@ -384,8 +384,62 @@ In practice many Cloud services choose not to implement distributed transactions
 Some implementations of distributed transactions carry a heavy performance penalty. (MySQL distributed transactions are 10 times slower than single-node transactions)
 
 But... what is a distributed transaction?
-- Database-internal distributed transactions
-- Heterogeneous distributed transaction
+- Database-internal distributed transactions => All nodes participating in the transaction are running the same db software 
+- Heterogeneous distributed transaction => In this case, there are multiple DB types, for example: different vendors or versions.
+
+> Database-internal distributed transactions > Heterogeneous
+
+#### **Exactly-once message processing**
+By atomically committing a message and its side effects, we can ensure that the message is effectively processed exactly once, even if it requires a few retries before it succeeded.
+
+Such a distributed transaction is only possible if all systems affected by the transaction are able to use the same atomic protocol.
+
+XA API needs to be implemented, something similar to a Interface in Java
+
+#### **Holding locks while in doubt**
+Why do we care a lot about a transaction being stuck in doubt?
+
+Well because, the db is _locked_ and we cannot process more transactions.
+
+If the coordinator goes offline for 20 mins, the locks might be there for the same time as well.
+
+#### XA transactions
+XA is a protocol that assumes that your app uses a network driver or client library to communicate with the participant dbs or messaging services.
+
+#### **Recovering from coordinator failure**
+In theory, if the coordinator crashes and is restarted, it should cleanly recover its state from the log and resolve any in-doubt transaction
+
+However, in practice **Orphaned in-doubt transactions** can occur.
+
+Even rebooting your db servers will not fix the problem. It's a sticky situation
+
+2PC coordinators must preserve the locks of an in-doubt nodes.
+
+Otherwise, the only available solution would be **manually resolve** the operation.
+
+Many XA implementations have an emergency scape hatch called:
+**Heuristic decisions**
+
+**Important** Heuristic decisions are intended only for getting out of catastrophic situations, not for regular use
+
+#### **Limitations of distributed transactions**
+XA transactions solve the real and important problem of keeping several participant data systems consistent with each other.
+
+However, this approach has failures. For example: 
+- The coordinator might become a bottle neck if its not replicated.
+- We depend completely on the coordinator logs, instead of being stateless.
+- There is no conflict resolution in XA
+- For 2PC to successfully commit, its required a full agreement of the participants. One failure and _abort_.
+
+Distributed transactions have the tendency of amplifying failures.
+
+### Fault tolerant consensus
+The consensus problem is normally formalized as follows:
+One or more nodes may propose values, and the consensus algorithm decides on one of those values.
+
+A consensus algorithm must satisfy the following properties:
+- Uniform agreement: No two nodes decide differently
+- Integrity
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
@@ -415,3 +469,7 @@ But... what is a distributed transaction?
 **Totally Ordered Delivery** => Messages are delivered to every node in the same order.
 
 **State machine replication** => If every message represents a write to the db, and every replica processes the same writes in the same order, the replicas will remain consistent with each other (Aside from any temporary replication lag)
+
+**Orphaned in-doubt transactions** => Transactions for which the coordinator cannot decide the outcome for whatever reason.
+
+**Heuristic decisions** => Allowing a participant to unilaterally decide to abort or commit an in-doubt transaction without a definitive decision from the coordinator
