@@ -258,7 +258,7 @@ However, in this case, the challenge is how to scale the system if the throughpu
 These 2 safety properties must be guaranteed even when a node fails or the network is faulty
 
 #### **Using total order broadcast**
-Consensus services such as: ZooKeeper & etcd implemented total order broadcast. There's a strong correlation between consensus & total order broadcast
+Consensus services such as: `ZooKeeper` & `etcd` implemented total order broadcast. There's a strong correlation between consensus & total order broadcast
 
 Total order broadcast is exactly what you need for db replication. Using _State Machine replication_ replicas can remain consistent
 
@@ -433,13 +433,104 @@ However, this approach has failures. For example:
 
 Distributed transactions have the tendency of amplifying failures.
 
+<img tag="chapter 9 consensus vs atomic commit" src="img/ch9-consensus-vs-atomic-commit.png" width="400px">
+
 ### Fault tolerant consensus
 The consensus problem is normally formalized as follows:
 One or more nodes may propose values, and the consensus algorithm decides on one of those values.
 
 A consensus algorithm must satisfy the following properties:
 - Uniform agreement: No two nodes decide differently
-- Integrity
+- Integrity: No node decides twice
+- Validity: If a node decides value `v` then `v` was proposed by some node
+- Termination: Every node that does not crash eventually decides some value
+
+Every one decides on the same outcome, and once you have decided, you cannot change your mind.
+
+Termination is a liveness property whereas the other three are safety properties.
+
+This system model assumes that when a node "crashes" it never comes back. Remember the earthquake example. This satisfies the termination property
+
+Of course, if all nodes crash there's no way to continue with the algorithm.
+
+There's a limit to the number of failures that an algorithm can tolerate
+
+The termination property is subject to the assumption that fewer than half of the nodes are crashed or unreachable.
+
+Most implementations of consensus ensure that the safety properties (Agreement, integrity and validity) are always met, even if a majority of nodes fail or there is a severe network problem
+
+**Important** A large-scale outage can stop the system from being able to process transactions, but wont corrupt the consensus system by making invalid decisions.
+
+#### **Consensus algorithms and total order broadcast
+The best known fault-tolerant consensus algorithms are:
+- Viewstamped Replication (VSR)
+- Paxos
+- Raft
+- Zab
+
+Most of these algorithms decide on a sequence of values. Mimic-ing Total order broadcast. 
+
+**Remember** Total order broadcast => Deliver messages exactly once to each node. Keeping the same order.
+
+**Important** Total order broadcast is basically several rounds of consensus.
+
+- Due to the **agreement** property, all nodes decide to deliver the same message in the same order
+- Due to **integrity** property, messages are not duplicated
+- Due to the **validity** property, messages are not corrupted and not fabricated out of thin air
+- Due to **termination** property, messages are not lost.
+
+#### **Single-Leader replication and consensus**
+Systems that require a manual intervention from humans do not satisfy the termination property of consensus.
+
+#### **Epoch numbering and quorums**
+All of the consensus protocols discussed so far, internally use a leader in some form or another, but they don't guarantee that the leader is unique
+
+Within Epoch number, we can ensure that the leader is unique, but it might or not the same leader.
+
+Every time a leader is thought to be "dead", a vote is started among the nodes, this will increase the epoch number and if the previous leader wants to write, it will need to be re-elected
+
+So if the previous leader wants to perform an action, it will need to collect votes from the quorum
+
+The quorum will accept the proposal if there's no other leader with a higher epoch number.
+
+#### **Limitations of Consensus**
+Consensus algorithms bring concrete safety properties (Agreement, Integrity, and Validity) to systems where everything is uncertain, and remain fault-tolerant.
+
+Consensus provide total order broadcast, therefore they can also implement linearizable atomic operations
+
+However, all of these benefits come with a price. The proposal voting process is kind of **async replication**
+
+Consensus systems always require a strict majority to operate. This means you need a minimum of three nodes in order to tolerate one failure
+
+For consensus we usually have a **fixed** number of participants, its uncommon to have a dynamic number of participants
+
+Consensus systems generally rely on timeouts to understand that a node is out of service.
+
+This could be a performance problem, because on networks with highly variable delay, it could lead to re-elections all the time.
+
+Thus, nodes would spend more time than what is required voting, than doing useful tasks
+
+### Membership and Coordination services
+Projects like `ZooKeeper` and `etcd` are often described as "distributed key-value stores" or "coordination and configuration services"
+
+They pretty much like a database (key -> value). So then why all the effort to implement a consensus algorithm?
+
+They were designed to hold a small amount of data that can fit in memory.
+
+That small amount of data is replicated across all the nodes using a fault-tolerant total order broadcast (deliver commits one by one on each replica. At the same rightful order)
+
+ZooKeeper provides as well other useful set of features
+- **Linearizable atomic operations** => The consensus protocol, guarantees that the operation will be atomic and linearizable, even if a node fails or the network is interrupted. Distributed locks are used for this, and it will be implemented via a lease.
+
+- **Total ordering of operations** => When some resource is protected by a lock or a lease, you need a fencing token to prevent clients from conflicting with each other in the case of a process pause.
+
+- **Failure detection** => Clients have long-lived sessions on ZooKeeper server. Client and server exchange heartbeats to check if the other is alive. This is also called ephemeral nodes.
+
+- **Change notifications** => Clients can watch other clients changes. This happens through subscribing to notifications
+
+#### **Allocation work to nodes**
+
+
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value
