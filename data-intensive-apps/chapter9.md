@@ -529,6 +529,72 @@ ZooKeeper provides as well other useful set of features
 - **Change notifications** => Clients can watch other clients changes. This happens through subscribing to notifications
 
 #### **Allocation work to nodes**
+Trying to perform majority votes over so many nodes would be terribly inefficient. Instead, ZooKeeper runs on a fixed number of nodes (Usually 3 to 5).
+
+The voting happens in those nodes while supporting a potentially large number of clients.
+
+ZooKeeper outsources some of the work of coordinating nodes.
+
+Normally, the kind of data managed by ZooKeeper is quite slow-changing (minutes or hours):
+- "Node lives on IP address 10.1.1.23 and its the leader of partition 7"
+
+ZooKeeper must not store **runtime** data.
+
+#### **Service Discovery**
+In cloud/distributed systems, you often don't know the IP addresses of your services ahead of time
+
+You can configure your services such that when they start up they register their network endpoints in a service registry, where they can be found by other services.
+
+DNS is the traditional way of looking up the IP address for a service name. Although DNS lookups are not linearizable.
+
+DNS searches are little stale. This does not represent a problem.
+
+Service discovery does not require consensus. Leader election does
+
+Some consensus systems allow **read-only cache replicas**. These replicas do not participate in voting, however, they receive asynchronously the change log from the decisions made.
+
+#### Membership services
+Via consensus, nodes can decide who is actually alive.
+
+#### Summary
+**Linearizability**: 
+- its goal is to make replicated data appears as thought there were only a single copy, and make all operations.
+- It makes the DB to behave like a single-thread. 
+- It has performance issues.
+
+**Causality**: 
+- Imposes an ordering on events in the system. 
+- Basically, what happened before what, based on cause and effect
+- Puts all operation in a single, totally ordered timeline
+- Some things can be concurrent
+- Works with branching and merging
+- Causal consistency might not be enough.
+
+**Consensus**
+- Deciding something in such a way that all nodes agree on what was decided and such that the decision is irrevocable.
+
+**Linearizable compare and set registers** => The register needs to automatically decide whether to set its value, based on whether its current value equals the parameter given in the operation
+
+**Atomic transaction commit** => A database must decide whether to commit or abort a distributed transaction
+
+**Total order broadcast** => The system must decide on the order in which to deliver messages
+
+**Locks and leases** => When several clients are racing to grab a lock or lease, the lock decides which one successfully acquired it
+
+**Membership/coordination service** => Given a failure detector (i.e. timeouts) the system must decide which nodes are alive, and which should be considered dead
+
+**Uniqueness constraint** => When several transactions concurrently try to create conflicting records with the same key, the constraint must decide which one to allow and which should fail with a constraint violation.
+
+**Single-leader app** => All decisions are made by one single node.
+
+In a single-leader application when the leader dies, then:
+- We can wait until leader comes back, halting all operations. Accept that the system will be blocked in the mean time.
+- Manually failover by human hands. It's quite common
+- Use an algorithm to automatically choose a new leader. This approach requires a consensus algorithm
+
+Tools like **ZooKeeper** play an important role in providing an _outsourced_ consensus, failure detection, and membership service that apps can use.
+
+leaderless systems or multi-leader replication systems not necessarily require consensus.
 
 
 
@@ -564,3 +630,5 @@ ZooKeeper provides as well other useful set of features
 **Orphaned in-doubt transactions** => Transactions for which the coordinator cannot decide the outcome for whatever reason.
 
 **Heuristic decisions** => Allowing a participant to unilaterally decide to abort or commit an in-doubt transaction without a definitive decision from the coordinator
+
+**Membership service** => Service that determines which nodes are currently active and live members of a cluster
