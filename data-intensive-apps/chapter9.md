@@ -461,7 +461,7 @@ Most implementations of consensus ensure that the safety properties (Agreement, 
 
 **Important** A large-scale outage can stop the system from being able to process transactions, but wont corrupt the consensus system by making invalid decisions.
 
-#### **Consensus algorithms and total order broadcast
+#### **Consensus algorithms and total order broadcast**
 The best known fault-tolerant consensus algorithms are:
 - Viewstamped Replication (VSR)
 - Paxos
@@ -595,8 +595,6 @@ In a single-leader application when the leader dies, then:
 Tools like **ZooKeeper** play an important role in providing an _outsourced_ consensus, failure detection, and membership service that apps can use.
 
 leaderless systems or multi-leader replication systems not necessarily require consensus.
-
-
 
 ## Concepts
 **Eventual Consistency** => If you stop writing to a DB and wait for some unspecified length of time, then eventually all read requests will return the same value

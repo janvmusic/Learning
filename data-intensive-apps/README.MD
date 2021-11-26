@@ -10,7 +10,9 @@ Data-intensive apps: Data is its primary challenge - quantity of data, the compl
 6. [Partitioning](chapter6.md)
 7. [Transactions](chapter7.md)
 7. [The trouble with Distributed Systems](chapter8.md)
+7. [Consistency and Consensus](chapter9.md)
 
 ## Notes & Concepts
 - [Transaction Concepts](chapter7.md#concepts)
 - [The trouble with Distributed Systems](chapter8.md#concepts)
+- [Consistency and Consensus](chapter9.md#concepts)
