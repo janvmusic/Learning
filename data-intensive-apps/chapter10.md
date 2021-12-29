@@ -100,6 +100,91 @@ What to do? Sort data in stages! also known as **_shuffle_**
 5. The reducer starts to process each key.
 6. The output of the reducer is written to a file on the distributed filesystem.
 
+#### **MapReduce Workflows**
+The range of problems that you can solve using a **single** MapReduce job is limited.
+
+Thus, it's quite common to use the output of one MapReduce job chained as the input of another job.
+
+Then `MapReduce` jobs don't work as pipelines, more like separate commands. This approach has advantages and disadvantages.
+
+A `MapReduce` job is considered completed if the job has finished successfully. Therefore, one job in a workflow can only start when the prior jobs have completed.
+
+To manage these dependencies, Hadoop and other systems have: _Workflow schedulers_ such as: Azkaban, Luigi, Airflow & Pinball
+
+Tool support is important for managing complex dataflows. I.E. recommendation system which might require 50 to 100 MapReduce jobs
+
+#### **Reduce-Side Joins and Grouping**
+A **join** is necessary whenever you have some code that needs to access records on both sides of the association
+
+Although, `Denormalization` reduces the need of using joins, that does not mean you wont need ***joins**
+
+`MapReduce` does not know the concept of _indexes_. When a `MapReduce` job is given a set of files as input, it reads the entire content of all of those files (In relational db: full table scan);
+
+`MapReduce` jobs have a different advantage: Parallelism, which DBs don't have.
+
+When we talk about joins in the context of batch processing, we mean resolving all the occurrences of some association within a dataset.
+
+#### Sort-merge joins
+Recall that the purpose of a `mapper` is to extract the `key-value` from a record.
+
+<img tag="chapter 10 map reducer job" src="img/ch10-mapreducer-job.png" width="500px">
+
+When the `MapReduce` framework partitions the mapper output by key and then sorts the `key-value` pairs
+
+> Same keys goes at the same file and the records are adjacent
+
+`Secondary sort` => The `MapReducer` job can even arrange the records to be sorted such that the reducer always sees the record from the key first
+
+_Sort merge join_ => Same Keys consecutive then merge them into one aggregate element. Additional info [here](https://www.youtube.com/watch?v=jiWCPJtDE2c)
+
+#### **Bringing related data together in the same place**
+In **Sort merge join** the mapper ensures that all the necessary data to perform a join is brought together in the same place. 
+
+This means _a single call to the reducer_. 
+
+**Important** In the end, **all key-value pairs with the same key will be delivered to the same destination**
+
+MapReduce handles all network communication, this means MapReduce transparently retries failed tasks without affecting app logic.
+
+#### **Group by**
+All records with the same key form a group, and the next step is often to perform some kind of aggregation within each group.
+
+This function is similar to `GROUP BY` in SQL
+
+To achieve this, MapReduce is set up so the mapper produce groups with the same Grouping key. Then each group is delivered to a Reducer
+
+#### **Handling Skew**
+The patter of "bringing all records with the same key to the same place" breaks down if there is a very large amount of data related to a single key
+
+This type of situation is called: `linchpin objects` or `hot keys`
+
+Processing a _hot spot_ can lead to a _skew_. Basically, the processing balance between reducers will be broken.
+
+**Important** Any subsequent jobs must wait for the slowest reducer to complete before they can start.
+
+There are algorithms that might help such as:
+- Skewed join => Performs a dry-run to determine which keys are hot. Then mappers distribute the records through different reducers.
+
+- Sharded join => It's similar to _Skew join_ however, this algorithm requires that hot keys are selected manually.
+
+When **grouping records by a hot key** and aggregating them, you can perform the grouping in 2 stages:
+1. MapReduce stage sends records to a random reducer, so that each reducer performs the grouping on a subset of records for the hot key and outputs a more compact aggregated value per key
+2. The next MapReduce job then combines the values from all of the 1st stage reducers into a single value per key
+
+These reducers are known as: **_Reduce-Side Joins_** 
+
+The advantage of **Reducer-Side Joins** is that jobs do not need to make any assumption of the input data: The mapper can prepare the data to be ready for joining.
+
+As a downside is that all the `[Sorting | Copying | Merging]` can be quite expensive.
+
+### Map-side Joins
+These type of joins _can_ make certain assumptions about your input data, and it will make the join a bit faster
+
+Using a `cut-down` MapReduce, this means that no reducers and no sorting. Instead each mapper simply reads one input file block and writes it to other file system.
+
+#### **Broadcast hash joins**
+
+
 ## Concepts
 **HDFS** => Daemon that allows other nodes to access file stored in a machine
 
@@ -108,3 +193,26 @@ What to do? Sort data in stages! also known as **_shuffle_**
 **Mapper** => Called once for every input record, extracts the key and value from the input record.
 
 **Reducer** => Collects all the values belonging to the same key and calls the reducer which produces an output record.
+
+**Foreign Key** => In a relational model, one record may have an association with another record. 
+
+**Foreign Key** => In a document model, called document reference
+
+**Foreign Key** => In a graph model, called edge
+
+**Star schema or dimensional modeling** => fact table + dimensions (events)
+
+**Dimension table** => What, where, who, when, how and why of the event
+
+**Snowflake schema** => Similar to star, but with sub dimensions
+
+**Nondeterministic function** => Undetermined value such as `NOW()` or `RAND()`
+
+**Sessionization** => Grouping all the activity events for a particular user session, in order to find out the sequence of actions that the user took.
+
+**Hot keys / Linchpin objects** => Keys that accumulate a massive amount of data. For example: Followers of celebrities in social networks
+
+**Skewed join** => Performs a dry-run to determine which keys are hot. Then mappers distribute the records through different reducers.
+
+**Sharded join** => It's similar to _Skew join_ however, this algorithm requires that hot keys are selected manually.
+
