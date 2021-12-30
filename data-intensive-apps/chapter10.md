@@ -183,7 +183,32 @@ These type of joins _can_ make certain assumptions about your input data, and it
 Using a `cut-down` MapReduce, this means that no reducers and no sorting. Instead each mapper simply reads one input file block and writes it to other file system.
 
 #### **Broadcast hash joins**
+One example of `Map-Side` join **applies** in the case **where a large dataset is joined with a small dataset**. In particular, the small dataset needs to be small enough that it can be loaded entirely into memory in each of the mappers.
 
+If the mapper is able to load the `small dataset` into memory, then it will create a `hash-map` with the keys.
+
+As example, you can load all the users into a memory and get the **detailed information** for the following mapping operations.
+
+> The key here is: the small dataset must fit into memory.
+
+This is called _Broadcast hash joins_. 
+- Broadcast comes from the idea that all mappers will load the whole small dataset into memory
+- Hash reflects the use of the hash table.
+
+Another option is: instead of load a hash table in memory, you can create a read-only index on the local disk
+
+#### **Partitioned hash joins**
+If the inputs to the map-side join are partitioned in the same way, then the hash join approach can be applied to each partition independently.
+
+Basically, each record will be partitioned based on a key. For example the last digit of the user id. and then distribute the records to all the mappers. For example the mapper 3, can take all the users that end with the number 3.
+
+If the partitioning is done correctly, you can be sure that all the records you might want to join are located in the same numbered partition.
+
+This has the advantage that each mapper can load a smaller amount of data into its hash table.
+
+This approach only works if the join inputs are have the same size of the mappers.
+
+**Important** Partitioned hash joins are known as _bucketed map joins in Hive.
 
 ## Concepts
 **HDFS** => Daemon that allows other nodes to access file stored in a machine
