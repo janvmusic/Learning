@@ -210,6 +210,61 @@ This approach only works if the join inputs are have the same size of the mapper
 
 **Important** Partitioned hash joins are known as _bucketed map joins in Hive.
 
+#### **Map-side merge joins**
+Another variant of a Map-side join is where you have partitioned and **sorted by** the same key. In this case the mapper accomplish the same function as the reducer.
+
+_Reading both input file frequently, in order of ascending keys and matching records with the same key._
+
+If a map-side merge join is possible, it probably means that prior MapReduce jobs brought the input datasets into partitioned and sorted form in the first place.
+
+It would make sense to split these tasks (partition/join) if the same dataset will be used on other places.
+
+#### **MapReduce workflows with map-side joins**
+The output of a `reduce-side` join is **partitioned and sorted by the joining key**
+
+Whereas the output of a `map-side` join is **partitioned and sorted in the same way as the large input**
+
+The `map-side` joins also make more assumptions about the: size, sorting, and partitioning of their input datasets.
+
+Knowing about the physical layout of datasets in distributed filesystems becomes important when optimizing join strategies.
+
+It's not enough to know the encoding format; You must also know the number of partitions and the keys in which the data is partitioned and sorted.
+
+### The output of batch workflows
+OLTP look up small number of records by key.
+
+OLAP scan over a large number of records, performing grouping and aggregations, the output often has the form of a report.
+
+Batch processing is neither a transaction nor a analytic processing. However, it's closed to analytics because processes a large number of records.
+
+The question lies on: _What is the format of the output?_
+
+#### Key-value stores as batch process output
+**Search indexes** are just one example of the output of a batch process. Another example is to build machine learning systems such as **classifiers** & **recommendation systems**
+
+The output of those batch jobs is often some kind of _database_. These outputs are queried by the web app that handles user requests.
+
+Once everything is MapReduced, how does it gets back the database?
+
+The most common answer is using an insert row by row. However, this might be a bad idea since:
+- Making a network request for every single record is quite expensive and slow.
+- MapReduce jobs often run many tasks in parallel, which can cause a db collapse.
+- Normally MapReduce jobs provides a clean all-or-nothing guarantee for job output. Writing to an external system from inside a job produces externally visible side effects that cannot be hidden in this way.
+
+A much better solution would be to build a brand-new database inside the batch job and write it as files to the job output in the distributed filesystem. Usually these db files are _read-only_ and can be **bulk processed** by servers.
+
+(Voldemort) The idea is that the servers can still respond to request. Meanwhile the processing the new dataset to eventually switch from the old dataset to the new.
+
+#### **Philosophy of batch process outputs**
+MapReduce jobs consider input as immutable avoiding any side effect. Using this approach batch jobs are maintainable and performant.
+- If you make a mistake in your code, you can rollback to a previous version and rerun the job with the same input.
+- Faster development
+- If a `MapReduce` job fails then the framework will re-schedule it and re-run it. (Fault tolerant)
+- The same set of files can be used as input for various jobs.
+- Separation of concerns: _What the job does_ vs _Where and when the job runs_
+
+### Comparing Hadoop to Distributed Databases
+
 ## Concepts
 **HDFS** => Daemon that allows other nodes to access file stored in a machine
 
@@ -241,3 +296,8 @@ This approach only works if the join inputs are have the same size of the mapper
 
 **Sharded join** => It's similar to _Skew join_ however, this algorithm requires that hot keys are selected manually.
 
+**OLTP** => Online transaction processing
+
+**OLAP** => Online analytics processing
+
+**WAL** => Write ahead log
