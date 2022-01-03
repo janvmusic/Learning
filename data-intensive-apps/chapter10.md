@@ -180,7 +180,7 @@ As a downside is that all the `[Sorting | Copying | Merging]` can be quite expen
 ### Map-side Joins
 These type of joins _can_ make certain assumptions about your input data, and it will make the join a bit faster
 
-Using a `cut-down` MapReduce, this means that no reducers and no sorting. Instead each mapper simply reads one input file block and writes it to other file system.
+Using a `cut-down` MapReduce, this means that no reducers and no sorting. Instead each mapper simply reads one input file block and writes it to other filesystem.
 
 #### **Broadcast hash joins**
 One example of `Map-Side` join **applies** in the case **where a large dataset is joined with a small dataset**. In particular, the small dataset needs to be small enough that it can be loaded entirely into memory in each of the mappers.
@@ -264,6 +264,41 @@ MapReduce jobs consider input as immutable avoiding any side effect. Using this 
 - Separation of concerns: _What the job does_ vs _Where and when the job runs_
 
 ### Comparing Hadoop to Distributed Databases
+TL;DR: Hadoop is somewhat like a distributed version of unix. Where:
+- HDFS - filesystem
+- Hadoop - Unix processes
+
+The combination of a `MapReduce` and a `distributed filesystem` is a _general purpose_ operating system that can run arbitrary programs
+
+#### **Diversity of Storage**
+Databases require you to structure data according to a **particular model**(relational or documents). 
+
+Meanwhile files in a distributed filesystem are just byte sequences, which can be written using any data model and encoding.
+
+They can be:
+- Database records
+- text
+- images
+- videos
+- sensor readings
+- sparse matrices
+- etc
+
+Batch processing (Hadoop) put in the table the possibility to indiscriminately dump any data into `HDFS` to later figure out how to process it
+
+>  Have data fast in whichever format > Specific, well thought data model
+
+Simply bringing data together (from various parts of a large organization) is valuable.
+
+Indiscriminate data dumping shifts the burden of interpreting the data. 
+
+**Important** The producer does not have to worry about having the same format for all values, that should be consumer's problem/responsibility.
+
+**Sushi principle**: _Raw data is better_
+
+Since data may come from different teams, there might not be an exact data model. We might think of this data as _different views of the same problem_
+
+Data modeling happens, but it's **decoupled** from the data collection.
 
 ## Concepts
 **HDFS** => Daemon that allows other nodes to access file stored in a machine
@@ -301,3 +336,7 @@ MapReduce jobs consider input as immutable avoiding any side effect. Using this 
 **OLAP** => Online analytics processing
 
 **WAL** => Write ahead log
+
+**Data lake / Enterprise data hub** => Collecting data in one place, it doesn't matter in which format. Jobs will figure it out later
+
+**Sushi principle** => _Raw data is better_
