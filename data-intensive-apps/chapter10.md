@@ -300,6 +300,28 @@ Since data may come from different teams, there might not be an exact data model
 
 Data modeling happens, but it's **decoupled** from the data collection.
 
+#### **Diversity of processing models**
+For `MapReduce` processes the data models tend to be very specific to the application that will use the data
+
+It tends to be more declarative, not just queries.
+
+**Important** `MapReduce` gave engineers the ability to easily run their own code over large datasets.
+
+Later, it was found that `MapReduce` has its own tradeoffs. Could be really slow or too limiting for certain scenarios.
+
+However, still a great machine to process various models that can all be run on a single shared-use of clustered machines
+
+The system is flexible enough to support a diverse set of workloads within the same cluster.
+
+Not having to move data around makes it a lot of easier to derive value from the data, and a lot of easier to experiment with new processing models
+
+#### Designing for frequent faults
+Batch processes are less sensitive to faults than online systems, because they do not immediately affect users if they fail and they can be run again
+
+`MapReduce` can tolerate the failure of a map or reduce task without it affecting the job as a whole by retrying work at the granularity of an individual task.
+
+**important** `MapReduce` is optimal for larger jobs. Jobs that process so much data and run for such a long time that they are likely to experience at least one task failure along the way
+
 ## Concepts
 **HDFS** => Daemon that allows other nodes to access file stored in a machine
 
