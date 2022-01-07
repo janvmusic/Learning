@@ -322,6 +322,52 @@ Batch processes are less sensitive to faults than online systems, because they d
 
 **important** `MapReduce` is optimal for larger jobs. Jobs that process so much data and run for such a long time that they are likely to experience at least one task failure along the way
 
+`MapReduce` jobs assumes that might be terminated at any time, they are considered **low-priority** jobs.
+
+If at any time another process needs the resources, the `MapReduce` jobs may be **preempted**
+
+**important** `MapReduce` is designed to tolerate frequent unexpected task terminations.
+
+## Beyond MapReduce
+Depending on the volume of data, the structure of the data and the type of processing being done with it, other tools may be more appropriate for expressing a computation
+
+Implementing MapReduce from scratch is hard. Understand how it works, that might be easier
+
+MapReduce is robust; You can use it to:
+- Process large amounts of data on unreliable systems
+- Can be rerun
+- Will get the job down... but might be slow
+- Every MapReduce job is independent
+
+**TL;DR**: It's powerful but sometimes really slow
+
+### Materialization of Intermediate State
+MapReduce jobs are independent from every other job.
+
+The main contact point of a job within the rest of the world are inputs and outputs
+
+Publishing data to a well-known location in the distributed filesystem allows loose coupling so that jobs don't need to know who is producing their input or consuming their output
+
+Unfortunately, input/outputs are used by the same team. The files on the distributed system are simply intermediate state: _pass data from one job to another_
+
+_Materialization_ is the process of writing out this intermediate state to files.
+
+One subtle difference from Unix and MapReduce is that Unix _streams_ the output of one job to the other, which saves memory and buffer
+
+_Materialization_ has downsides:
+- A job can only start if the previous one has already finished and succeeded. Having to wait until the job finishes slows down the whole process
+- Mappers are often redundant; They just read back the same file and prepare it.
+- Storing intermediate state files in a distributed filesystem means those files are replicated across several nodes, which is often overkill for such temporary data.
+
+#### **Dataflow Engines**
+They (Spark, Tez & Flink) handle a entire workflow as one job, rather than breaking it up into independent subjobs.
+
+They explicitly model the flow of data through several processing stages, these systems are known as dataflow engines.
+
+They parallelize work by partitioning inputs, and they copy the output of one function over the network to become the input to another function.
+
+
+
 ## Concepts
 **HDFS** => Daemon that allows other nodes to access file stored in a machine
 
