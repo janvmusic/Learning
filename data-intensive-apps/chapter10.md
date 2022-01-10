@@ -360,12 +360,83 @@ _Materialization_ has downsides:
 - Storing intermediate state files in a distributed filesystem means those files are replicated across several nodes, which is often overkill for such temporary data.
 
 #### **Dataflow Engines**
-They (Spark, Tez & Flink) handle a entire workflow as one job, rather than breaking it up into independent subjobs.
+They (Spark, Tez & Flink) handle a entire workflow as one job, rather than breaking it up into independent sub jobs.
 
 They explicitly model the flow of data through several processing stages, these systems are known as dataflow engines.
 
 They parallelize work by partitioning inputs, and they copy the output of one function over the network to become the input to another function.
 
+Then **_Operators_** can switch between Map / Reduce functions and be assembled in more flexible ways.
+- One option is to repartition and sort records by key. This feature enables sort-merge joins and grouping the same way as in MapReduce
+- Another option is to take several inputs and partition them in the same way, but skip the sorting. This saves effort on partitioned hash joins, where partitioning of records if important but the order is irrelevant because building the hash table randomizes the order anyway
+- For broadcast hash joins, the same output from one operator can be sent to all partitions of the join operator
+
+What are the advantages of using these processing engines?
+- Expensive work (such as sorting) need only be performed in places where it is actually required, rather than always happening by default
+- There are no unnecessary map tasks, since the work done by a mapper can be often be incorporated into the preceding reduce operator.
+- Since all joins and data dependencies in a workflow are explicitly declared, the scheduler has an overview of what data is required where. So it can make locality optimizations.
+- Intermediate state usually fits _in-memory_ or it can be written to local disks, instead of writing to HDFS.
+- Operators can start processing as soon as their input is ready.
+- Existing JVMs can be reused for other operators.
+
+**Operators** in dataflow are generalizations of map and reduce, the same processing code can run on another dataflow engine. The solution for _non-deterministic_ operators is normally kill the process.
+
+Recovering from faults by recomputing data is not always the right answer: If the intermediate data is much smaller than the source data or if the computation is very CPU-intensive, it is probably cheaper to materialize the intermediate state data to files than to recompute it
+
+**Important** Dataflow engines behaves more like a Unix pipes.
+
+A sorting operation inevitably needs to consume its entire input before it can produce any output.
+
+Like with MapReduce, the inputs are immutable and the out is completely replaced.
+
+#### **Fault tolerant**
+An advantage of **materializing intermediate state** to HDFS is that it's durable. This property makes `MapReduce` fault tolerant.
+
+**If a task fails, it can just be restarted on another machine and rad the same input again.**
+
+Another approach is to recompute the intermediate state and use it in case of any fault.
+
+For this _recompute_ approach, its important to know whether the input will produce a **deterministic** output
+
+#### **Graphs and iterative processing**
+MAny graph algorithms are expressed by traversing one edge at a time, joining one vertex with an adjacent vertex in order to propagate some information and repeating until some condition is met.
+
+It is possible to store a graph in a distributed filesystem, but this idea of "repeating until done" cannot be expressed in plan `MapReduce`, since it only performs a single pass over the data.
+
+To solve this, we can use an _iterative_ style:
+1. An external scheduler runs a batch process to calculate one step of the algorithm
+2. When the batch process completes, the scheduler checks whether the iterative algorithm has finished.
+3. If the algorithm has not yet finished, the scheduler goes back to step 1 and runs another round of the batch process.
+
+This algorithm works, however using a `MapReduce` approach seems to be quite inefficient.
+
+#### **The Pregel processing model**
+The BPS model of computation has become popular.
+
+BPS also known as Pregel model, the main idea is that one vertex can "send a message" to another vertex and typically those message are sent along the edges in a graph.
+
+In each iteration, a function is called for each vertex, passing the function all the messages that were sent to that vertex. Similar to a call to the reducer.
+
+The difference from MapReduce is that in Pregel model, a vertex remembers its state in memory from one iteration to the next, so the function only needs to process new incoming message.
+
+If no messages, then Pregel model is done.
+
+Its a bit similar to actor model. You can think of each vertex as an `actor`. An actor with message delivery guaranteed, fault-tolerant and durable).
+
+#### **Fault tolerance**
+Vertices can only communicate by message passing (not by querying each other directly). This improves the performance of Pregel jobs, since message can be batched and there is less waiting for communication.
+
+Pregel model guarantees that all messages sent in one iteration are delivered in the next iteration, the prior iteration must completely finish, and all of its messages must be copied over the network, before the next one can start.
+
+Pregel implementations guarantee that messages are processed exactly one at their destination vertex in the following iteration. 
+
+The Pregel framework is fault tolerant, this is achieved by periodically checkpointing the sate of all vertices at the end of an iteration.
+
+If a node fails and its memory state is lost, then rollback the entire graph computation to the last checkpoint and restart the computation at that point.
+
+If the algorithm is deterministic and messages are logged, it's also possible to selectively recover only the partition that was lost.
+
+#### **Parallel Execution**
 
 
 ## Concepts
@@ -408,3 +479,5 @@ They parallelize work by partitioning inputs, and they copy the output of one fu
 **Data lake / Enterprise data hub** => Collecting data in one place, it doesn't matter in which format. Jobs will figure it out later
 
 **Sushi principle** => _Raw data is better_
+
+**BSP** => Bulk Synchronous Parallel model of computation.
