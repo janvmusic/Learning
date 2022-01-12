@@ -6,3 +6,16 @@ linearizability
 Pregel
 Tez
 Flink
+_memtable_
+memtable
+Elasticsearch
+Solr
+Lamport
+Viewstamped
+Paxos
+Zab
+dedup
+lastname
+Datalog
+schemaless
+Graphql

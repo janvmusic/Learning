@@ -437,7 +437,93 @@ If a node fails and its memory state is lost, then rollback the entire graph com
 If the algorithm is deterministic and messages are logged, it's also possible to selectively recover only the partition that was lost.
 
 #### **Parallel Execution**
+A vertex does not need to know on which physical machine it is executing
 
+When it sends the message to other vertices, it only needs to need the `Vertex ID` of the receiver
+
+The framework's responsibility is in charge of distributing these messages to the correct partition.
+
+Because the programming model deals with **just one vertex at a time**, the framework may partition the graph in arbitrary ways.
+
+If possible the framework will place together the vertices that share information often.
+
+The most common arrange is: random. Which leads to have a lot of cross-machine communication overhead.
+
+As well the intermediate state is often bigger than the original graph.
+
+If possible, have the graph in memory or in a single machine. If not possible Pregel is unavoidable.
+
+### High-Level APIs and Languages
+These dataflows APIs generally use `relational-style` building blocks to express computation: 
+- Joining datasets on the value of some field
+- Grouping tables by key; 
+- Filtering by some condition
+- Aggregating tuples by counting, summing or other functions
+
+Besides of requiring less code, these high level interfaces allow interactive use.
+
+#### **The move toward declarative query languages**
+An advantage of specifying joins as relational operators is that the framework can analyze the properties of the join inputs and automatically decide which of the aforementioned join algorithms would be most suitable for the task at hand.
+
+The choice of the join algorithm can make a big difference to the performance of a batch job. Remember the styles available
+
+Declarative way allows us to avoid thinking which algorithm suits better the problem
+
+**Remember**: MapReduce Declarative Language is different from SQL Declarative Language
+
+**Important** MapReduce was build around the idea of function callbacks.
+
+This approach has the advantage that you can draw upon a large ecosystem of existing libraries to do things like parsing, natural language analysis, image analysis, and running numerical or statistical algorithms
+
+By incorporating declarative aspects in their high-level APIs and having query optimizers that can take advantage of them during execution, batch processing frameworks became faster.
+
+As well, by having the extensibility of being able to run arbitrary code and read/write data in arbitrary formats, they retain their flexibility advantage.
+
+### Specialization for different domains
+It's common to have repeated processing patterns. It's worth having reusable implementations of the common building blocks.
+
+Batch processing engines are being used for distributed execution of algorithms from increasingly wide range of domains.
+
+## Summary
+During this chapter we studied **Batch Processing**. First we saw the resemblance of Unix Tools and `MapReduce frameworks`
+
+**Important** Inputs are immutable, outputs can be used as input for another Job.
+
+The **input/output** belongs to the distributed filesystem which resembles to pipes.
+
+The **two main problems** that Distributed Batch Processing tries **to solve** are:
+
+**Partitioning**: Mappers are partitioned according to input file blocks. The output of the mapper is repartitioned, sorted and merged into a configurable number of reducer partitions.
+
+**The purpose of this step is to bring all the related data to one place**
+
+Post-MapReduce dataflow engines try to **avoid sorting** unless required.
+
+**Fault tolerance**: `MapReduce` frequently writes to disk, which makes it easy to recover from an individual failed task without restarting the entire job.
+
+Dataflow engines perform **less materialization** of intermediate state, which means that they need to **recompute if** a step fails.
+
+**Deterministic operators reduce the amount of data that needs to be recomputed.**
+
+Types of Joins discussed through the chapters are:
+
+**Sort-merge joins** => The **Mapper** groups records with a similar Key. By partitioning, sorting and merging, all these records end up going to the same reducer
+
+**Broadcast hash joins** => One of the two inputs is small, so it's not partitioned but load in a hash table. The mapper avoids an expensive task of going to disk by using the _in-memory_ hash table
+
+**Partitioned hash joins** => If the two inputs are partitioned in the same way, then the hash table approach can be used independently for each partition.
+
+Mappers & Reducers callback functions are assumed to be **stateless** and have no externally visible side effects, besides the output.
+
+Thanks to the framework, your code does not worries about implementing fault-tolerance mechanisms
+
+The framework can guarantee that final output is complete. The user didn't have to worry if a task had to be retried.
+
+The main point of Batch processing jobs is that they read the input without modifying it. Which is different from Online systems which causes side effects.
+
+**Important** The output is **derived** from the input.
+
+The input data is **Bounded** which means it has a known fixed size.
 
 ## Concepts
 **HDFS** => Daemon that allows other nodes to access file stored in a machine
@@ -481,3 +567,5 @@ If the algorithm is deterministic and messages are logged, it's also possible to
 **Sushi principle** => _Raw data is better_
 
 **BSP** => Bulk Synchronous Parallel model of computation.
+
+**Column oriented storage** => The idea behind _column-oriented_ storage is simple: **don't store all the values from one row together, but store all the values from each column together instead.**
