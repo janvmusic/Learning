@@ -12,7 +12,7 @@ Data-intensive apps: Data is its primary challenge - quantity of data, the compl
 8. [The trouble with Distributed Systems](chapter8.md)
 9. [Consistency and Consensus](chapter9.md)
 10. [Batch Processing](chapter10.md)
-10. [Stream Processing](chapter10.md)
+10. [Stream Processing](chapter11.md)
 
 ## Notes & Concepts
 - [Transaction Concepts](chapter7.md#concepts)

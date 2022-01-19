@@ -1,6 +1,4 @@
 ## Stream processing
-<img tag="chapter 10 map" src="img/ch10.png" width="300px">
-
 _A complex system that works is invariably found to have evolved from a simple system that works._
 
 _The inverse proposition also appears to be true: A complex system designed from scratch never works and cannot be made to work._
@@ -114,6 +112,8 @@ A broker may have several consumers on the same topic. There are 2 main patterns
 - Fan-out => Each message is delivered to **all** consumers. Allows several independent consumers to each "tune in" to the same broadcast of messages without affecting each other.
 
 **Important** These patterns can be combined
+
+<img tag="chapter 10 map" src="img/ch11-producers-consumers.png" width="500px">
 
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
