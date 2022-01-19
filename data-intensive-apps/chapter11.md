@@ -68,6 +68,53 @@ With this _publish/subscribe_ model, there are different approaches. To differen
 - What happens if nodes crash or temporarily go offline, are any message lost?
   - As in DBs, durability requires a combination of writing to disk and/or replication.
 
+Whether message loss is acceptable depends very much on the application.
+
+#### **Direct messaging from producers to consumers**
+A number of messaging systems use direct network communication between producers and consumers without intermediaries.
+- UDP multicast is used by financial industry
+- `Brokerless` messaging such as ZeroMQ uses publish/subscribe over TCP or IP multicast
+- StatsD & Brubeck use unreliable UDP
+- If the consumer exposes a service over the network, producers can make a direct HTTP or RPC request to push the event to the consumer
+
+Even if the protocols detect and retransmit packets that are lost in the network, the generally assume that producers and consumers are constantly online.
+
+So the app needs to have code to be aware of the possibility of message loss
+
+#### **Message Brokers**
+> Message broker == message queue
+
+A `Message broker` is essentially a kind of database that is optimized for handling message streams.
+
+Runs as a server, having producers and consumers as `clients`
+- Producer => writes to Broker
+- Consumer => reads from broker
+
+Centralizing data via `Message Brokers` the data in the broker, these system can more easily tolerate clients that come and go, and the question of durability is moved to the broker instead.
+
+Some Brokers keep messages in memory, while others write them to disk so that they are not lost in case of a broker crash.
+
+Brokers allow **unbounded queueing** which allows them to be _asynchronous_ which means:
+
+> When a producer sends a message, it normally only waits for the broker to confirm that i has buffered the message and does not wait for the message to be processed by consumers
+
+The delivery of a message will happen at some undetermined future point in time
+
+#### **Message brokers compared to databases**
+Some message brokers can even participate in two-phase commit protocols. What's the difference between brokers and DBs?
+- Databases usually keep data until it is explicitly deleted, meanwhile brokers automatically delete a message when it has been successfully delivered to its consumers.
+- Most message brokers assume that their working set is fairly small. Queues needs to be small otherwise the overall throughput may degrade
+- While DBs have support for indexes and various ways of searching, message brokers often support some way of subscribing to a subset of topics. 
+- When querying a database, the result is is typically based on a point-in-time snapshot of the data; By contrast, message brokers do not support arbitrary queries, but they notify clients when data changes
+
+#### **Multiple consumers**
+A broker may have several consumers on the same topic. There are 2 main patterns of messaging:
+- Load balancing => Each message is delivered to **one** of the consumers, so the consumers can share the work of processing the messages in the topic. This pattern is useful when the messages are expensive to process
+
+- Fan-out => Each message is delivered to **all** consumers. Allows several independent consumers to each "tune in" to the same broadcast of messages without affecting each other.
+
+**Important** These patterns can be combined
+
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
 
@@ -88,3 +135,7 @@ With this _publish/subscribe_ model, there are different approaches. To differen
 **Topic** => Group of related events.
 
 **Backpressure** => Block the producer from sending more messages.
+
+**Message broker** => It's essentially a kind of database that is optimized for handling message streams.
+
+**Asynchronous** => When a producer sends a message, it normally only waits for the broker to confirm that it has buffered the message and does not wait for the message to be processed by consumers
