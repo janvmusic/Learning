@@ -190,6 +190,7 @@ In a log-based remember that all messages that need to be ordered consistently n
 
 #### **Consumer offsets**
 
+
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
 
