@@ -115,6 +115,81 @@ A broker may have several consumers on the same topic. There are 2 main patterns
 
 <img tag="chapter 10 map" src="img/ch11-producers-consumers.png" width="500px">
 
+#### **Acknowledgements and redelivery**
+Consumers may crash at any time. It could happen that a broker delivers a message to a consumer but the consumer never process it or partially process it before crash.
+
+Message brokers use `acknowledgments` to ensure the message is not lost.
+
+**Important** It could happen that the message actually was fully processed, but the acknowledgment was lost in the network.
+
+Handling this requires **atomic commit protocol**.
+
+The combination of load balancing with redelivery inevitably leads to messages being reordered.
+
+<img tag="chapter 11 crash of consumer 2" src="img/ch11-consumers-crash.png" width="500px">
+
+To avoid this issue you can use a separate queue per consumer. 
+
+Message reordering is not a problem if messages a completely independent of each other, but it can be important if there are causal dependencies between messages.
+
+### Partitioned Logs
+Sending a packet over a network or making a request to a network service is normally a transient operation that leaves no permanent trace.
+
+**Important** Messages are _supposed_ to be transient.
+
+Meanwhile, DBs and Filesystems are the opposite: _Everything that is written to a db or file is normally expected to be permanently recorded.
+
+AMQP/JMS differs from batch processing because, while batch processing expects that the input remains, in stream processing receive a message is destructive if the acknowledgement causes it to be deleted from the broker.
+
+**Important** New consumers cannot access/read/process previous messages. 
+
+Why can't we have a hybrid between db and messages?
+
+There's an option called _log-based message brokers_
+
+#### **Using logs for message storage**
+A log is a simply an append-only sequence of records on disk.
+
+The same structure can be used for message brokers:
+1. A producer sends a message by appending it to the end of a log
+2. A consumer receives messages by reading the log sequentially
+3. If a consumer reaches the end of the log, then waits.
+
+If you want to scale then you can use _partitioned log_ distributed through different machines.
+
+A topic can then be defined as a group of partitions that all carry messages of the same type.
+
+Within each partition, the broker assigns a monotonically increasing sequence number, or **offset**
+
+Messages within a partition are totally ordered. Meanwhile there is not order guarantee across different partitions.
+
+<img tag="chapter 11 log partition" src="img/ch11-log-partition.png" width="500px">
+
+#### **Logs compared to traditional messaging**
+The log-based approach trivially supports fan-out messaging, because several consumers can independently read the log without affecting each other.
+
+Reading a message does not delete it from the log.
+
+To achieve load balancing across a group of consumers, instead of assigning individual messages to consumer clients, the broker can assign entire partitions to nodes in the consumer group
+
+Then each client consumes all the messages in the partitions it has been assigned.
+
+Typically, each consumer reads the messages in the partition **sequentially**
+
+_What are the downsides of this approach?_
+- The number of nodes sharing the work of consuming a topic can be at most the number of log partitions in that topic
+- If a single message is slow to process, it holds up the processing of subsequent messages in that partition.
+
+In situations where messages may be expensive to process and you want to parallelize processing on a message-by-message basis
+
+Where message ordering is not so important the JMS/AMPQ style of message broker is preferable.
+
+For a situation with high message throughput, each message is fast to process and where ordering is important, use log-based approach
+
+In a log-based remember that all messages that need to be ordered consistently need to be routed to the same partition.
+
+#### **Consumer offsets**
+
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
 
@@ -139,3 +214,11 @@ A broker may have several consumers on the same topic. There are 2 main patterns
 **Message broker** => It's essentially a kind of database that is optimized for handling message streams.
 
 **Asynchronous** => When a producer sends a message, it normally only waits for the broker to confirm that it has buffered the message and does not wait for the message to be processed by consumers
+
+**Message Acknowledgment** => A client must explicitly tell the broker when it has finished processing a message, so the broker can remove it from the queue
+
+**Atomic commit** => We might have the problem of a transaction that fails in some nodes but succeed on others. We have to get all the nodes to agree: _all abort/rollback_ or _all of them commit_
+
+**Log** => An append-only sequence of records on disk.
+
+**Monotonic** => Always increasing or always decreasing, as the value of the independent variable increases;
