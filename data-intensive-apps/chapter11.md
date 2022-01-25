@@ -189,7 +189,50 @@ For a situation with high message throughput, each message is fast to process an
 In a log-based remember that all messages that need to be ordered consistently need to be routed to the same partition.
 
 #### **Consumer offsets**
+Consuming a partition sequentially makes it easy to tell which messages have been processed: _all messages with an offset less than the consumer's current offset._
 
+_Messages with a greater offset than customer's offset means that they have not been processed._
+
+In log-based systems, Brokers don't need acknowledgment for every message. It only needs to check the log and compare it with consumers offsets.
+
+The `offset` is similar to a _log sequence number_. The message broker behaves like a _leader db_, and the consumer like a _follower_
+
+If a consumer node fails, a new consumer gets assigned to that partition and starts at the last recorded offset.
+
+#### **Disk space usage**
+If you only append to the log, eventually you will run out of disk space
+
+The log is actually divided into segments, and from time to time old segments are deleted or archived.
+
+The log implements a bounded-size bugger that discards old messages when it gets full. This is known as _circular bugger_ or _ring buffer_
+
+In practice, log buffers can keep several days' or even weeks worth of messages
+
+Compared with other types of message systems, it remains consistent even if writes to the disk
+
+On the other hand the throughput of systems that keep messages in memory can be fast when the queue is small, but it degrades if the queue is long.
+
+#### **When consumers cannot keep up with producers**
+The log-based uses a buffer to keep as much messages as possible, it tries to not drop messages or apply backpressure.
+
+If a consumer falls so far behind that the messages it requires don't exist anymore, the consumer wont be able to read missing messages.
+
+As the buffer is large, there is enough time for a human operator to fix the slow consumer and allow it to catch up before it starts missing messages
+
+If a consumer falls behind, it wont affect other consumers.
+
+An advantage of this type of system is that: _you can experimentally consume a production log for development, testing or debugging purposes, without having to worry much about disrupting production services
+
+If a consumer crashes, the only thing that remains is the consumer offset
+
+#### **Replaying old messages**
+Within AMQP and JMS messages get destroyed once processed.
+
+Within log-based systems is more like reading from a file. Messages wont be destroyed.
+
+The only side effect is that the offset of the consumer moves forward.
+
+You also can manipulate the offset, so you can reuse the consumer to process another topic/queue
 
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
@@ -223,3 +266,5 @@ In a log-based remember that all messages that need to be ordered consistently n
 **Log** => An append-only sequence of records on disk.
 
 **Monotonic** => Always increasing or always decreasing, as the value of the independent variable increases;
+
+**Log sequence number** => In Single-leader replication, allows a follower to reconnect to a leader after if has become disconnected, and resume replication without skipping any writes.
