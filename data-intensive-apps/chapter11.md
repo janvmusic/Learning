@@ -113,7 +113,7 @@ A broker may have several consumers on the same topic. There are 2 main patterns
 
 **Important** These patterns can be combined
 
-<img tag="chapter 10 map" src="img/ch11-producers-consumers.png" width="500px">
+<img tag="chapter 11 map" src="img/ch11-producers-consumers.png" width="500px">
 
 #### **Acknowledgements and redelivery**
 Consumers may crash at any time. It could happen that a broker delivers a message to a consumer but the consumer never process it or partially process it before crash.
@@ -234,6 +234,37 @@ The only side effect is that the offset of the consumer moves forward.
 
 You also can manipulate the offset, so you can reuse the consumer to process another topic/queue
 
+## Databases and Streams
+Databases can also include elements of streams, for example `events` which in a DB could mean: _write to database_
+
+This even can be captured stored, and processed.
+
+### Keeping Systems in Sync
+As we have seen throughout this book, there is no single system that can satisfy all data storage, querying, and processing needs.
+
+In practice, most nontrivial apps need to combine several different technologies in order to satisfy their requirements.
+
+It's important to keep in mind that data across these systems, needs to be similar and optimized for their purposes.
+
+In `BI/data warehouse` this process(data sync) is usually performed by ETL processes.
+
+If periodic full database dumps are too slow, an alternative that is sometimes used is _dual writes_
+
+However, with `dual writes` there are serious problems with race conditions. One value will simply silently overwrite another value.
+
+Another problem with _dual writes_ is that one write could fail while the other will succeed. This is a fault-tolerant problem and will lead to a system inconsistency.
+
+#### **Change data capture**
+The problem with most dbs replication logs is that they have long been considered to be an internal implementation detail of the db, not a public API
+
+Clients are supposed to query the db through its data model and query language, not parse the replication logs and try to extract data from them.
+
+`Change Data Capture` or `CDC` is the process of observing all data changes written to a db and extracting them in a form in which they can be replicated to other systems
+
+CDC can be implemented to use streams. If changes are made they are placed into a queue to be processed
+
+<img tag="chapter 11 CDC" src="img/ch11-cdc.png" width="500px">
+
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
 
@@ -268,3 +299,12 @@ You also can manipulate the offset, so you can reuse the consumer to process ano
 **Monotonic** => Always increasing or always decreasing, as the value of the independent variable increases;
 
 **Log sequence number** => In Single-leader replication, allows a follower to reconnect to a leader after if has become disconnected, and resume replication without skipping any writes.
+
+**State machine replication** => If every message represents a write to the db, and every replica processes the same writes in the same order, the replicas will remain consistent with each other (Aside from any temporary replication lag)
+
+**Dual Writes** => The application code, explicitly, writes to each of the systems when data changes. For example:
+  - Write to db
+  - Update search index
+  - Invalidate cache
+
+**Change Data Capture (CDC)** => it's the process of observing all data changes written to a db and extracting them in a form in which they can be replicated to other systems
