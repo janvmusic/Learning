@@ -254,7 +254,7 @@ However, with `dual writes` there are serious problems with race conditions. One
 
 Another problem with _dual writes_ is that one write could fail while the other will succeed. This is a fault-tolerant problem and will lead to a system inconsistency.
 
-#### **Change data capture**
+### Change data capture
 The problem with most dbs replication logs is that they have long been considered to be an internal implementation detail of the db, not a public API
 
 Clients are supposed to query the db through its data model and query language, not parse the replication logs and try to extract data from them.
@@ -264,6 +264,44 @@ Clients are supposed to query the db through its data model and query language, 
 CDC can be implemented to use streams. If changes are made they are placed into a queue to be processed
 
 <img tag="chapter 11 CDC" src="img/ch11-cdc.png" width="500px">
+
+#### **Implementing change data capture**
+We can call the log consumer as `derived data`
+
+The data stored in the search index or the data warehouse is **just another view onto the data** in the system of record.
+
+**Change data capture** is a mechanism for ensuring all the changes made in the db records are reflected in the derived data
+
+Essentially, change data capture makes one db the leader(where changes are captured) and turns the other into followers
+
+A **log-based message broker** is perfect for transporting the change events from the source db to the derived system, since it preserves the ordering of the messages.
+
+Triggers can do this work as well, however, they are error prone and they have a significant performance overhead.
+
+Parsing the replication log can be a more robust approach. Although it also comes with challenges, such as handling schema changes.
+
+CDC tends to be **async**
+
+#### **Initial Snapshot**
+If you have the log of all changes that were ever made to a db, you can reconstruct the entire state of the db, by replaying the log.
+
+However, it will take space and time to restore the entire db so this `change log` gets truncated.
+
+Then... what to do?
+- If you don't have the entire log history, you need to start with a **consistent snapshot**!
+- This snapshot must correspond to a known position or offset in the change log.
+
+#### **Log Compaction**
+The principle is simple: _The storage engine_ periodically looks for records with the same key, **throws** away any duplicates, and keeps only the **most recent update** for each key.
+
+In log-structured engines, an update with a null value (tombstone) indicates that the record will be removed in the next log compaction
+
+TL;DR => Records will be keep if they have the latests value, otherwise they will be removed.
+
+For CDC every change has a **primary key**, and every update for a key replaces the previous value for that key, then it's sufficient to keep the most recent write for a particular key
+
+You can use the log compacted to obtain a full copy of the db
+
 
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
@@ -308,3 +346,5 @@ CDC can be implemented to use streams. If changes are made they are placed into 
   - Invalidate cache
 
 **Change Data Capture (CDC)** => it's the process of observing all data changes written to a db and extracting them in a form in which they can be replicated to other systems
+
+**Write ahead log** => Basically before writing your db record, there's a write in the WAL then if something happens you restore it from here.
