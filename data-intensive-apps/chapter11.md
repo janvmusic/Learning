@@ -302,6 +302,64 @@ For CDC every change has a **primary key**, and every update for a key replaces 
 
 You can use the log compacted to obtain a full copy of the db
 
+#### **API Support for change streams**
+Increasingly, dbs are beginning to support change streams as a first-class interface.
+
+### Event Sourcing
+**Event sourcing**, although its similar (in concept) to stream systems, it has subtle differences. 
+
+Similarly to change data capture, **Event sourcing** involves storing all changes to the app state as a log of change events.
+
+The difference between data capture and **Event Sourcing** is that event sourcing applies the idea at a different level of abstraction.
+
+- Change Data capture, the **app uses the db** in a mutable way, **updating and deleting records at will.** The changes are extracted from the db log. This ensures the order of the changes, avoiding race conditions.
+
+- In event sourcing, **the app logic is explicitly built on the basis of immutable events that are written to an event log**. The event store is **append-only**, and updates or deletes are discouraged or prohibited. The events are to **reflect things that happened at the app level** rather than low-level stage changes.
+
+Event sourcing is a powerful technique for data modeling. 
+
+From an app point of view, it is more meaningful to record the user's actions as immutable events, rather than recording the effect of those actions on a mutable db.
+
+Event sourcing is about recording "Why happened (Event)" instead of "What it did (Side effect)"
+
+Event sourcing is similar to the chronicle data model, and there are also similarities between an event log and the fact table that you find in a star schema
+
+#### **Deriving current state from the event log**
+An event log by itself is not very useful, because user generally expect to see the current state of a system, no the history of modifications.
+
+Thus, apps that use event sourcing need to take the log of events and transform it into app state that is suitable for showing to a user
+
+This transformation needs to be **deterministic**. In this case, log compaction needs to be handled differently.
+
+- Update events in CDC usually contains a completely new record, so the current state is derived by the last row written. Log compaction then can discard older records
+- With event sourcing, events are modeled at a higher level: an event typically expresses the intent of a user action, not the result of the action. In this case, later events typically do not override prior events. So systems keep all the events and log compaction is not possible.
+
+Apps that use event sourcing typically have some mechanisms for storing snapshots of the current state that is derived from the log of events.
+
+This is only a performance optimization to speed up reads and recovery from crashes; 
+
+THe intention is that the system is able to store all raw events forever and reprocess the full event log whenever required.
+
+**Commands and events**
+The event sourcing philosophy is careful to distinguish between `events` and `commands`
+- When a request from a user first arrives, it is initially a **command**. At this point it **may still fail**.
+- This means that it can be **validated** and **then transformed** to an event
+- An event is `durable` and `immutable`
+- At the point of an event is generated, it becomes a **fact**
+
+A consumer of the event stream is not allowed to reject an event
+
+By the time the consumers see the event, it is already an immutable part of the log, and it may have already been seen by other consumers.
+
+**Important** Command validations needs to be synchronous! before it becomes an event
+
+### State, Streams, and Immutability
+The immutable principle is what makes event sourcing and change data capture so powerful
+
+We normally think of db as storing the current state of the application. However, **the nature of state is that it changes.**
+
+_How does this fit with immutability?_
+Whenever you have state that changes, that state is the result of the events that mutated it over time
 
 ## Concepts
 **Batch processing** => Read a set of files as input and produce a new set of output files. 
@@ -348,3 +406,5 @@ You can use the log compacted to obtain a full copy of the db
 **Change Data Capture (CDC)** => it's the process of observing all data changes written to a db and extracting them in a form in which they can be replicated to other systems
 
 **Write ahead log** => Basically before writing your db record, there's a write in the WAL then if something happens you restore it from here.
+
+**Deterministic** => A process that you can run several times and the result will be the same
