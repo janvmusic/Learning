@@ -1,7 +1,7 @@
 ## Table of contents:
 
 ### Java
-- [Functional Programming with Java](funtional-programming-java.md)
+- [Functional Programming with Java](functional-programming-java.md)
 
 ### Architecture Design
 - [What is a service mesh?](service-mesh.md)
@@ -14,3 +14,6 @@
 ### React
 - [Class components vs Functional Components](class-component-vs-functional-components.md)
 - [A quick guide to understanding React Hooks](quick-guide-react-hooks.md)
+
+### Algorithms
+- [14 Patterns to Ace Any Coding Interview Question](patterns-to-ace-coding-interviews.md)
