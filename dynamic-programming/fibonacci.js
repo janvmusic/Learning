@@ -55,6 +55,13 @@ const tabulatedFibonacci = (n) => {
   return table[n];
 };
 
+console.log("Memoized ======");
+console.log(memoizedFibonacci(6));
+console.log(memoizedFibonacci(7));
+console.log(memoizedFibonacci(8));
+console.log(memoizedFibonacci(50));
+
+console.log("Tabulated ======");
 console.log(tabulatedFibonacci(6));
 console.log(tabulatedFibonacci(7));
 console.log(tabulatedFibonacci(8));
