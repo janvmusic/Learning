@@ -68,11 +68,11 @@ This is a condensed knowledge for Dynamic programming (memoization & tabulation)
 
 - Memoization
 
-  <img tag="sliding window" src="img/all-construct-memo.png" width="300px">
+  <img tag="all construct" src="img/all-construct-memo.png" width="300px">
 
 - Tabulation
 
-  <img tag="sliding window" src="img/all-construct-tabulation.png" width="300px">
+  <img tag="all construct" src="img/all-construct-tabulation.png" width="300px">
 
 ## Memoization Recipe
 
@@ -95,6 +95,10 @@ This is a condensed knowledge for Dynamic programming (memoization & tabulation)
 3. Seed the trivial answer into the table
 4. Iterate through the table
 5. Update the table values
+
+## Final Notes
+
+<img tag="notes" src="img/notes.png" width="300px">
 
 ## Source
 
