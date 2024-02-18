@@ -1,13 +1,12 @@
-## Summary
+# Summary
 
 This is a directory of things that I've been studying during 2020. I do not dominate all of them but I've been learning new things through this year.
 I'm proud of this :D!!!!
 
-### Topics
+## Topics
 
 - [Javascript Grammar](js-grammar)
 - [CSS Design](css-design)
-- [Graphql]()
 - [Swagger](swagger)
 - [React](react)
 - [Articles](articles)
@@ -16,3 +15,4 @@ I'm proud of this :D!!!!
 - [API](api)
 - [Data Intensive Apps](data-intensive-apps)
 - [Dynamic Programming](dynamic-programming)
+- [Binary Tree](binary-tree)

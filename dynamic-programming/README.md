@@ -1,4 +1,4 @@
-## JS Grammar
+# Dynamic Programming
 
 This is a condensed knowledge for Dynamic programming (memoization & tabulation)
 
