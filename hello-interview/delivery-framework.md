@@ -21,7 +21,8 @@ For example, if you were going to design twitter, functional requirements will b
 
 These types of requirements refers to qualities on the system
 
-> [!CAUTION] Most of these capabilities refers to a number
+> [!CAUTION]
+> Most of these capabilities refers to a number
 
 Clarify statements such as:
 
