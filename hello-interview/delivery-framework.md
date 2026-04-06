@@ -32,18 +32,18 @@ Clarify statements such as:
 #### Non-Functional Requirements Domain
 
 - CAP Theorem: Consistency, Availability and Partition.
-  > [!TIP]
-  > Partition is a given in these type of interviews
+> [!TIP]
+> Partition is a given in these type of interviews
 - Environment constraints: Clarify any kind of limitation. For example: mobile device with limited memory and battery? or any limited bandwidth
 - Scalability: Clarify if the system has any unique scaling requirements. For example if there is a holiday that might affect the traffic, or if any time of the day the traffic will increase
-  > [!TIP]
-  > Consider read/write ratio here, which one is important.
+> [!TIP]
+> Consider read/write ratio here, which one is important.
 - Latency: Clarify how quickly the system should respond. Try to narrow it down to specific parts of the system, for example Yelp low latency for searching
 - Durability: Clarify how important is the data in the system. For example social network might be tolerant to lose some data but a bank no.
 - Security: Clarify what are security requirements. For example authorization and authentication
 - Fault Tolerance: Clarify what kind of failures should the system consider.
-  > [!TIP]
-  > Consider here redundancy, failover, recovery mechanisms
+> [!TIP]
+> Consider here redundancy, failover, recovery mechanisms
 - Compliance: Clarify if the data needs to be under a legal or if there is a regulatory agreement
 
 ## Core Entities (2~ minutes)
@@ -56,7 +56,8 @@ For example you can have a Core Entities like this (Twitter example):
 - Tweet
 - Follow
 
-> [!IMPORTANT] Ask yourself the following questions:
+> [!IMPORTANT]
+> Ask yourself the following questions:
 > What are the actors in the system? Are they overlapping?
 > What are the nouns or resources necessary to satisfy the functional requirements?
 
@@ -67,5 +68,5 @@ This topic defines the contract between your system and the users.
 Here you select the type of communication you can use:
 
 - REST: Uses HTTP verbs (GET, POST, PUT, DELETE) to perform CRUD operations
-  > [!TIP]
-  > This is the default
+> [!TIP]
+> This is the default
