@@ -98,8 +98,6 @@ GET /v1/feed -> Tweet[]
 
 > [!TIP]
 > Use plural nouns: Tweets and Follows
-
-> [!CAUTION]
 > The current user is derived from the authentication token
 
 ## Data Flow (~5 minutes)
