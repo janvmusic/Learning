@@ -232,3 +232,67 @@ Shards add complexity to the system for example:
 - Creating a shard means moving a massive amount of data
 - Cross-sharding transactions are quite complex to address.
 - The need of using Sagas or distributed transaction
+
+## Consistent Hashing
+
+Problem: `Hash(key) % N` is really simple to manage keys around different shards
+
+Solution:
+
+1. Create a virtual ring with keys and servers
+2. A hash key belongs to the next server you encounter clockwise
+3. When adding a new server, the new keys are added and you need to move previous server keys
+4. When a server is removed, only moves the closest keys
+
+![Consistent](./resources/consistent1.png "Consistent Hashing")
+
+![Consistent](./resources/consistent2.png "Hashing Ring")
+
+> [!TIP]
+> In interviews, you rarely need to explain how consistent hashing works unless specifically asked. It's enough to say:
+>
+> - Cache => We'll use consistent hashing to distribute data across cache nodes
+> - DB => We'll use consistent hashing for the shard key
+>
+> The interviewer usually just wants to know you're aware of the technique.
+
+The right moment to mention consistent hashing is when you are speaking about `Elastic Scaling`, which represent a system that add/remove constantly shards either in cache or database.
+
+## Cap Theorem
+
+```text
+C => Consistency
+A => Availability
+P => Partition
+```
+
+This theorem refers on how your system will **behave** during failures
+
+In practice if you choose **consistency**, it means that if a network partition happens then your system will refuse to respond
+
+In practice if you choose **availability**, it means that if a network partition happens then your system will respond with stale data
+
+> [!TIP]
+> Availability => every request gets a response (probably with stale data)
+> Consistency => Not all requests will get a response. The system refuses to respond stale data
+
+## Numbers to know
+
+The trick here is knowing which numbers to use. Modern hardware is much more powerful than 2010's.
+
+A well tunned database can handle **thousands** of queries per second.
+
+> [!TIP]
+> Understand latency first, with this you can propose sharding/caching better
+
+```text
+DB    => 1000s queries per second
+Cache => 100000s operations per second
+RAM   => nano seconds to access
+SSD   => Micro seconds to read
+Data center network calls => 1 ~ 10 ms
+Cross continental network calls => ~100ms
+Space => A postgres instance can handle a few TB of data
+```
+
+![Numbers](./resources/numbers.png "Numbers to know")
