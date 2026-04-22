@@ -59,3 +59,34 @@ These type of DBs are not tied to table like structure, they are considered sche
 - **Consistency models**: Ranges from strong consistency to eventual consistency
 - **Indexing**: Similar to relational
 - **Scalability**: Scale horizontally by using consisten hashing and/or sharding to distribute data across many servers
+
+## Blob Storage
+
+Sometimes you need to store a blob of data (images, videos or other files).
+
+Remember to use S3 or Cloud Storage. Otherwise having this stored in the DB is
+
+Usually these services are simple, you upload your blob and then you get an URL to retrieve it
+
+> [!IMPORTANT]
+> Avoid using blob storage as database, most problems focuses on having a primary db and references to blob storages
+
+![Blob storage](./resources/blob.png "Blob")
+
+### Use cases
+
+Youtube => Store videos in the blob storage, in your db then store metadata
+Instagram => Store images and videos in the blob storage, store metadata in the db
+Dropbox => Store files in the blob storage, in your db then store metadata
+
+### To Upload
+
+1. The Client request the upload
+2. The server returns a presigned URL. Records this in the DB
+3. The client uploads the file to the presigned URL
+4. The blob storage then returns the response to the server
+
+### To Download
+
+1. A client request a specific file from the server and are returned a presigned URL
+2. The client makes a get request and downloads the file
