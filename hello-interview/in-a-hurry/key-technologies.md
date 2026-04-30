@@ -90,3 +90,40 @@ Dropbox => Store files in the blob storage, in your db then store metadata
 
 1. A client request a specific file from the server and are returned a presigned URL
 2. The client makes a get request and downloads the file
+
+### Blob Storage - General Knowledge
+
+Durability: Blob storages are incredible durable. They use replication to ensure data is safe
+
+Scalability: Services like AWS S3 can be considered infinitely scalable
+
+Cost Efficient: They are cost effective (compared to having the blob in the db)
+
+Security: They are built thinking about security, like encryption or access control
+
+Upload/Download: They have specialized clients to upload/download
+
+Chunking: Allows your file to be divided in small chunks.
+
+## Search optimized database
+
+Specific designed to full-text search. They use indexes, tokenization and stemming to make queries fast and efficient
+
+They use `inverted indexes` which map words to documents
+
+```json
+{
+  "word1": [doc1, doc2, doc3],
+  "word2": [doc2, doc3, doc4],
+  "word3": [doc1, doc3, doc5],
+}
+```
+
+Examples of search optimized dbs are straightforward. Think of ticketmaster that needs to search fast in a massive list of events.
+
+### Key Details
+
+- **Inverted Indexes**: Maps from words to the documents that contain them. This allows you to quickly find documents that contain a given word
+- **Tokenization**: Its the process of breaking a piece of text into individual words.
+- **Stemming**: Reducing words to their root form. This transform the words on their most minimal elements from "running" and "runs" to "run"
+- **Scaling**: Adding mroe nodes to a cluster and sharding data across those nodes
